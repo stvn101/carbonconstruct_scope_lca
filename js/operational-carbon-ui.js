@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTabs();
     initializeSubTabs();
     initializeScope1();
+q
+x
+Q
+X
     initializeScope2();
     initializeScope3();
     initializeDashboard();

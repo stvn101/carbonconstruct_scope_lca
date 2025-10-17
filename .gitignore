@@ -1,0 +1,26 @@
+# Environment variables with sensitive data
+.env.local
+.env
+
+# Node modules (if using Node.js)
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp

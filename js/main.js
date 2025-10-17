@@ -562,3 +562,4 @@ function exportReport() {
 window.removeMaterial = removeMaterial;
 window.loadProject = loadProject;
 window.deleteProject = deleteProject;
+ 

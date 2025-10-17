@@ -1,0 +1,404 @@
+/**
+ * Custom CSS Styles
+ * Additional styling beyond Tailwind CSS for specific CarbonConstruct needs
+ */
+
+/* Ensure proper font loading */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading state for buttons */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Enhanced hover effects for cards */
+.carbon-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carbon-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure charts have proper aspect ratio */
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+.chart-container canvas {
+    max-height: 100%;
+}
+
+/* Print styles for reports */
+@media print {
+    nav,
+    button,
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+    }
+    
+    .bg-gray-50,
+    .bg-gray-100 {
+        background: white !important;
+    }
+    
+    section {
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+    }
+    
+    .chart-container {
+        page-break-inside: avoid;
+    }
+}
+
+/* Accessibility improvements */
+button:focus,
+input:focus,
+select:focus {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* Status badge animations */
+.status-badge {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Table responsive improvements */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.875rem;
+    }
+    
+    table th,
+    table td {
+        padding: 0.5rem !important;
+    }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #059669;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+
+/* Loading spinner (if needed in future) */
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #059669;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Tooltip styles (if needed) */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.875rem;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Alert/notification styles */
+.alert {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    border: 1px solid #059669;
+    color: #065f46;
+}
+
+.alert-warning {
+    background-color: #fef3c7;
+    border: 1px solid #f59e0b;
+    color: #92400e;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #991b1b;
+}
+
+/* Gradient backgrounds for compliance sections */
+.gradient-green {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.gradient-blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.gradient-yellow {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* Mobile menu toggle (if navigation becomes hamburger menu) */
+@media (max-width: 768px) {
+    .mobile-menu-button {
+        display: block;
+    }
+    
+    .desktop-menu {
+        display: none;
+    }
+}
+
+/* Ensure icons have proper spacing */
+i.fas,
+i.far,
+i.fab {
+    vertical-align: middle;
+}
+
+/* Data table improvements */
+table.data-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.data-table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #374151;
+}
+
+table.data-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Chart legends responsive */
+@media (max-width: 640px) {
+    .chart-container {
+        height: 300px;
+    }
+}
+
+/* Compliance status colors */
+.status-excellent {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-good {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.status-average {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-poor {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Material category colors */
+.category-concrete {
+    border-left: 4px solid #3b82f6;
+}
+
+.category-steel {
+    border-left: 4px solid #6b7280;
+}
+
+.category-timber {
+    border-left: 4px solid #92400e;
+}
+
+.category-masonry {
+    border-left: 4px solid #dc2626;
+}
+
+.category-insulation {
+    border-left: 4px solid #f59e0b;
+}
+
+.category-glazing {
+    border-left: 4px solid #06b6d4;
+}
+
+.category-finishes {
+    border-left: 4px solid #8b5cf6;
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #9ca3af;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Footer styling */
+footer {
+    margin-top: 4rem;
+}
+
+/* Hero section overlay */
+.hero-overlay {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%);
+}
+
+/* Ensure proper spacing on mobile */
+@media (max-width: 640px) {
+    .max-w-7xl {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.875rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Input focus states for better UX */
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+/* Disabled input styling */
+input:disabled,
+select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+}
+
+/* Success animation for save actions */
+@keyframes successPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.save-success {
+    animation: successPulse 0.5s ease;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .carbon-card {
+        border: 2px solid currentColor;
+    }
+    
+    button {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

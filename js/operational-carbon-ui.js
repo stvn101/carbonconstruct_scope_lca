@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTabs();
     initializeSubTabs();
     initializeScope1();
-q
-x
-Q
-X
     initializeScope2();
     initializeScope3();
     initializeDashboard();
@@ -163,8 +159,8 @@ function addEquipment() {
     const type = document.getElementById('s1EquipmentType').value;
     const operatingHours = parseFloat(document.getElementById('s1OperatingHours').value);
     const fuelUsed = document.getElementById('s1FuelUsed').value ? parseFloat(document.getElementById('s1FuelUsed').value) : null;
-    
-    if (!category || !type || !operatingHours) {
+
+    if (!category || !type || isNaN(operatingHours) || operatingHours <= 0) {
         alert('Please fill in all required fields');
         return;
     }
@@ -221,8 +217,8 @@ function addGenerator() {
     const size = document.getElementById('s1GeneratorSize').value;
     const hours = parseFloat(document.getElementById('s1GenHours').value);
     const loadFactor = parseFloat(document.getElementById('s1GenLoad').value) / 100;
-    
-    if (!size || !hours || !loadFactor) {
+
+    if (!size || isNaN(hours) || hours <= 0 || isNaN(loadFactor) || loadFactor <= 0) {
         alert('Please fill in all required fields');
         return;
     }
@@ -246,8 +242,8 @@ function addGenerator() {
 function addHeating() {
     const type = document.getElementById('s1HeatingType').value;
     const hours = parseFloat(document.getElementById('s1HeatingHours').value);
-    
-    if (!type || !hours) {
+
+    if (!type || isNaN(hours) || hours <= 0) {
         alert('Please fill in all required fields');
         return;
     }
@@ -280,8 +276,8 @@ function addPower() {
     const kWh = parseFloat(document.getElementById('s2PowerKWh').value);
     const state = document.getElementById('s2PowerState').value;
     const days = parseInt(document.getElementById('s2PowerDays').value);
-    
-    if (!description || !kWh || !state || !days) {
+
+    if (!description || isNaN(kWh) || kWh <= 0 || !state || isNaN(days) || days <= 0) {
         alert('Please fill in all required fields');
         return;
     }
@@ -306,8 +302,8 @@ function addFacility() {
     const type = document.getElementById('s2FacilityType').value;
     const days = parseInt(document.getElementById('s2FacilityDays').value);
     const state = document.getElementById('s2FacilityState').value;
-    
-    if (!type || !days || !state) {
+
+    if (!type || isNaN(days) || days <= 0 || !state) {
         alert('Please fill in all required fields');
         return;
     }
@@ -329,8 +325,8 @@ function addElectricEquipment() {
     const type = document.getElementById('s2ElecType').value;
     const hours = parseFloat(document.getElementById('s2ElecHours').value);
     const state = document.getElementById('s2ElecState').value;
-    
-    if (!type || !hours || !state) {
+
+    if (!type || isNaN(hours) || hours <= 0 || !state) {
         alert('Please fill in all required fields');
         return;
     }
@@ -366,8 +362,8 @@ function addTransport() {
     const weight = parseFloat(document.getElementById('s3TransWeight').value);
     const distance = parseFloat(document.getElementById('s3TransDistance').value);
     const transportMode = document.getElementById('s3TransMode').value;
-    
-    if (!material || !weight || !distance || !transportMode) {
+
+    if (!material || isNaN(weight) || weight <= 0 || isNaN(distance) || distance <= 0 || !transportMode) {
         alert('Please fill in all required fields');
         return;
     }
@@ -392,8 +388,8 @@ function addWaste() {
     const material = document.getElementById('s3WasteMaterial').value;
     const weight = parseFloat(document.getElementById('s3WasteWeight').value);
     const disposalMethod = document.getElementById('s3WasteMethod').value;
-    
-    if (!material || !weight || !disposalMethod) {
+
+    if (!material || isNaN(weight) || weight <= 0 || !disposalMethod) {
         alert('Please fill in all required fields');
         return;
     }
@@ -415,8 +411,8 @@ function addWaste() {
 function addWater() {
     const type = document.getElementById('s3WaterType').value;
     const volume = parseFloat(document.getElementById('s3WaterVolume').value);
-    
-    if (!type || !volume) {
+
+    if (!type || isNaN(volume) || volume <= 0) {
         alert('Please fill in all required fields');
         return;
     }
@@ -438,8 +434,8 @@ function addCommute() {
     const avgDistance = parseFloat(document.getElementById('s3CommuteDistance').value);
     const days = parseInt(document.getElementById('s3CommuteDays').value);
     const mode = document.getElementById('s3CommuteMode').value;
-    
-    if (!employees || !avgDistance || !days || !mode) {
+
+    if (isNaN(employees) || employees <= 0 || isNaN(avgDistance) || avgDistance <= 0 || isNaN(days) || days <= 0 || !mode) {
         alert('Please fill in all required fields');
         return;
     }
@@ -464,8 +460,8 @@ function addTempWorks() {
     const type = document.getElementById('s3TempType').value;
     const area = parseFloat(document.getElementById('s3TempArea').value);
     const uses = parseInt(document.getElementById('s3TempUses').value);
-    
-    if (!type || !area || !uses) {
+
+    if (!type || isNaN(area) || area <= 0 || isNaN(uses) || uses <= 0) {
         alert('Please fill in all required fields');
         return;
     }

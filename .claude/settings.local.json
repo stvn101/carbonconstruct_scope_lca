@@ -15,7 +15,9 @@
       "Bash(npm install:*)",
       "Bash(node direct_postgres_migration.js:*)",
       "Bash(node:*)",
-      "Bash(pkill -f \"python -m http.server\")"
+      "Bash(pkill -f \"python -m http.server\")",
+      "Bash(taskkill /F /PID 39496)",
+      "Bash(taskkill /F /PID 6948)"
     ],
     "deny": [],
     "ask": []

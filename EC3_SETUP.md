@@ -7,14 +7,26 @@
 
 ## EC3 API Authentication
 
-The EC3 API (Building Transparency) requires OAuth authentication, not a simple API key.
+The EC3 API (Building Transparency) requires OAuth2 authentication with Client ID + Client Secret.
+
+### You Have:
+- ✅ Client Secret: `UfKIX9yTjbmYsCnGBfhwtRykzHXasggIt1AhaTHQ`
+- ❓ Client ID: **NEEDED** (check your Building Transparency account)
 
 ### To Enable EC3:
 
+**Option 1: Find your Client ID**
 1. Go to https://buildingtransparency.org/
 2. Sign in to your account
-3. Navigate to API settings
-4. Generate an **OAuth Bearer Token** (not just an API key)
+3. Navigate to "Developer Settings" or "API Keys" or "OAuth Applications"
+4. Find your **Client ID** (should be listed with your Client Secret)
+5. Run: `node get-ec3-token-simple.js` (add both ID and Secret)
+
+**Option 2: Get Bearer Token Directly**
+1. Log in to https://buildingtransparency.org/
+2. Look for "API Keys" or "Developer" section
+3. Find a **Bearer Token** or "Access Token" (pre-generated)
+4. Copy it directly
 5. Add the token to your `.env.local` file:
 
 ```env

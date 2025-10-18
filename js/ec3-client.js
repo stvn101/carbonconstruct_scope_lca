@@ -20,7 +20,7 @@
 class EC3Client {
     constructor() {
         // EC3 API Configuration
-        this.baseUrl = 'https://buildingtransparency.org/api';
+        this.baseUrl = 'https://api.buildingtransparency.org/api';
         this.apiKey = null;
         this.bearerToken = null;
         this.initialized = false;

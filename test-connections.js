@@ -77,10 +77,9 @@ async function testEC3() {
     try {
         // Test 1: Simple API call
         console.log('Test 1: Testing authentication...');
-        const response = await fetch('https://buildingtransparency.org/api/materials?page_size=1', {
+        const response = await fetch('https://api.buildingtransparency.org/api/materials?page_size=1', {
             headers: {
-                'X-API-Key': EC3_API_KEY,
-                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${EC3_API_KEY}`,
                 'Accept': 'application/json'
             }
         });

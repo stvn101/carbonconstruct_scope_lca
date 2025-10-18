@@ -24,3 +24,8 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# Migration data exports (too large for git)
+all_materials_export.json
+exported_materials_data.json
+failed_materials.json

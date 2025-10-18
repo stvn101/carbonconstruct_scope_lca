@@ -4,7 +4,13 @@
       "Bash(git fetch:*)",
       "Bash(find:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(node migrate_supabase.js:*)",
+      "Bash(node fetch_all_materials.js:*)",
+      "Bash(node create_schema.js:*)",
+      "Bash(node final_migration.js:*)",
+      "Bash(node check_schema.js:*)"
     ],
     "deny": [],
     "ask": []

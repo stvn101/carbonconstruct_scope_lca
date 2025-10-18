@@ -10,7 +10,11 @@
       "Bash(node fetch_all_materials.js:*)",
       "Bash(node create_schema.js:*)",
       "Bash(node final_migration.js:*)",
-      "Bash(node check_schema.js:*)"
+      "Bash(node check_schema.js:*)",
+      "Bash(cat:*)",
+      "Bash(npm install:*)",
+      "Bash(node direct_postgres_migration.js:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

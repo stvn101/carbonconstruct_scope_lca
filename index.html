@@ -608,6 +608,17 @@
     </footer>
 
     <!-- JavaScript -->
+    <!-- Configuration (load first) -->
+    <script src="js/config.js"></script>
+
+    <!-- External libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- API Clients -->
+    <script src="js/supabase-client.js"></script>
+    <script src="js/ec3-client.js"></script>
+
+    <!-- Application Scripts -->
     <script src="js/materials-database.js"></script>
     <script src="js/lca-calculator.js"></script>
     <script src="js/scopes-calculator.js"></script>
@@ -615,6 +626,69 @@
     <script src="js/charts.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Initialize Database Connections -->
+    <script>
+        // Initialize Supabase and EC3 when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Initializing CarbonConstruct...');
+
+            try {
+                // Initialize Supabase
+                if (window.ENV.ENABLE_SUPABASE && typeof supabaseClient !== 'undefined') {
+                    const supabaseReady = await supabaseClient.initialize({
+                        url: window.ENV.SUPABASE_URL,
+                        key: window.ENV.SUPABASE_ANON_KEY
+                    });
+
+                    if (supabaseReady) {
+                        console.log('✅ Supabase: Connected to 4,343 materials database');
+
+                        // Test connection
+                        const testResult = await supabaseClient.testConnection();
+                        if (testResult.connected) {
+                            console.log('✅ Supabase: Connection verified');
+                        }
+
+                        // Get stats
+                        try {
+                            const stats = await supabaseClient.getMaterialStats();
+                            if (stats) {
+                                console.log(`📊 Supabase: ${stats.total} total materials available`);
+                            }
+                        } catch (e) {
+                            console.warn('Could not fetch stats:', e.message);
+                        }
+                    } else {
+                        console.warn('⚠️  Supabase: Failed to connect, using fallback database');
+                    }
+                } else {
+                    console.log('ℹ️  Supabase: Disabled in configuration');
+                }
+
+                // Initialize EC3
+                if (window.ENV.ENABLE_EC3 && typeof ec3Client !== 'undefined') {
+                    const ec3Ready = await ec3Client.initialize({
+                        apiKey: window.ENV.EC3_API_KEY,
+                        bearerToken: window.ENV.EC3_BEARER_TOKEN
+                    });
+
+                    if (ec3Ready) {
+                        console.log('✅ EC3: Connected to 50,000+ global EPDs');
+                    } else {
+                        console.warn('⚠️  EC3: Failed to connect, EC3 features disabled');
+                    }
+                } else {
+                    console.log('ℹ️  EC3: Disabled in configuration');
+                }
+
+                console.log('✅ CarbonConstruct initialized successfully!');
+
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+            }
+        });
+    </script>
 
 </body>
 </html>

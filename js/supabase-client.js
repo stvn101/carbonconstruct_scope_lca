@@ -96,7 +96,7 @@ class SupabaseClient {
 
             // Build query
             let query = this.client
-                .from('materials') // Adjust table name to match your schema
+                .from('unified_materials') // Adjust table name to match your schema
                 .select('*')
                 .order('name', { ascending: true });
 
@@ -141,7 +141,7 @@ class SupabaseClient {
 
         try {
             const { data, error } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('*')
                 .eq('category', category)
                 .order('name', { ascending: true });
@@ -170,7 +170,7 @@ class SupabaseClient {
 
         try {
             const { data, error } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('*')
                 .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
                 .order('name', { ascending: true })
@@ -197,7 +197,7 @@ class SupabaseClient {
 
         try {
             const { data, error } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('*')
                 .eq('id', materialId)
                 .single();
@@ -231,7 +231,7 @@ class SupabaseClient {
 
         try {
             const { data, error } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('category')
                 .order('category', { ascending: true });
 
@@ -268,7 +268,7 @@ class SupabaseClient {
             } = options;
 
             let query = this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('*')
                 .eq('source', 'EPD Australasia') // Adjust field name as needed
                 .order('name', { ascending: true });
@@ -308,18 +308,18 @@ class SupabaseClient {
         try {
             // Total count
             const { count: totalCount } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('*', { count: 'exact', head: true });
 
             // EPD count
             const { count: epdCount } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('*', { count: 'exact', head: true })
                 .eq('source', 'EPD Australasia');
 
             // Categories count
             const { data: categories } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('category');
 
             const uniqueCategories = [...new Set(categories.map(m => m.category))];
@@ -399,7 +399,7 @@ class SupabaseClient {
 
         try {
             const { data, error } = await this.client
-                .from('materials')
+                .from('unified_materials')
                 .select('id')
                 .limit(1);
 

@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vercel dev",
+    "lint": "eslint . --ext js --max-warnings 0",
     "build": "echo 'Static site - no build required'",
     "deploy": "vercel --prod"
   },
@@ -13,6 +14,7 @@
     "stripe": "^14.10.0"
   },
   "devDependencies": {
+    "eslint": "^9.0.0",
     "vercel": "^33.0.0"
   },
   "engines": {

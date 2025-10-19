@@ -12,6 +12,8 @@ build/
 
 # IDE files
 .vscode/
+!.vscode/mcp.json
+!.vscode/settings.json
 .idea/
 .claude/
 

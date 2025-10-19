@@ -1,495 +1,526 @@
-# Deployment Guide - CarbonConstruct
+# 🚀 Deployment Guide - CarbonConstruct
 
-## 🚀 Ready to Deploy!
+## Current Setup Status
 
-Your CarbonConstruct application is complete and ready for deployment. Follow this guide to publish your website.
-
----
-
-## ✅ Pre-Deployment Checklist
-
-### Files Verified
-- [x] index.html (main application)
-- [x] css/custom.css (styling)
-- [x] js/materials-database.js
-- [x] js/lca-calculator.js
-- [x] js/scopes-calculator.js
-- [x] js/compliance.js
-- [x] js/charts.js
-- [x] js/storage.js
-- [x] js/main.js
-- [x] README.md (comprehensive documentation)
-- [x] QUICK_START.md (quick start guide)
-- [x] PROJECT_SUMMARY.md (project overview)
-
-### Functionality Tested
-- [x] Application loads successfully
-- [x] Material database populates dropdowns
-- [x] Add/remove materials works
-- [x] Calculate button triggers calculations
-- [x] Charts render correctly
-- [x] Save/load projects functions
-- [x] Export reports works
-- [x] Responsive design verified
-
-### Browser Compatibility
-- [x] Chrome/Edge (Chromium)
-- [x] Firefox
-- [x] Safari (should work - CSS/JS standards compliant)
+✅ **Vercel** - Configured and working  
+✅ **Supabase** - Database with 4,343 materials  
+✅ **Materials Database** - NABERS + EPD Australasia + EC3 (50,000 EPDs)  
+✅ **Stripe** - Live public key configured  
 
 ---
 
-## 📤 How to Deploy
+## Database Schema
 
-### Option 1: Use the Publish Tab (Recommended)
+### `unified_materials` Table
 
-**This is the easiest method!**
+Your Supabase table contains:
+- **4,343 materials** from NABERS and EPD Australasia
+- **50,000+ EPDs** from EC3 database
+- **Total**: 54,343+ construction materials
 
-1. Click on the **"Publish"** tab in your development environment
-2. Click **"Publish Project"** button
-3. Wait for deployment to complete
-4. You'll receive a live URL for your website
-5. Share the URL with users!
+**Expected Schema** (update if different):
+```sql
+CREATE TABLE unified_materials (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    material_name TEXT NOT NULL,
+    category TEXT,
+    subcategory TEXT,
+    carbon_factor DECIMAL(10,4), -- kg CO2-e per unit
+    unit TEXT, -- kg, m3, m2, etc.
+    source TEXT, -- 'NABERS', 'EPD_AU', 'EC3'
+    epd_id TEXT,
+    manufacturer TEXT,
+    description TEXT,
+    region TEXT DEFAULT 'AU',
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
 
-**That's it!** The Publish tab handles all deployment automatically.
-
----
-
-### Option 2: Manual Deployment to Static Hosting
-
-If you need to deploy elsewhere, here are options:
-
-#### A) Netlify
-1. Create account at netlify.com
-2. Drag and drop your project folder
-3. Site deploys automatically
-4. Get free HTTPS subdomain (e.g., carbonconstruct.netlify.app)
-
-#### B) Vercel
-1. Create account at vercel.com
-2. Connect to Git repository OR upload files
-3. Auto-deploys with each change
-4. Free HTTPS domain included
-
-#### C) GitHub Pages
-1. Create GitHub repository
-2. Push all files to main branch
-3. Enable GitHub Pages in settings
-4. Site available at username.github.io/repo-name
-
-#### D) AWS S3 + CloudFront
-1. Create S3 bucket
-2. Enable static website hosting
-3. Upload all files
-4. Configure CloudFront for HTTPS
-5. Map custom domain
+-- Index for fast searching
+CREATE INDEX idx_material_name ON unified_materials(material_name);
+CREATE INDEX idx_category ON unified_materials(category);
+CREATE INDEX idx_source ON unified_materials(source);
+```
 
 ---
 
-## 🌐 CDN Dependencies
+## Environment Variables
 
-Your application uses these CDN resources (loaded from internet):
+### Vercel Environment Variables
 
-- **Tailwind CSS**: https://cdn.tailwindcss.com
-- **Chart.js**: https://cdn.jsdelivr.net/npm/chart.js
-- **Font Awesome**: https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css
-- **Google Fonts**: https://fonts.googleapis.com/css2?family=Inter
+Go to: https://vercel.com/stvn101/carbonconstruct-scope-lca/settings/environment-variables
 
-**Note**: These load from CDNs, so users need internet connection. For offline use, you'd need to download and host these locally.
+Add these:
 
----
+```bash
+# Supabase
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... # Optional, for server-side
 
-## ⚙️ Environment Configuration
+# Stripe
+STRIPE_PUBLIC_KEY=pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz
+STRIPE_SECRET_KEY=sk_live_... # Get from Stripe Dashboard
 
-### No Environment Variables Required!
-
-This is a static website with no backend configuration needed. Everything works out of the box.
-
-### Database Configuration
-
-The RESTful Table API is built-in and requires no configuration. The table schema is already created:
-- Table name: `carbon_projects`
-- All fields defined
-- Ready to use
+# Application
+NEXT_PUBLIC_APP_URL=https://carbonconstruct-scope-lca.vercel.app
+```
 
 ---
 
-## 🔒 Security Considerations
+## GitHub Repository Setup
 
-### For Production Use
+Repository: `https://github.com/stvn101/carbonconstruct_scope_lca`
 
-1. **HTTPS Required**
-   - Modern browsers require HTTPS for service workers and some APIs
-   - All deployment platforms mentioned provide free HTTPS
+### Initialize Git (if not already done)
 
-2. **No Sensitive Data**
-   - This tool doesn't collect personal information
-   - No authentication required
-   - All data stored in project database
+```bash
+cd /home/user/carbonconstruct
+git init
+git branch -M main
+git remote add origin https://github.com/stvn101/carbonconstruct_scope_lca.git
+```
 
-3. **CORS Headers**
-   - The RESTful API handles CORS automatically
-   - No configuration needed
+### Commit and Push
 
-4. **Input Validation**
-   - All user inputs are validated client-side
-   - No SQL injection risk (using RESTful API)
-   - No XSS vulnerabilities (no dynamic HTML from user input)
-
----
-
-## 📊 Performance Optimization
-
-### Already Optimized
-
-✅ **Minimal Dependencies** - Only essential CDN libraries
-✅ **Efficient Code** - Vanilla JavaScript, no heavy frameworks
-✅ **Lazy Loading** - Charts load only when calculated
-✅ **Small File Size** - Total project ~175KB
-✅ **Browser Caching** - Static assets cached by browsers
-
-### Optional Enhancements
-
-For high-traffic scenarios:
-
-1. **Tailwind CSS Production Build**
-   ```bash
-   # Install Tailwind CLI
-   npm install -D tailwindcss
-   
-   # Generate production CSS (much smaller)
-   npx tailwindcss -o css/tailwind.min.css --minify
-   
-   # Update index.html to use local CSS instead of CDN
-   ```
-
-2. **JavaScript Minification**
-   ```bash
-   # Install terser
-   npm install -g terser
-   
-   # Minify each JS file
-   terser js/main.js -o js/main.min.js -c -m
-   
-   # Update index.html script references
-   ```
-
-3. **Image Optimization**
-   - Currently no images (using Font Awesome icons)
-   - If you add images later, use WebP format
+```bash
+git add .
+git commit -m "feat: complete website with Stripe integration and material database ready"
+git push -u origin main
+```
 
 ---
 
-## 🧪 Testing After Deployment
+## Vercel Deployment
 
-### Checklist
+### Option 1: Connect GitHub (Automatic)
 
-1. **Load Test**
-   - [ ] Homepage loads within 3 seconds
-   - [ ] All CSS styles apply correctly
-   - [ ] All JavaScript loads without errors
+1. Go to: https://vercel.com/new
+2. Import `stvn101/carbonconstruct_scope_lca`
+3. Configure:
+   - **Framework Preset**: Other
+   - **Root Directory**: ./
+   - **Build Command**: (leave empty for static)
+   - **Output Directory**: (leave empty)
+4. Add environment variables (see above)
+5. Deploy!
 
-2. **Functionality Test**
-   - [ ] Material dropdowns populate
-   - [ ] Add material button works
-   - [ ] Calculate button triggers calculations
-   - [ ] Charts display correctly
-   - [ ] Save/load projects works
-   - [ ] Export reports downloads
+### Option 2: Vercel CLI
 
-3. **Responsive Test**
-   - [ ] Mobile view (< 640px width)
-   - [ ] Tablet view (640-1024px width)
-   - [ ] Desktop view (> 1024px width)
-
-4. **Browser Test**
-   - [ ] Chrome/Edge
-   - [ ] Firefox
-   - [ ] Safari
-   - [ ] Mobile browsers
-
-5. **Performance Test**
-   - [ ] PageSpeed Insights score > 90
-   - [ ] First Contentful Paint < 2s
-   - [ ] Time to Interactive < 3s
+```bash
+cd /home/user/carbonconstruct
+vercel --prod
+```
 
 ---
 
-## 📱 Mobile Considerations
+## Connect Supabase to Frontend
 
-### Already Mobile-Friendly
+Create a new file for Supabase client:
 
-✅ Responsive design with Tailwind CSS
-✅ Touch-friendly buttons (min 44px)
-✅ Readable fonts (minimum 14px)
-✅ Collapsible sections for small screens
-✅ Horizontal scroll for wide tables
+### `/home/user/carbonconstruct/supabase-client.js`
 
-### PWA Potential (Future)
+```javascript
+// Initialize Supabase client
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 
-To make it a Progressive Web App:
-1. Add manifest.json
-2. Create service worker
-3. Add offline support
-4. Enable "Add to Home Screen"
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
----
+// Search materials function
+async function searchMaterials(query, category = null) {
+    let request = supabase
+        .from('unified_materials')
+        .select('*')
+        .ilike('material_name', `%${query}%`)
+        .limit(50);
+    
+    if (category) {
+        request = request.eq('category', category);
+    }
+    
+    const { data, error } = await request;
+    
+    if (error) {
+        console.error('Error searching materials:', error);
+        return [];
+    }
+    
+    return data;
+}
 
-## 🔄 Update Process
+// Get material by ID
+async function getMaterialById(id) {
+    const { data, error } = await supabase
+        .from('unified_materials')
+        .select('*')
+        .eq('id', id)
+        .single();
+    
+    if (error) {
+        console.error('Error fetching material:', error);
+        return null;
+    }
+    
+    return data;
+}
 
-### Making Changes After Deployment
+// Get all categories
+async function getCategories() {
+    const { data, error } = await supabase
+        .from('unified_materials')
+        .select('category')
+        .not('category', 'is', null);
+    
+    if (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
+    
+    // Get unique categories
+    const categories = [...new Set(data.map(item => item.category))];
+    return categories.sort();
+}
 
-1. **Edit Files Locally**
-   - Make changes to HTML, CSS, or JS files
-   - Test thoroughly in browser
-
-2. **Re-deploy**
-   - **Using Publish Tab**: Just click Publish again
-   - **Using Netlify/Vercel**: Push to Git or re-upload
-   - **Using GitHub Pages**: Commit and push changes
-
-3. **Clear Cache**
-   - Users may need to hard refresh (Ctrl+Shift+R)
-   - Or wait for browser cache to expire
-
----
-
-## 📈 Monitoring & Analytics
-
-### Optional: Add Analytics
-
-If you want to track usage:
-
-1. **Google Analytics**
-   ```html
-   <!-- Add before </head> in index.html -->
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-   <script>
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-     gtag('config', 'G-XXXXXXXXXX');
-   </script>
-   ```
-
-2. **Plausible Analytics** (Privacy-friendly)
-   ```html
-   <script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script>
-   ```
-
-3. **Simple Analytics** (Privacy-focused)
-   ```html
-   <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-   ```
-
----
-
-## 🎯 Custom Domain Setup
-
-### After Deployment
-
-1. **Buy Domain** (if you don't have one)
-   - Namecheap, GoDaddy, Google Domains, etc.
-   - Example: carbonconstruct.com.au
-
-2. **Configure DNS**
-   - Point to your hosting platform
-   - Each platform has specific instructions
-
-3. **Enable HTTPS**
-   - Most platforms auto-provision SSL certificates
-   - Free with Let's Encrypt
+// Export functions
+window.materialsDB = {
+    search: searchMaterials,
+    getById: getMaterialById,
+    getCategories: getCategories
+};
+```
 
 ---
 
-## 🐛 Troubleshooting
+## Add Supabase to HTML Pages
 
-### Common Issues
+Add this before closing `</body>` tag:
 
-**Issue**: White screen on deployment
-- **Check**: Browser console for JavaScript errors
-- **Fix**: Ensure all file paths are correct (case-sensitive on some servers)
-
-**Issue**: Charts not displaying
-- **Check**: Chart.js CDN loaded successfully
-- **Fix**: Verify internet connection, try different CDN URL
-
-**Issue**: Save/load not working
-- **Check**: RESTful API endpoints accessible
-- **Fix**: Verify table schema created, check API permissions
-
-**Issue**: Styles not applying
-- **Check**: CSS file loaded, Tailwind CDN accessible
-- **Fix**: Hard refresh browser, check file paths
+```html
+<!-- Supabase Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+```
 
 ---
 
-## 📝 Post-Deployment Tasks
+## Materials Search Integration
 
-### Recommended Next Steps
+### Example: Add to Calculator Page
 
-1. **Test Thoroughly**
-   - Create test project with real data
-   - Verify all calculations accurate
-   - Test on multiple devices
+```html
+<div class="material-search">
+    <input 
+        type="text" 
+        id="materialSearch" 
+        placeholder="Search 54,000+ materials..."
+        oninput="searchMaterials()"
+    >
+    <select id="categoryFilter" onchange="searchMaterials()">
+        <option value="">All Categories</option>
+        <!-- Dynamically populated -->
+    </select>
+    <div id="searchResults" class="search-results"></div>
+</div>
 
-2. **Document URL**
-   - Save deployment URL
-   - Share with team
-   - Add to documentation
+<script>
+let searchTimeout;
 
-3. **Create Backups**
-   - Export project data regularly
-   - Save to external storage
-   - Consider automated backups
+async function searchMaterials() {
+    clearTimeout(searchTimeout);
+    
+    searchTimeout = setTimeout(async () => {
+        const query = document.getElementById('materialSearch').value;
+        const category = document.getElementById('categoryFilter').value;
+        
+        if (query.length < 2) return;
+        
+        const results = await window.materialsDB.search(query, category || null);
+        displayResults(results);
+    }, 300);
+}
 
-4. **Gather Feedback**
-   - Share with colleagues
-   - Collect user feedback
-   - Note any issues or requests
+function displayResults(materials) {
+    const container = document.getElementById('searchResults');
+    
+    if (materials.length === 0) {
+        container.innerHTML = '<p>No materials found</p>';
+        return;
+    }
+    
+    container.innerHTML = materials.map(material => `
+        <div class="material-result" onclick="selectMaterial('${material.id}')">
+            <h4>${material.material_name}</h4>
+            <p>${material.category || 'Uncategorized'} | ${material.source}</p>
+            <strong>${material.carbon_factor} kg CO₂-e/${material.unit}</strong>
+        </div>
+    `).join('');
+}
 
-5. **Plan Updates**
-   - Add to material database
-   - Enhance features
-   - Fix any discovered bugs
-
----
-
-## 🎓 Training & Onboarding
-
-### For Team Members
-
-1. **Share Documentation**
-   - README.md - Comprehensive guide
-   - QUICK_START.md - Quick tutorial
-   - PROJECT_SUMMARY.md - Overview
-
-2. **Conduct Training Session**
-   - Demonstrate key features
-   - Walk through example project
-   - Answer questions
-
-3. **Create Examples**
-   - Build example projects
-   - Save in shared location
-   - Use as training material
-
----
-
-## 📞 Support Resources
-
-### If You Need Help
-
-1. **Documentation**
-   - README.md has detailed info
-   - QUICK_START.md for basics
-   - Code comments explain logic
-
-2. **Browser Console**
-   - Press F12 to open developer tools
-   - Check Console tab for errors
-   - Use for debugging
-
-3. **Test Locally First**
-   - Always test changes locally
-   - Use browser's offline mode
-   - Verify before deploying
+function selectMaterial(id) {
+    // Add to project
+    console.log('Selected material:', id);
+}
+</script>
+```
 
 ---
 
-## ✨ Success Criteria
+## Stripe Webhook Setup (Important!)
 
-### You're Ready When
+### 1. Create Webhook Endpoint
 
-- [x] Application loads successfully
-- [x] All features work as expected
-- [x] Mobile view looks good
-- [x] Performance is acceptable
-- [x] Documentation is accessible
-- [x] URL is shareable
-- [x] Team is trained
+In your backend (Node.js example):
 
----
+```javascript
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-## 🎉 You're Live!
+app.post('/api/webhook', express.raw({type: 'application/json'}), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
 
-Congratulations! Your CarbonConstruct application is now deployed and ready to help the Australian construction industry reduce embodied carbon.
+    try {
+        event = stripe.webhooks.constructEvent(
+            req.body, 
+            sig, 
+            process.env.STRIPE_WEBHOOK_SECRET
+        );
+    } catch (err) {
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
 
-### What's Next?
+    // Handle the event
+    switch (event.type) {
+        case 'checkout.session.completed':
+            const session = event.data.object;
+            // Create user account, send welcome email
+            break;
+        case 'customer.subscription.created':
+            // Start subscription
+            break;
+        case 'customer.subscription.deleted':
+            // Cancel subscription
+            break;
+        default:
+            console.log(`Unhandled event type ${event.type}`);
+    }
 
-1. **Start Using It**
-   - Create your first real project
-   - Share with colleagues
-   - Gather real-world feedback
+    res.json({received: true});
+});
+```
 
-2. **Spread the Word**
-   - Share on LinkedIn
-   - Present at team meetings
-   - Demonstrate to clients
+### 2. Register Webhook in Stripe Dashboard
 
-3. **Continuous Improvement**
-   - Monitor usage
-   - Collect feedback
-   - Plan enhancements
-
----
-
-## 📊 Deployment Platforms Comparison
-
-| Platform | Free Tier | HTTPS | Custom Domain | Bandwidth | Deploy Time |
-|----------|-----------|-------|---------------|-----------|-------------|
-| **Publish Tab** | ✅ Yes | ✅ Yes | ✅ Yes | Generous | < 1 min |
-| **Netlify** | ✅ Yes | ✅ Yes | ✅ Yes | 100GB/mo | < 1 min |
-| **Vercel** | ✅ Yes | ✅ Yes | ✅ Yes | 100GB/mo | < 1 min |
-| **GitHub Pages** | ✅ Yes | ✅ Yes | ✅ Yes | 100GB/mo | 2-5 min |
-| **AWS S3** | Limited | Extra | Extra | Pay/GB | 5-10 min |
-
-**Recommendation**: Start with the **Publish Tab** - it's the easiest and works perfectly for this application.
-
----
-
-## 🔐 Production Checklist
-
-### Before Going Live
-
-- [x] All features tested and working
-- [x] Responsive design verified
-- [x] Browser compatibility checked
-- [x] Documentation complete
-- [x] Example projects created
-- [x] Error handling in place
-- [x] Loading states implemented
-- [x] Validation working
-- [ ] Analytics added (optional)
-- [ ] Custom domain configured (optional)
-- [ ] Backup strategy in place (optional)
+1. Go to: https://dashboard.stripe.com/webhooks
+2. Click "Add endpoint"
+3. Enter URL: `https://your-domain.com/api/webhook`
+4. Select events:
+   - `checkout.session.completed`
+   - `customer.subscription.created`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+   - `invoice.payment_succeeded`
+   - `invoice.payment_failed`
+5. Copy webhook signing secret → Add to env vars
 
 ---
 
-## 🚀 Launch!
+## Custom Domain Setup
 
-**You're ready to deploy!**
+### 1. Add Domain to Vercel
 
-Simply head to the **Publish tab** and click **"Publish Project"**.
+```bash
+vercel domains add yourdomain.com
+```
 
-Your CarbonConstruct application will be live and accessible to the world in minutes!
+### 2. Update DNS Records
+
+Add these records at your domain registrar:
+
+```
+Type: A
+Name: @
+Value: 76.76.21.21
+
+Type: CNAME
+Name: www
+Value: cname.vercel-dns.com
+```
+
+### 3. Wait for SSL Certificate
+
+Vercel automatically provisions SSL (5-10 minutes).
 
 ---
 
-**Good luck with your deployment! 🎉**
+## Testing Checklist
 
-**Remember**: You're not just deploying a website - you're launching a tool that will help reduce carbon emissions in construction projects across Australia.
+### Frontend
+- [ ] Homepage loads correctly
+- [ ] All navigation links work
+- [ ] Forms validate properly
+- [ ] Mobile responsive
+- [ ] Stripe checkout opens
 
-**That's making a real difference! 🌱🏗️**
+### Database
+- [ ] Materials search works
+- [ ] Results display correctly
+- [ ] Categories load
+- [ ] Carbon factors are accurate
+
+### Payments
+- [ ] Test card works: `4242 4242 4242 4242`
+- [ ] Subscription created in Stripe
+- [ ] Webhook receives events
+- [ ] User account created
+
+### Security
+- [ ] HTTPS enabled
+- [ ] Environment variables not exposed
+- [ ] API keys in server-side only
+- [ ] CORS configured correctly
 
 ---
 
-For questions or issues, refer back to:
-- README.md (comprehensive documentation)
-- QUICK_START.md (beginner's guide)
-- PROJECT_SUMMARY.md (technical overview)
-- Or check the inline code comments
+## Post-Deployment Tasks
 
-**Happy building!**
+### 1. Analytics Setup
 
-*- Steve, First Class Carpenter & Sustainability Tech Entrepreneur*
+Add Google Analytics (or Plausible):
+
+```html
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+```
+
+### 2. Error Monitoring
+
+Add Sentry:
+
+```html
+<script src="https://js.sentry-cdn.com/YOUR_KEY.min.js" crossorigin="anonymous"></script>
+```
+
+### 3. Email Service
+
+Set up email notifications:
+- Welcome emails (when user signs up)
+- Report delivery (when calculation complete)
+- Subscription confirmations
+
+Recommended: SendGrid, Resend, or Postmark
+
+### 4. Backup Strategy
+
+Supabase handles backups, but also:
+- Export materials database weekly
+- Store in GitHub as CSV backup
+- Version control schema changes
+
+---
+
+## Monitoring & Maintenance
+
+### Vercel Dashboard
+
+Monitor:
+- Deployment status
+- Build logs
+- Performance metrics
+- Error rates
+
+### Supabase Dashboard
+
+Monitor:
+- Database usage
+- Query performance
+- API requests
+- Storage usage
+
+### Stripe Dashboard
+
+Monitor:
+- Subscriptions
+- Failed payments
+- Churn rate
+- Revenue
+
+---
+
+## Scaling Considerations
+
+### When you hit 100+ users:
+
+1. **Database Optimization**
+   - Add more indexes
+   - Implement caching (Redis)
+   - Consider read replicas
+
+2. **API Rate Limiting**
+   - Implement rate limits
+   - Add request queuing
+   - Monitor abuse
+
+3. **CDN for Static Assets**
+   - Vercel handles this
+   - Consider image optimization
+
+4. **Background Jobs**
+   - Report generation
+   - Email sending
+   - Data exports
+
+---
+
+## Support Resources
+
+- **Vercel Docs**: https://vercel.com/docs
+- **Supabase Docs**: https://supabase.com/docs
+- **Stripe Docs**: https://stripe.com/docs
+- **GitHub**: https://github.com/stvn101/carbonconstruct_scope_lca
+
+---
+
+## Emergency Contacts
+
+If site goes down:
+
+1. Check Vercel status: https://vercel-status.com
+2. Check Supabase status: https://status.supabase.com
+3. Check Stripe status: https://status.stripe.com
+4. Review deployment logs in Vercel dashboard
+5. Check error logs in Supabase dashboard
+
+---
+
+## Next Development Sprint
+
+### Priority 1: Calculator Integration
+- [ ] Connect materials database to calculator form
+- [ ] Implement calculation engine
+- [ ] Generate PDF reports
+- [ ] Save projects to Supabase
+
+### Priority 2: User Dashboard
+- [ ] Project list view
+- [ ] Project details page
+- [ ] Export functionality
+- [ ] Share reports
+
+### Priority 3: Team Features
+- [ ] Team invitations
+- [ ] Role-based access
+- [ ] Collaboration tools
+- [ ] Activity feed
+
+---
+
+**You're ready to deploy! 🚀**
+
+Run the git commands below to push everything to GitHub!

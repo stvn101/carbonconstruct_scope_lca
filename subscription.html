@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Management - CarbonConstruct</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .subscription-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .current-plan-card {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .current-plan-card.trial {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .current-plan-card.inactive {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .plan-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .plan-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .detail-item h3 {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-item p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .plan-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plan-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .plan-card.featured {
+            border-color: var(--primary-color);
+            border-width: 3px;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: #6b7280;
+            font-weight: normal;
+        }
+
+        .plan-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            min-height: 3rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-check {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .feature-cross {
+            color: #d1d5db;
+            font-weight: bold;
+        }
+
+        .billing-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .billing-history {
+            list-style: none;
+        }
+
+        .billing-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .billing-item:last-child {
+            border-bottom: none;
+        }
+
+        .billing-date {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .billing-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .billing-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-paid {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f4f6;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .plan-header {
+                flex-direction: column;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-actions {
+                flex-direction: column;
+            }
+
+            .plan-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">CarbonConstruct</a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="calculator.html">Calculator</a></li>
+                <li><a href="subscription.html" class="active">Subscription</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </nav>
+
+    <div class="subscription-container">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading subscription details...</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="subscriptionContent" style="display: none;">
+            <div class="page-header">
+                <h1>Subscription Management</h1>
+                <p>Manage your plan, billing, and payment methods</p>
+            </div>
+
+            <!-- Current Plan Section -->
+            <div id="currentPlanCard" class="current-plan-card">
+                <div class="plan-header">
+                    <div class="plan-info">
+                        <h2 id="currentPlanName">Loading...</h2>
+                        <p id="currentPlanDescription">Please wait...</p>
+                    </div>
+                    <div class="plan-status" id="planStatus">ACTIVE</div>
+                </div>
+                <div class="plan-details" id="planDetails">
+                    <!-- Details will be inserted here -->
+                </div>
+                <div class="plan-actions" id="planActions">
+                    <!-- Actions will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Available Plans -->
+            <h2 class="section-title">Available Plans</h2>
+            <div class="plans-grid" id="plansGrid">
+                <!-- Plans will be loaded here -->
+            </div>
+
+            <!-- Billing History -->
+            <div class="billing-section">
+                <h2 class="section-title">Billing History</h2>
+                <ul class="billing-history" id="billingHistory">
+                    <!-- Billing items will be inserted here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase, getCurrentUser, signOut } from './auth-supabase.js';
+
+        let currentUser = null;
+        let currentSubscription = null;
+        const STRIPE_PUBLIC_KEY = 'pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz';
+
+        // Plan configurations
+        const PLANS = [
+            {
+                id: 'starter',
+                name: 'Starter',
+                price: 29,
+                interval: 'month',
+                description: 'Perfect for small projects and getting started',
+                features: [
+                    { text: '10 projects per month', included: true },
+                    { text: 'Access to 54,343+ materials database', included: true },
+                    { text: 'NCC compliance checking', included: true },
+                    { text: 'Basic carbon calculations', included: true },
+                    { text: 'PDF export', included: true },
+                    { text: 'Email support', included: true },
+                    { text: 'Advanced analytics', included: false },
+                    { text: 'API access', included: false },
+                    { text: 'Priority support', included: false }
+                ]
+            },
+            {
+                id: 'professional',
+                name: 'Professional',
+                price: 79,
+                interval: 'month',
+                description: 'For professionals managing multiple projects',
+                features: [
+                    { text: 'Unlimited projects', included: true },
+                    { text: 'Access to 54,343+ materials database', included: true },
+                    { text: 'NCC compliance checking', included: true },
+                    { text: 'Advanced carbon calculations', included: true },
+                    { text: 'PDF & Excel export', included: true },
+                    { text: 'Advanced analytics & reporting', included: true },
+                    { text: 'Custom material library', included: true },
+                    { text: 'Priority email support', included: true },
+                    { text: 'API access', included: false }
+                ],
+                featured: true
+            },
+            {
+                id: 'enterprise',
+                name: 'Enterprise',
+                price: 199,
+                interval: 'month',
+                description: 'For teams and organizations',
+                features: [
+                    { text: 'Unlimited projects', included: true },
+                    { text: 'Access to 54,343+ materials database', included: true },
+                    { text: 'NCC compliance checking', included: true },
+                    { text: 'Advanced carbon calculations', included: true },
+                    { text: 'All export formats', included: true },
+                    { text: 'Advanced analytics & reporting', included: true },
+                    { text: 'Custom material library', included: true },
+                    { text: 'Team collaboration tools', included: true },
+                    { text: 'Full API access', included: true },
+                    { text: '24/7 priority support', included: true },
+                    { text: 'Dedicated account manager', included: true }
+                ]
+            }
+        ];
+
+        // Initialize subscription page
+        async function initSubscription() {
+            try {
+                // Get current user
+                currentUser = await getCurrentUser();
+                
+                if (!currentUser) {
+                    window.location.href = 'signin-new.html';
+                    return;
+                }
+
+                // Load subscription data
+                await loadCurrentSubscription();
+                await loadAvailablePlans();
+                await loadBillingHistory();
+
+                // Show content
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('subscriptionContent').style.display = 'block';
+
+            } catch (error) {
+                console.error('Subscription initialization error:', error);
+                alert('Failed to load subscription details. Please try again.');
+            }
+        }
+
+        // Load current subscription
+        async function loadCurrentSubscription() {
+            try {
+                const { data, error } = await supabase
+                    .from('subscriptions')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') throw error;
+
+                currentSubscription = data;
+                updateCurrentPlanUI(data);
+
+            } catch (error) {
+                console.error('Error loading subscription:', error);
+                updateCurrentPlanUI(null);
+            }
+        }
+
+        // Update current plan UI
+        function updateCurrentPlanUI(subscription) {
+            const card = document.getElementById('currentPlanCard');
+            const nameEl = document.getElementById('currentPlanName');
+            const descEl = document.getElementById('currentPlanDescription');
+            const statusEl = document.getElementById('planStatus');
+            const detailsEl = document.getElementById('planDetails');
+            const actionsEl = document.getElementById('planActions');
+
+            if (!subscription || subscription.status === 'canceled') {
+                card.className = 'current-plan-card inactive';
+                nameEl.textContent = 'No Active Subscription';
+                descEl.textContent = 'Subscribe to unlock all features';
+                statusEl.textContent = 'INACTIVE';
+                statusEl.style.display = 'inline-block';
+
+                detailsEl.innerHTML = `
+                    <div class="detail-item">
+                        <h3>Current Plan</h3>
+                        <p>Free</p>
+                    </div>
+                    <div class="detail-item">
+                        <h3>Projects</h3>
+                        <p>0 / month</p>
+                    </div>
+                    <div class="detail-item">
+                        <h3>Status</h3>
+                        <p>Inactive</p>
+                    </div>
+                `;
+
+                actionsEl.innerHTML = `
+                    <button class="btn btn-outline" onclick="document.getElementById('plansGrid').scrollIntoView({ behavior: 'smooth' })">
+                        Choose a Plan
+                    </button>
+                `;
+                return;
+            }
+
+            const plan = PLANS.find(p => p.id === subscription.plan_id) || PLANS[0];
+            
+            if (subscription.status === 'trialing') {
+                card.className = 'current-plan-card trial';
+                const daysLeft = Math.ceil((new Date(subscription.trial_end) - new Date()) / (1000 * 60 * 60 * 24));
+                statusEl.textContent = `TRIAL - ${daysLeft} DAYS LEFT`;
+            } else if (subscription.status === 'active') {
+                card.className = 'current-plan-card';
+                statusEl.textContent = 'ACTIVE';
+            } else {
+                card.className = 'current-plan-card inactive';
+                statusEl.textContent = subscription.status.toUpperCase();
+            }
+
+            nameEl.textContent = `${plan.name} Plan`;
+            descEl.textContent = plan.description;
+
+            detailsEl.innerHTML = `
+                <div class="detail-item">
+                    <h3>Monthly Cost</h3>
+                    <p>$${plan.price}</p>
+                </div>
+                <div class="detail-item">
+                    <h3>Next Billing</h3>
+                    <p>${formatDate(subscription.current_period_end)}</p>
+                </div>
+                <div class="detail-item">
+                    <h3>Status</h3>
+                    <p>${subscription.status === 'active' ? 'Active' : subscription.status === 'trialing' ? 'Trial' : 'Inactive'}</p>
+                </div>
+                <div class="detail-item">
+                    <h3>Auto Renew</h3>
+                    <p>${subscription.cancel_at_period_end ? 'No' : 'Yes'}</p>
+                </div>
+            `;
+
+            actionsEl.innerHTML = `
+                <button class="btn btn-outline" onclick="manageStripeSubscription()">
+                    Update Payment Method
+                </button>
+                ${subscription.cancel_at_period_end ? `
+                    <button class="btn btn-outline" onclick="reactivateSubscription()">
+                        Reactivate Subscription
+                    </button>
+                ` : `
+                    <button class="btn btn-outline" onclick="document.getElementById('plansGrid').scrollIntoView({ behavior: 'smooth' })">
+                        Change Plan
+                    </button>
+                    <button class="btn btn-danger" onclick="cancelSubscription()">
+                        Cancel Subscription
+                    </button>
+                `}
+            `;
+        }
+
+        // Load available plans
+        async function loadAvailablePlans() {
+            const grid = document.getElementById('plansGrid');
+            
+            grid.innerHTML = PLANS.map(plan => `
+                <div class="plan-card ${plan.featured ? 'featured' : ''}">
+                    ${plan.featured ? '<div class="featured-badge">MOST POPULAR</div>' : ''}
+                    <div class="plan-name">${plan.name}</div>
+                    <div class="plan-price">$${plan.price}<span> / ${plan.interval}</span></div>
+                    <p class="plan-description">${plan.description}</p>
+                    <ul class="plan-features">
+                        ${plan.features.map(feature => `
+                            <li>
+                                <span class="${feature.included ? 'feature-check' : 'feature-cross'}">
+                                    ${feature.included ? '✓' : '✕'}
+                                </span>
+                                ${feature.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button 
+                        class="btn ${plan.featured ? 'btn-primary' : 'btn-secondary'} btn-block"
+                        onclick="selectPlan('${plan.id}')"
+                        ${currentSubscription?.plan_id === plan.id ? 'disabled' : ''}
+                    >
+                        ${currentSubscription?.plan_id === plan.id ? 'Current Plan' : 'Select Plan'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Load billing history
+        async function loadBillingHistory() {
+            try {
+                const { data, error } = await supabase
+                    .from('invoices')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error && error.code !== 'PGRST116') throw error;
+
+                const list = document.getElementById('billingHistory');
+
+                if (!data || data.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <p>No billing history yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = data.map(invoice => `
+                    <li class="billing-item">
+                        <div>
+                            <div class="billing-date">${formatDate(invoice.created_at)}</div>
+                            <div style="color: #6b7280; font-size: 0.9rem;">${invoice.description || 'Subscription payment'}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="billing-amount">$${(invoice.amount / 100).toFixed(2)}</div>
+                            <span class="billing-status status-${invoice.status}">${invoice.status.toUpperCase()}</span>
+                        </div>
+                    </li>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading billing history:', error);
+                document.getElementById('billingHistory').innerHTML = `
+                    <div class="empty-state">
+                        <p>Unable to load billing history</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Select a plan
+        window.selectPlan = async function(planId) {
+            if (currentSubscription?.plan_id === planId) return;
+
+            const plan = PLANS.find(p => p.id === planId);
+            if (!plan) return;
+
+            if (confirm(`Subscribe to ${plan.name} plan for $${plan.price}/month?`)) {
+                // Redirect to checkout with selected plan
+                window.location.href = `checkout.html?plan=${planId}`;
+            }
+        };
+
+        // Manage Stripe subscription (portal)
+        window.manageStripeSubscription = async function() {
+            try {
+                // In production, you'd call your backend to create a Stripe portal session
+                // For now, show a message
+                alert('Redirecting to Stripe billing portal...\n\nNote: This requires a backend endpoint to create a portal session.');
+                
+                // Example implementation:
+                // const { data, error } = await supabase.functions.invoke('create-portal-session', {
+                //     body: { customer_id: currentSubscription.stripe_customer_id }
+                // });
+                // if (data?.url) window.location.href = data.url;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to open billing portal. Please try again.');
+            }
+        };
+
+        // Cancel subscription
+        window.cancelSubscription = async function() {
+            if (!currentSubscription) return;
+
+            if (confirm('Are you sure you want to cancel your subscription?\n\nYou will retain access until the end of your current billing period.')) {
+                try {
+                    // Update subscription to cancel at period end
+                    const { error } = await supabase
+                        .from('subscriptions')
+                        .update({ 
+                            cancel_at_period_end: true,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', currentSubscription.id);
+
+                    if (error) throw error;
+
+                    alert('Subscription cancelled. You will retain access until ' + formatDate(currentSubscription.current_period_end));
+                    await loadCurrentSubscription();
+
+                } catch (error) {
+                    console.error('Error cancelling subscription:', error);
+                    alert('Failed to cancel subscription. Please try again.');
+                }
+            }
+        };
+
+        // Reactivate subscription
+        window.reactivateSubscription = async function() {
+            if (!currentSubscription) return;
+
+            try {
+                const { error } = await supabase
+                    .from('subscriptions')
+                    .update({ 
+                        cancel_at_period_end: false,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', currentSubscription.id);
+
+                if (error) throw error;
+
+                alert('Subscription reactivated successfully!');
+                await loadCurrentSubscription();
+
+            } catch (error) {
+                console.error('Error reactivating subscription:', error);
+                alert('Failed to reactivate subscription. Please try again.');
+            }
+        };
+
+        // Helper function
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-AU', { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+        }
+
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                await signOut();
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Initialize on page load
+        initSubscription();
+    </script>
+    
+    <!-- Tawk.to Live Chat Widget -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/YOUR_TAWK_WIDGET_ID';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!-- End of Tawk.to Script -->
+</body>
+</html>

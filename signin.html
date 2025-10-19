@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CarbonConstruct</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-left">
+            <div class="auth-brand">
+                <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2L4 9V23L16 30L28 23V9L16 2Z" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M16 16L4 9M16 16L28 9M16 16V30" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>CarbonConstruct</span>
+            </div>
+            <div class="auth-left-content">
+                <h1>Calculate Carbon.<br>Save Costs.<br>Meet Compliance.</h1>
+                <p>Join 500+ Australian construction projects reducing their carbon footprint with our NCC-compliant calculator.</p>
+                <div class="auth-stats">
+                    <div class="auth-stat">
+                        <div class="auth-stat-number">10 min</div>
+                        <div class="auth-stat-label">Average completion time</div>
+                    </div>
+                    <div class="auth-stat">
+                        <div class="auth-stat-number">20-30%</div>
+                        <div class="auth-stat-label">Cost savings identified</div>
+                    </div>
+                </div>
+                <div class="auth-testimonial">
+                    <div class="testimonial-quote">
+                        "CarbonConstruct saved us 6 months of consultant fees. The reports are compliance-ready and the interface is incredibly intuitive."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MJ</div>
+                        <div>
+                            <div class="testimonial-name">Michael Johnson</div>
+                            <div class="testimonial-title">Project Manager, Lendlease</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-right">
+            <div class="auth-form-container">
+                <div class="auth-header">
+                    <h2>Welcome back</h2>
+                    <p>Sign in to your CarbonConstruct account</p>
+                </div>
+
+                <!-- Social Login -->
+                <div class="social-login">
+                    <button class="social-btn google-btn">
+                        <svg width="20" height="20" viewBox="0 0 20 20">
+                            <path d="M19.8 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.5c-.2 1.2-.9 2.2-1.9 2.9v2.5h3.1c1.8-1.7 2.9-4.1 2.9-7.2z" fill="#4285F4"/>
+                            <path d="M10 20c2.6 0 4.7-.9 6.3-2.3l-3.1-2.5c-.9.6-2 .9-3.2.9-2.5 0-4.6-1.7-5.3-4H1.5v2.6C3.1 18.1 6.3 20 10 20z" fill="#34A853"/>
+                            <path d="M4.7 11.9c-.2-.6-.3-1.2-.3-1.9s.1-1.3.3-1.9V5.5H1.5C.5 7.2 0 8.5 0 10s.5 2.8 1.5 4.5l3.2-2.6z" fill="#FBBC04"/>
+                            <path d="M10 4c1.4 0 2.6.5 3.6 1.4l2.7-2.7C14.7 1.1 12.6 0 10 0 6.3 0 3.1 1.9 1.5 4.5l3.2 2.6C5.4 5.7 7.5 4 10 4z" fill="#EA4335"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                    <button class="social-btn microsoft-btn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M0 0H9.5V9.5H0V0Z" fill="#F25022"/>
+                            <path d="M10.5 0H20V9.5H10.5V0Z" fill="#7FBA00"/>
+                            <path d="M0 10.5H9.5V20H0V10.5Z" fill="#00A4EF"/>
+                            <path d="M10.5 10.5H20V20H10.5V10.5Z" fill="#FFB900"/>
+                        </svg>
+                        Continue with Microsoft
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <span>Or continue with email</span>
+                </div>
+
+                <!-- Sign In Form -->
+                <form class="auth-form" id="signinForm">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            placeholder="you@company.com"
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                            <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+                        </div>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                            >
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="eye-icon">
+                                    <path d="M10 3C5 3 1 10 1 10s4 7 9 7 9-7 9-7-4-7-9-7z" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember" id="remember">
+                            <span class="checkbox-custom"></span>
+                            <span>Remember me for 30 days</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary-full">Sign In</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="signup.html">Sign up for free</a></p>
+                </div>
+
+                <div class="auth-help">
+                    <p>Need help? <a href="mailto:support@carbonconstruct.com">Contact support</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+        }
+
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            // Here you would normally send to your backend
+            console.log('Sign in attempt:', { email, password, remember });
+            
+            // For demo, redirect to dashboard
+            alert('Sign in successful! (This is a demo)');
+            window.location.href = 'dashboard.html';
+        });
+
+        // Social login handlers
+        document.querySelectorAll('.social-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const provider = this.classList.contains('google-btn') ? 'Google' : 'Microsoft';
+                alert(`${provider} sign-in would happen here in production`);
+            });
+        });
+    </script>
+</body>
+</html>

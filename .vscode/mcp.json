@@ -1,0 +1,35 @@
+{
+  "servers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp"],
+      "env": {
+        "HEADLESS": "true",
+        "BROWSER": "chromium"
+      }
+    },
+    "fetch": {
+      "type": "stdio",
+      "command": "C:/Users/SteveDev/Downloads/code_sandbox_light_34cdb6f4_1760690233/carbonconstruct_scope_lca/.venv/Scripts/python.exe",
+      "args": ["-m", "mcp_server_fetch"],
+      "env": {}
+    },
+    "browserbase": {
+      "type": "stdio", 
+      "command": "npx",
+      "args": ["@browserbase/mcp-server-browserbase"],
+      "env": {
+        "BROWSERBASE_API_KEY": "${input:browserbase-api-key}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "browserbase-api-key",
+      "description": "Browserbase API Key (optional - for cloud browser automation)",
+      "password": true
+    }
+  ]
+}

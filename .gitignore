@@ -1,6 +1,7 @@
 # Environment variables with sensitive data
 .env.local
 .env
+js/config.local.js
 
 # Node modules (if using Node.js)
 node_modules/
@@ -14,6 +15,7 @@ build/
 !.vscode/mcp.json
 !.vscode/settings.json
 .idea/
+.claude/
 
 # OS generated files
 .DS_Store

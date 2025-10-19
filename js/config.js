@@ -55,3 +55,6 @@
         console.log('CarbonConstruct configuration', mergedEnv);
     }
 })(typeof window !== 'undefined' ? window : globalThis);
+export const APP_URL = "https://carbonconstruct.com.au";
+export const NEXT_PUBLIC_APP_URL = "https://carbonconstruct.com.au";
+export const VITE_APP_URL = "https://carbonconstruct.com.au";

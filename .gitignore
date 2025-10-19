@@ -29,6 +29,3 @@ logs/
 all_materials_export.json
 exported_materials_data.json
 failed_materials.json
-# Local configuration with API keys
-js/config.local.js
-config.local.js

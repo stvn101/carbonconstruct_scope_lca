@@ -88,7 +88,7 @@ class EC3Client {
         if (this.bearerToken) {
             headers['Authorization'] = `Bearer ${this.bearerToken}`;
         } else if (this.apiKey) {
-            headers['Authorization'] = ; headers['X-API-Key'] = this.apiKey;
+            headers['X-API-Key'] = this.apiKey;
         }
 
         return headers;

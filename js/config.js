@@ -51,10 +51,21 @@
 
     globalObj.ENV = mergedEnv;
 
+    // Also expose APP_URL constants
+    globalObj.APP_URL = "https://carbonconstruct.com.au";
+    globalObj.NEXT_PUBLIC_APP_URL = "https://carbonconstruct.com.au";
+    globalObj.VITE_APP_URL = "https://carbonconstruct.com.au";
+
     if (mergedEnv.DEBUG) {
         console.log('CarbonConstruct configuration', mergedEnv);
     }
 })(typeof window !== 'undefined' ? window : globalThis);
-export const APP_URL = "https://carbonconstruct.com.au";
-export const NEXT_PUBLIC_APP_URL = "https://carbonconstruct.com.au";
-export const VITE_APP_URL = "https://carbonconstruct.com.au";
+
+// For ES modules compatibility (when loaded as type="module")
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        APP_URL: "https://carbonconstruct.com.au",
+        NEXT_PUBLIC_APP_URL: "https://carbonconstruct.com.au",
+        VITE_APP_URL: "https://carbonconstruct.com.au"
+    };
+}

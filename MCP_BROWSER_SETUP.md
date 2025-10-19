@@ -5,8 +5,10 @@ This project is configured with Model Context Protocol (MCP) servers to enable b
 ## Installed MCP Servers
 
 ### 1. Playwright MCP Server (@playwright/mcp)
+
 **Purpose**: Browser automation, web scraping, testing
 **Capabilities**:
+
 - Navigate to web pages
 - Take screenshots
 - Interact with web elements (click, type, fill forms)
@@ -14,16 +16,20 @@ This project is configured with Model Context Protocol (MCP) servers to enable b
 - Run automated tests
 
 ### 2. Fetch MCP Server (mcp-server-fetch)
+
 **Purpose**: Web content fetching and processing
 **Capabilities**:
+
 - Fetch web pages and convert to markdown
 - Handle various content types
 - Respect robots.txt
 - Custom user agents
 
 ### 3. Browserbase MCP Server (optional)
+
 **Purpose**: Cloud-based browser automation
 **Capabilities**:
+
 - Browser automation in the cloud
 - Scalable web scraping
 - No local browser installation required
@@ -31,6 +37,7 @@ This project is configured with Model Context Protocol (MCP) servers to enable b
 ## Configuration Files
 
 ### `.vscode/mcp.json` - Workspace MCP Configuration
+
 ```json
 {
   "servers": {
@@ -54,6 +61,7 @@ This project is configured with Model Context Protocol (MCP) servers to enable b
 ```
 
 ### `.vscode/settings.json` - VS Code Settings
+
 ```json
 {
     "chat.mcp.access": "all",
@@ -74,35 +82,41 @@ This project is configured with Model Context Protocol (MCP) servers to enable b
 
 ## Example Prompts
 
-- "Take a screenshot of https://example.com"
+- "Take a screenshot of <https://example.com>"
 - "Navigate to Google and search for 'carbon footprint calculator'"
-- "Fetch the content from https://news.ycombinator.com and summarize the top stories"
-- "Fill out a form on https://example.com/contact"
+- "Fetch the content from <https://news.ycombinator.com> and summarize the top stories"
+- "Fill out a form on <https://example.com/contact>"
 
 ## Browser Configuration
 
 The Playwright server is configured to:
+
 - Run in headless mode by default
 - Use Chromium browser
 - Support full page automation
 
 Browsers installed:
+
 - Chromium (latest)
 - Firefox (latest)
 - WebKit (latest)
 
 ## Troubleshooting
 
-### If MCP servers don't start:
+### If MCP servers don't start
+
 1. Check VS Code Output panel for MCP errors
 2. Verify installations:
+
    ```bash
    npx @playwright/mcp --help
    python -m mcp_server_fetch --help
    ```
+
 3. Restart VS Code after configuration changes
 
-### Common Issues:
+### Common Issues
+
 - **Permission errors**: Ensure VS Code has proper permissions
 - **Network restrictions**: Check if your network allows web automation
 - **Browser installation**: Run `npx playwright install` if browsers are missing
@@ -117,6 +131,7 @@ Browsers installed:
 ## Advanced Configuration
 
 You can customize the MCP servers by modifying the `mcp.json` file:
+
 - Change browser type (chromium, firefox, webkit)
 - Enable/disable headless mode
 - Set custom timeouts

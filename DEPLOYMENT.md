@@ -524,3 +524,92 @@ If site goes down:
 **You're ready to deploy! 🚀**
 
 Run the git commands below to push everything to GitHub!
+---
+
+## Production Push Checklist — Hybrid Supabase + Stripe + Vercel
+
+### Apply canonical URL
+- Set `APP_URL` and `NEXT_PUBLIC_APP_URL` to `https://carbonconstruct.com.au` in `.env.local` and Vercel environment settings.
+- Replace any remaining references to `carbonconstructtech.com.au`.
+
+### Confirm repository state
+```bash
+git checkout stvn101-patch-1
+git pull origin main
+git merge --no-ff origin/main
+pnpm lint && pnpm build
+grep -R "sk_live\|pk_live\|anon" -n src public || true
+```
+
+### Populate environment variables (Vercel → Production)
+```
+SUPABASE_URL=https://carbonconstruct-ver1.supabase.co
+SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+STRIPE_SECRET_KEY=sk_live_***
+STRIPE_WEBHOOK_SECRET=whsec_***
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_***
+EC3_API_KEY=***
+APP_URL=https://carbonconstruct.com.au
+NEXT_PUBLIC_APP_URL=https://carbonconstruct.com.au
+```
+
+### Verify Supabase
+- Ensure tables exist: `auth.users`, `public.user_profiles`, `billing.customers`, `billing.subscriptions`, `carbon_projects`, `unified_materials`.
+- Confirm triggers:
+  - `on_auth_user_created → handle_new_user()`
+  - `on_auth_user_created_stripe → Edge Function create_stripe_customer`
+- Enable RLS:
+  ```sql
+  alter table carbon_projects enable row level security;
+  alter table unified_materials enable row level security;
+  ```
+- Check ownership policy and test CRUD access.
+
+### Configure Stripe
+- Create webhook endpoint: `https://carbonconstruct.com.au/api/stripe/webhook`
+- Listen for events:
+  - `customer.created`
+  - `customer.subscription.created`
+  - `customer.subscription.updated`
+  - `customer.subscription.deleted`
+- Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
+- Test via `stripe trigger customer.subscription.created`.
+- Confirm data persists in `billing.subscriptions`.
+
+### Vercel build + deployment
+- Ensure the project is linked to `stvn101/carbonconstruct_scope_lca`.
+- Build command:
+  ```bash
+  pnpm install && pnpm build
+  ```
+- Output directory: `dist/`
+- Add Stripe webhook endpoint.
+- Deploy to production: `vercel --prod`
+
+### Smoke test after deploy
+
+| Check           | Expected Result                                  |
+|-----------------|--------------------------------------------------|
+| Home page       | Loads via HTTPS                                  |
+| Auth            | OTP sign-in succeeds                             |
+| Billing         | Stripe checkout works                            |
+| Database        | CRUD scoped to owner                             |
+| Materials       | 4 343 rows visible, read-only                    |
+| EC3             | API key returns 200 OK                           |
+
+### Monitoring + backup
+- Enable Vercel Analytics and Supabase Log Drains.
+- Weekly dump:
+  ```bash
+  supabase db dump --project carbonconstruct-ver1 --db-url $SUPABASE_URL
+  ```
+- Validate Stripe events in Dashboard → Developers → Events.
+
+### Tag and release
+```bash
+git tag -a v2.0.0 -m "Production release — hybrid Supabase + Stripe + Vercel"
+git push origin v2.0.0
+```

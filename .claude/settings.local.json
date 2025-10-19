@@ -19,7 +19,10 @@
       "Bash(taskkill /F /PID 39496)",
       "Bash(taskkill /F /PID 6948)",
       "Bash(tree /F /A)",
-      "Bash(findstr /V \"node_modules .git build dist .next out\")"
+      "Bash(findstr /V \"node_modules .git build dist .next out\")",
+      "Bash(pnpm dev)",
+      "Bash(npx http-server -p 8000 -c-1)",
+      "Bash(timeout 3 bash -c \"echo waiting\")"
     ],
     "deny": [],
     "ask": []

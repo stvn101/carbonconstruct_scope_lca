@@ -15,8 +15,20 @@
       "args": ["-m", "mcp_server_fetch"],
       "env": {}
     },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp",
+      "query": {
+        "project_ref": "jaqzoyouuzhchuyzafii",
+        "features": "docs,account,database,debugging,development,functions,branching,storage"
+      },
+      "headers": {
+        "apikey": "${input:supabase-anon-key}",
+        "Authorization": "Bearer ${input:supabase-anon-key}"
+      }
+    },
     "browserbase": {
-      "type": "stdio", 
+      "type": "stdio",
       "command": "npx",
       "args": ["@browserbase/mcp-server-browserbase"],
       "env": {
@@ -30,6 +42,13 @@
       "id": "browserbase-api-key",
       "description": "Browserbase API Key (optional - for cloud browser automation)",
       "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "supabase-anon-key",
+      "description": "Supabase Anonymous API Key",
+      "password": true,
+      "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE"
     }
   ]
 }

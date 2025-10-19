@@ -6,6 +6,15 @@ This guide shows you how to integrate your **Supabase database with 4,500+ Austr
 
 **This is your competitive advantage!** Most carbon calculators have 20-50 materials. You'll have 4,500+.
 
+## 🔧 VS Code MCP Integration
+
+For advanced database management through VS Code, see the **[Supabase MCP Setup Guide](SUPABASE_MCP_SETUP.md)**. This provides:
+- Direct database operations from VS Code
+- Migration management
+- Edge Functions deployment
+- Development branching
+- Real-time project monitoring
+
 ---
 
 ## 🏗️ Your Database Schema (Assumed Structure)

@@ -804,15 +804,22 @@
     </script>
     
     <!-- Tawk.to Live Chat Widget -->
+    <script src="tawk-config.js"></script>
     <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/YOUR_TAWK_WIDGET_ID';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
+    // Dynamically inject Tawk.to script using shared config
+    (function() {
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        if (typeof window.TAWK_PROPERTY_ID !== 'undefined' && typeof window.TAWK_WIDGET_ID !== 'undefined') {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/' + window.TAWK_PROPERTY_ID + '/' + window.TAWK_WIDGET_ID;
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        } else {
+            console.error('Tawk.to credentials are not defined in tawk-config.js');
+        }
     })();
     </script>
     <!-- End of Tawk.to Script -->

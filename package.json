@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vercel dev",
     "lint": "eslint . --ext js --max-warnings 0",
-    "build": "node build.js",
     "deploy": "vercel --prod"
   },
   "dependencies": {

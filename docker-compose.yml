@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   carbonconstruct:
@@ -7,6 +7,13 @@ services:
       - "3000:80"
     environment:
       - NODE_ENV=production
+      # Supabase environment variables (optional - for server-side features)
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-https://jaqzoyouuzhchuyzafii.supabase.co}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      # EC3 API environment variables (optional)
+      - NEXT_PUBLIC_EC3_API_KEY=${NEXT_PUBLIC_EC3_API_KEY}
+    env_file:
+      - .env.local  # Load from .env.local if it exists
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
@@ -32,7 +39,6 @@ services:
 networks:
   carbonconstruct-network:
     driver: bridge
-
 # Optional: Add volumes for persistent data
 # volumes:
 #   nginx-logs:

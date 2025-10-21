@@ -67,6 +67,7 @@ NEXT_PUBLIC_EC3_API_KEY=your-ec3-key-here
 ### Security Headers
 
 The Nginx configuration includes security headers matching your Vercel setup:
+
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 - `X-XSS-Protection: 1; mode=block`
@@ -77,12 +78,14 @@ The Nginx configuration includes security headers matching your Vercel setup:
 For production deployment with SSL:
 
 1. **Using a reverse proxy** (recommended):
+
    ```bash
    # Use nginx-proxy or traefik in front of the container
    docker run -d -p 80:80 -p 443:443 nginxproxy/nginx-proxy
    ```
 
 2. **Using Docker secrets**:
+
    ```bash
    docker run -p 443:443 \
      -v /path/to/ssl:/etc/ssl/certs \
@@ -107,12 +110,14 @@ docker push your-registry/carbonconstruct:v1.0.0
 ### Deployment Platforms
 
 #### 1. Digital Ocean App Platform
+
 ```bash
 # Deploy directly from Docker image
 doctl apps create --spec app-spec.yaml
 ```
 
 #### 2. AWS ECS
+
 ```bash
 # Push to ECR and deploy
 aws ecr get-login-password | docker login --username AWS --password-stdin
@@ -120,6 +125,7 @@ docker push your-account.dkr.ecr.region.amazonaws.com/carbonconstruct:latest
 ```
 
 #### 3. Google Cloud Run
+
 ```bash
 # Deploy to Cloud Run
 gcloud run deploy carbonconstruct \
@@ -128,6 +134,7 @@ gcloud run deploy carbonconstruct \
 ```
 
 #### 4. Azure Container Instances
+
 ```bash
 # Deploy to Azure
 az container create \
@@ -156,22 +163,25 @@ docker-compose exec carbonconstruct nginx -t
 ### Common Issues
 
 1. **Port already in use**:
+
    ```bash
    # Change port mapping
    docker run -p 8080:80 carbonconstruct
    ```
 
 2. **Permission denied**:
+
    ```bash
    # Fix file permissions
    sudo chown -R $(whoami) .
    ```
 
 3. **Container won't start**:
+
    ```bash
    # Check logs
    docker logs container-name
-   
+
    # Debug interactively
    docker run -it carbonconstruct sh
    ```
@@ -187,6 +197,7 @@ docker-compose exec carbonconstruct nginx -t
    - Gzip compression enabled
 
 3. **Resource limits**:
+
    ```yaml
    # In docker-compose.yml
    deploy:
@@ -198,7 +209,7 @@ docker-compose exec carbonconstruct nginx -t
 
 ## Monitoring
 
-### Basic monitoring with Docker:
+### Basic monitoring with Docker
 
 ```bash
 # Resource usage
@@ -211,9 +222,10 @@ docker logs -f carbonconstruct
 docker events
 ```
 
-### Production monitoring:
+### Production monitoring
 
 Consider adding:
+
 - Prometheus metrics
 - Grafana dashboards
 - Log aggregation (ELK stack)
@@ -221,7 +233,7 @@ Consider adding:
 
 ## Scaling
 
-### Horizontal scaling:
+### Horizontal scaling
 
 ```bash
 # Scale with docker-compose
@@ -231,9 +243,10 @@ docker-compose up --scale carbonconstruct=3
 docker-compose up --scale carbonconstruct=3 nginx-proxy
 ```
 
-### Container orchestration:
+### Container orchestration
 
 For production, consider:
+
 - Kubernetes
 - Docker Swarm
 - AWS ECS/Fargate
@@ -245,11 +258,13 @@ For production, consider:
 Since this is a static site, backups mainly involve:
 
 1. **Container images**:
+
    ```bash
    docker save carbonconstruct > carbonconstruct-backup.tar
    ```
 
 2. **Application data** (if any persistent data is added):
+
    ```bash
    docker run --rm -v carbonconstruct_data:/data -v $(pwd):/backup alpine tar czf /backup/data-backup.tar.gz /data
    ```

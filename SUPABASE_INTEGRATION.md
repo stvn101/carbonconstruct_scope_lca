@@ -9,6 +9,7 @@ This guide shows you how to integrate your **Supabase database with 4,500+ Austr
 ## 🔧 VS Code MCP Integration
 
 For advanced database management through VS Code, see the **[Supabase MCP Setup Guide](SUPABASE_MCP_SETUP.md)**. This provides:
+
 - Direct database operations from VS Code
 - Migration management
 - Edge Functions deployment
@@ -25,33 +26,33 @@ Based on typical EPD data, your Supabase table probably looks like:
 -- Example materials table structure
 CREATE TABLE materials (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    
+
     -- Basic Info
     name TEXT NOT NULL,
     category TEXT NOT NULL,
     subcategory TEXT,
     description TEXT,
-    
+
     -- Carbon Data (Core)
     embodied_carbon DECIMAL NOT NULL,  -- kg CO2-e per unit
     unit TEXT NOT NULL,                 -- m3, tonnes, m2, kg, etc.
-    
+
     -- LCA Breakdown (if you have it)
     a1_a3 DECIMAL,                     -- Product stage %
     a4 DECIMAL,                         -- Transport %
     a5 DECIMAL,                         -- Installation %
-    
+
     -- EPD Data
     source TEXT,                        -- 'EPD Australasia' or other
     epd_number TEXT,                    -- Official EPD reference
     manufacturer TEXT,
     valid_until DATE,
-    
+
     -- Additional Properties
     density DECIMAL,                    -- kg/m3
     recyclability DECIMAL,              -- % recyclable
     recycled_content DECIMAL,           -- % recycled content
-    
+
     -- Metadata
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
@@ -72,7 +73,7 @@ CREATE INDEX idx_materials_name ON materials(name);
 ### Step 1: Prepare Your Supabase Database
 
 1. **Log into Supabase Dashboard**
-   - Go to https://supabase.com
+   - Go to https://jaqzoyouuzhchuyzafii.supabase.co
    - Open your project
 
 2. **Verify Your Materials Table**
@@ -81,21 +82,23 @@ CREATE INDEX idx_materials_name ON materials(name);
    - Note the exact field names (they matter!)
 
 3. **Get Your Credentials**
+
    ```
    Project Settings → API
-   
+
    You need:
-   - Project URL: https://xxxxx.supabase.co
-   - anon public key: eyJhbGciOiJ...
+   - Project URL: https://jaqzoyouuzhchuyzafii.supabase.co
+   - anon public key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
    ```
 
 4. **Set Up Row Level Security (Optional but Recommended)**
+
    ```sql
    -- Allow public read access to materials
-   CREATE POLICY "Allow public read access" 
-   ON materials FOR SELECT 
+   CREATE POLICY "Allow public read access"
+   ON materials FOR SELECT
    USING (true);
-   
+
    -- This keeps your data safe while allowing reads
    ```
 
@@ -105,8 +108,8 @@ Create a file called `.env.local` in your project root:
 
 ```bash
 # .env.local (DO NOT COMMIT THIS FILE!)
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_URL=https://jaqzoyouuzhchuyzafii.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
 ```
 
 **🚨 CRITICAL**: Add `.env.local` to `.gitignore` (already done)
@@ -123,8 +126,8 @@ Add Supabase script and initialize:
 <script>
     // Make environment variables available
     window.ENV = {
-        SUPABASE_URL: 'https://your-project.supabase.co',
-        SUPABASE_ANON_KEY: 'your-anon-key-here'
+        SUPABASE_URL: 'https://jaqzoyouuzhchuyzafii.supabase.co',
+        SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE'
     };
 </script>
 
@@ -142,16 +145,16 @@ Add this to the initialization in `js/main.js`:
 // At the top of main.js, update the initialization
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('CarbonConstruct initializing...');
-    
+
     // Initialize Supabase connection
     const supabaseConnected = await supabaseClient.initialize({
         url: window.ENV?.SUPABASE_URL,
         key: window.ENV?.SUPABASE_ANON_KEY
     });
-    
+
     if (supabaseConnected) {
         console.log('🚀 Connected to 4,500+ materials database!');
-        
+
         // Get material stats
         const stats = await supabaseClient.getMaterialStats();
         console.log(`📊 Database contains:`);
@@ -161,19 +164,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     } else {
         console.log('⚠️ Using local materials database (40 materials)');
     }
-    
+
     // Initialize storage
     await storageManager.initialize();
-    
+
     // Load saved projects
     await loadSavedProjects();
-    
+
     // Setup event listeners
     setupEventListeners();
-    
+
     // Populate material dropdowns (now from Supabase!)
     await populateMaterialCategories();
-    
+
     console.log('CarbonConstruct ready!');
 });
 ```
@@ -188,25 +191,25 @@ Replace the `populateMaterialCategories` function:
  */
 async function populateMaterialCategories() {
     const select = document.getElementById('materialCategory');
-    
+
     // Clear existing options except first
     while (select.options.length > 1) {
         select.remove(1);
     }
-    
+
     try {
         // Get categories from Supabase
         const categories = await supabaseClient.getCategories();
-        
+
         categories.forEach(cat => {
             const option = document.createElement('option');
             option.value = cat.id;
             option.textContent = cat.name;
             select.appendChild(option);
         });
-        
+
         console.log(`✅ Loaded ${categories.length} material categories`);
-        
+
     } catch (error) {
         console.error('Error loading categories:', error);
         // Fallback to local database
@@ -225,18 +228,18 @@ async function populateMaterialCategories() {
  */
 async function populateMaterialTypes(category) {
     const select = document.getElementById('materialType');
-    
+
     // Clear existing options
     while (select.options.length > 1) {
         select.remove(1);
     }
-    
+
     if (!category) return;
-    
+
     try {
         // Get materials for this category from Supabase
         const materials = await supabaseClient.getMaterialsByCategory(category);
-        
+
         materials.forEach(material => {
             const option = document.createElement('option');
             option.value = material.id;
@@ -244,9 +247,9 @@ async function populateMaterialTypes(category) {
             option.dataset.materialData = JSON.stringify(material);
             select.appendChild(option);
         });
-        
+
         console.log(`✅ Loaded ${materials.length} materials for ${category}`);
-        
+
     } catch (error) {
         console.error('Error loading materials:', error);
         // Fallback to local database
@@ -271,10 +274,10 @@ Add a search box to your HTML:
     <label class="block text-sm font-medium text-gray-700 mb-2">
         🔍 Search Materials (4,500+ available)
     </label>
-    <input 
-        type="text" 
-        id="materialSearch" 
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" 
+    <input
+        type="text"
+        id="materialSearch"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
         placeholder="Search by name (e.g., 'concrete', 'steel', 'CLT')..."
     >
     <div id="searchResults" class="mt-2"></div>
@@ -287,12 +290,12 @@ Add the search handler:
 // Add to setupEventListeners()
 document.getElementById('materialSearch').addEventListener('input', debounce(async function(e) {
     const searchTerm = e.target.value.trim();
-    
+
     if (searchTerm.length < 2) {
         document.getElementById('searchResults').innerHTML = '';
         return;
     }
-    
+
     try {
         const results = await supabaseClient.searchMaterials(searchTerm);
         displaySearchResults(results);
@@ -317,12 +320,12 @@ function debounce(func, wait) {
 // Display search results
 function displaySearchResults(results) {
     const container = document.getElementById('searchResults');
-    
+
     if (results.length === 0) {
         container.innerHTML = '<p class="text-gray-500 text-sm">No materials found</p>';
         return;
     }
-    
+
     let html = '<div class="border border-gray-200 rounded-lg max-h-60 overflow-y-auto">';
     results.forEach(material => {
         html += `
@@ -336,7 +339,7 @@ function displaySearchResults(results) {
         `;
     });
     html += '</div>';
-    
+
     container.innerHTML = html;
 }
 ```
@@ -359,7 +362,7 @@ function displaySearchResults(results) {
 // Update the count when connected
 async function updateMaterialCount() {
     const stats = await supabaseClient.getMaterialStats();
-    document.getElementById('materialCount').textContent = 
+    document.getElementById('materialCount').textContent =
         `${stats.total.toLocaleString()}+`;
 }
 </script>
@@ -403,10 +406,12 @@ git push -u origin main
 2. **"New Project"**
 3. **Import from GitHub** → Select your repo
 4. **Configure Environment Variables**:
+
    ```
-   NEXT_PUBLIC_SUPABASE_URL = https://your-project.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY = your-anon-key-here
+   NEXT_PUBLIC_SUPABASE_URL = https://jaqzoyouuzhchuyzafii.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
    ```
+
 5. **Deploy** (takes 30 seconds)
 6. **Done!** You get a URL like: `carbonconstruct.vercel.app`
 
@@ -422,7 +427,8 @@ git push -u origin main
 
 ## 💰 Cost Analysis: FREE vs PRO
 
-### Vercel FREE Tier:
+### Vercel FREE Tier
+
 - ✅ **100GB bandwidth/month** (plenty for this app)
 - ✅ **Unlimited sites**
 - ✅ **HTTPS included**
@@ -431,7 +437,8 @@ git push -u origin main
 - ✅ **Serverless functions** (1000/month)
 - **Cost: $0**
 
-### Vercel PRO ($20/month):
+### Vercel PRO ($20/month)
+
 - Everything in FREE, plus:
 - 1TB bandwidth (vs 100GB)
 - Team collaboration features
@@ -440,13 +447,15 @@ git push -u origin main
 - More serverless invocations
 
 **Honest Assessment**: **You DON'T need PRO** unless:
+
 - You expect 10,000+ users/month
 - You need team collaboration
 - You want detailed analytics
 
 **Recommendation**: Start with FREE. Upgrade later if you actually hit limits.
 
-### Supabase FREE Tier:
+### Supabase FREE Tier
+
 - ✅ **500MB database** (enough for 4,500 materials)
 - ✅ **Unlimited API requests**
 - ✅ **50GB bandwidth/month**
@@ -459,7 +468,7 @@ git push -u origin main
 
 ## 🧪 Testing Your Integration
 
-### Test Checklist:
+### Test Checklist
 
 ```javascript
 // Run these tests in browser console (F12)
@@ -497,17 +506,20 @@ console.log('EPD Australasia materials:', epds.length);
 You don't have to do this all at once! Here's a phased approach:
 
 ### Phase 1: Dual Mode (Start Here)
+
 - Keep existing 40-material database
 - Add Supabase as optional enhancement
 - Fallback to local if Supabase unavailable
 - **Status**: Already implemented in `supabase-client.js`!
 
 ### Phase 2: Supabase Primary
+
 - Default to Supabase
 - Use local only as backup
 - Add "using local database" warning
 
 ### Phase 3: Supabase Only
+
 - Remove local materials database
 - Supabase required
 - Smaller codebase
@@ -519,25 +531,33 @@ You don't have to do this all at once! Here's a phased approach:
 ## 🐛 Troubleshooting
 
 ### "Supabase not initialized"
+
 **Check:**
+
 - Environment variables set correctly
 - Supabase URL and key are valid
 - No typos in credentials
 
 ### "No materials loading"
+
 **Check:**
+
 - Table name matches (probably `materials`)
 - Column names match your schema
 - Row Level Security allows public reads
 
 ### "CORS errors"
+
 **Solution:**
+
 - Supabase handles CORS automatically
 - Make sure you're using `anon` key, not `service_role` key
 - Check Supabase dashboard → Authentication → Policies
 
 ### "Slow loading"
+
 **Solutions:**
+
 - Implement pagination (load 100 at a time)
 - Use caching (already implemented)
 - Add database indexes (see schema above)
@@ -546,7 +566,7 @@ You don't have to do this all at once! Here's a phased approach:
 
 ## 📊 Expected Performance
 
-### With 4,500 Materials:
+### With 4,500 Materials
 
 | Operation | Time | Notes |
 |-----------|------|-------|
@@ -555,7 +575,8 @@ You don't have to do this all at once! Here's a phased approach:
 | Search | 0.3-0.5s | Direct DB query |
 | Material select | Instant | From cache |
 
-### Database Size:
+### Database Size
+
 - 4,500 materials ≈ 5-10MB
 - Well within FREE tier limits
 - Fast loading even on mobile
@@ -564,13 +585,15 @@ You don't have to do this all at once! Here's a phased approach:
 
 ## 🎉 What You Get
 
-### Before (Current):
+### Before (Current)
+
 - ❌ ~40 materials hardcoded
 - ❌ Manual updates required
 - ❌ Limited data
 - ❌ No EPD verification
 
-### After (With Supabase):
+### After (With Supabase)
+
 - ✅ **4,500+ materials** from database
 - ✅ **3,500+ EPD Australasia** verified
 - ✅ **Real-time updates** (update DB, not code)
@@ -607,8 +630,9 @@ You don't have to do this all at once! Here's a phased approach:
 ## 📞 Support
 
 If you need help:
-1. Check Supabase docs: https://supabase.com/docs
-2. Check Vercel docs: https://vercel.com/docs
+
+1. Check Supabase docs: <https://supabase.com/docs>
+2. Check Vercel docs: <https://vercel.com/docs>
 3. Test in browser console (F12) for debugging
 4. Check Network tab for API call errors
 

@@ -1,13 +1,15 @@
 # Supabase MCP Server Setup
 
 ## Overview
+
 This document explains the setup and configuration of the Supabase MCP (Model Context Protocol) server for the CarbonConstruct project.
 
 ## Configuration
 
 The Supabase MCP server is configured in `.vscode/mcp.json` with the following features:
+
 - **docs**: Access to Supabase documentation
-- **account**: Account management capabilities  
+- **account**: Account management capabilities
 - **database**: Database operations and queries
 - **debugging**: Debugging tools and logs
 - **development**: Development environment management
@@ -34,6 +36,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW9
 Once authenticated, you'll have access to various Supabase management tools through the MCP interface:
 
 ### Database Migration Tools
+
 - `mcp_supabase_apply_migration` - Apply DDL migrations
 - `mcp_supabase_list_migrations` - List database migrations
 - `mcp_supabase_create_branch` - Create development branches
@@ -44,39 +47,48 @@ Once authenticated, you'll have access to various Supabase management tools thro
 - `mcp_supabase_reset_branch` - Reset branch migrations
 
 ### Edge Functions Management
+
 - Deploy and manage Edge Functions
 - View function contents and configurations
 - List all functions in the project
 
 ### Project Configuration
+
 - Get project URL and API keys
 - Manage storage configuration
 - Access project settings
 
 ### Logging and Advisory
+
 - Get recent project logs
 - Access security and performance advisories
 - Monitor project health
 
 ### Storage Management
+
 - List storage buckets
 - Manage database extensions
 - View table schemas
 
 ### SQL Execution
+
 - Execute raw SQL queries
 - Direct database access for complex operations
 
 ## Troubleshooting
 
 ### Authentication Issues
+
 If you encounter 401 (Unauthorized) errors:
+
 1. Ensure VS Code MCP is enabled in settings
 2. Verify the API key is correct when prompted
 3. Check that the project reference matches your Supabase project
 
 ### Connection Issues
+
 If the MCP server fails to start:
+
 1. Restart VS Code to refresh MCP connections
 2. Check internet connectivity
 3. Verify the Supabase project is active and accessible

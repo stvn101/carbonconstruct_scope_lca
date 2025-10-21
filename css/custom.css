@@ -15,6 +15,33 @@ html {
     scroll-behavior: smooth;
 }
 
+/* EC3 Database navigation link styling */
+.nav-ec3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.nav-ec3:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    transform: translateY(-1px);
+    color: white;
+}
+
+.nav-ec3 svg {
+    flex-shrink: 0;
+}
+
 /* Loading state for buttons */
 button:disabled {
     opacity: 0.6;
@@ -44,26 +71,27 @@ button:disabled {
 
 /* Print styles for reports */
 @media print {
+
     nav,
     button,
     .no-print {
         display: none !important;
     }
-    
+
     body {
         background: white;
     }
-    
+
     .bg-gray-50,
     .bg-gray-100 {
         background: white !important;
     }
-    
+
     section {
         page-break-inside: avoid;
         margin-bottom: 20px;
     }
-    
+
     .chart-container {
         page-break-inside: avoid;
     }
@@ -87,6 +115,7 @@ select:focus {
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -98,7 +127,7 @@ select:focus {
     table {
         font-size: 0.875rem;
     }
-    
+
     table th,
     table td {
         padding: 0.5rem !important;
@@ -134,8 +163,13 @@ select:focus {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Tooltip styles (if needed) */
@@ -180,6 +214,7 @@ select:focus {
         transform: translateY(-20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -222,7 +257,7 @@ select:focus {
     .mobile-menu-button {
         display: block;
     }
-    
+
     .desktop-menu {
         display: none;
     }
@@ -340,11 +375,11 @@ footer {
         padding-left: 1rem;
         padding-right: 1rem;
     }
-    
+
     h1 {
         font-size: 1.875rem;
     }
-    
+
     h2 {
         font-size: 1.5rem;
     }
@@ -368,9 +403,12 @@ select:disabled {
 
 /* Success animation for save actions */
 @keyframes successPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
@@ -385,7 +423,7 @@ select:disabled {
     .carbon-card {
         border: 2px solid currentColor;
     }
-    
+
     button {
         border: 2px solid currentColor;
     }
@@ -393,6 +431,7 @@ select:disabled {
 
 /* Reduced motion support for accessibility */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

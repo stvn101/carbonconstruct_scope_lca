@@ -176,16 +176,16 @@ Error: ${error.message}
 
                 if (response.ok) {
                     const materials = await response.json();
-                    
+
                     // Filter materials that contain the search term
-                    const filtered = materials.filter(material => 
+                    const filtered = materials.filter(material =>
                         material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         material.category?.display_name?.toLowerCase().includes(searchTerm.toLowerCase())
                     ).slice(0, 5);
 
                     if (filtered.length > 0) {
                         let html = `<span class="success">✅ Found ${filtered.length} ${searchTerm} materials:</span>\n\n`;
-                        
+
                         filtered.forEach(material => {
                             html += `<div class="material-card">
                                 <div class="material-name">${material.name}</div>
@@ -194,7 +194,7 @@ Error: ${error.message}
                                 <div>Manufacturer: ${material.manufacturer_name || 'Generic'}</div>
                             </div>`;
                         });
-                        
+
                         resultsDiv.innerHTML = html;
                     } else {
                         resultsDiv.innerHTML = `
@@ -236,7 +236,7 @@ Error: ${error.message}
 
                 if (response.ok) {
                     const materials = await response.json();
-                    
+
                     // Group by category
                     const categoryStats = {};
                     materials.forEach(material => {
@@ -249,7 +249,7 @@ Error: ${error.message}
                             };
                         }
                         categoryStats[category].count++;
-                        
+
                         const gwp = parseFloat(material.gwp);
                         if (!isNaN(gwp)) {
                             categoryStats[category].gwpValues.push(gwp);
@@ -265,7 +265,7 @@ Error: ${error.message}
                     });
 
                     let html = `<span class="success">✅ Material Category Analysis:</span>\n\n`;
-                    
+
                     Object.entries(categoryStats)
                         .sort((a, b) => b[1].count - a[1].count)
                         .forEach(([category, stats]) => {

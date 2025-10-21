@@ -13,7 +13,7 @@ services:
       # EC3 API environment variables (optional)
       - NEXT_PUBLIC_EC3_API_KEY=${NEXT_PUBLIC_EC3_API_KEY}
     env_file:
-      - .env.local  # Load from .env.local if it exists
+      - .env.local # Load from .env.local if it exists
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]

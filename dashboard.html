@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CarbonConstruct</title>
@@ -444,7 +457,7 @@
             try {
                 // Get current user
                 currentUser = await getCurrentUser();
-                
+
                 if (!currentUser) {
                     window.location.href = 'signin-new.html';
                     return;
@@ -500,7 +513,7 @@
                 } else if (data.status === 'active') {
                     banner.className = 'subscription-banner';
                     title.textContent = `${data.plan_name} Plan Active`;
-                    message.textContent = data.plan_id === 'professional' 
+                    message.textContent = data.plan_id === 'professional'
                         ? 'You have unlimited access to all features'
                         : 'You have access to all essential features';
                     banner.style.display = 'flex';
@@ -523,7 +536,7 @@
                 if (error) throw error;
 
                 const grid = document.getElementById('projectsGrid');
-                
+
                 if (!data || data.length === 0) {
                     grid.innerHTML = `
                         <div class="empty-state" style="grid-column: 1/-1;">
@@ -584,7 +597,7 @@
                 const totalProjects = projects?.length || 0;
                 const totalMaterials = projects?.reduce((sum, p) => sum + (p.material_count || 0), 0) || 0;
                 const totalCarbon = projects?.reduce((sum, p) => sum + (p.total_carbon || 0), 0) || 0;
-                const avgCompliance = projects?.length > 0 
+                const avgCompliance = projects?.length > 0
                     ? Math.round((projects.filter(p => p.ncc_compliant).length / projects.length) * 100)
                     : 0;
 
@@ -618,7 +631,7 @@
                 if (error && error.code !== 'PGRST116') throw error;
 
                 const list = document.getElementById('activityList');
-                
+
                 if (!data || data.length === 0) {
                     list.innerHTML = `
                         <div class="empty-state">
@@ -654,10 +667,10 @@
         // Helper functions
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-AU', { 
-                day: 'numeric', 
-                month: 'short', 
-                year: 'numeric' 
+            return date.toLocaleDateString('en-AU', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
             });
         }
 
@@ -717,7 +730,7 @@
         // Initialize on page load
         initDashboard();
     </script>
-    
+
     <!-- Tawk.to Live Chat Widget -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

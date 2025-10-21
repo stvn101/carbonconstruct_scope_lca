@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - CarbonConstruct</title>
@@ -399,7 +412,7 @@
         <!-- Profile Section -->
         <div id="profile" class="settings-section active">
             <h2 class="section-title">Profile Information</h2>
-            
+
             <div class="success-message" id="profileSuccess">Profile updated successfully!</div>
             <div class="error-message" id="profileError"></div>
 
@@ -458,7 +471,7 @@
         <!-- Account Section -->
         <div id="account" class="settings-section">
             <h2 class="section-title">Connected Accounts</h2>
-            
+
             <div class="connected-accounts">
                 <div class="account-item">
                     <div class="account-info">
@@ -491,7 +504,7 @@
         <!-- Notifications Section -->
         <div id="notifications" class="settings-section">
             <h2 class="section-title">Notification Preferences</h2>
-            
+
             <div class="success-message" id="notificationsSuccess">Preferences updated!</div>
 
             <div class="notification-item">
@@ -546,7 +559,7 @@
         <!-- Security Section -->
         <div id="security" class="settings-section">
             <h2 class="section-title">Security Settings</h2>
-            
+
             <div class="success-message" id="passwordSuccess">Password changed successfully!</div>
             <div class="error-message" id="passwordError"></div>
 
@@ -591,7 +604,7 @@
         async function initSettings() {
             try {
                 currentUser = await getCurrentUser();
-                
+
                 if (!currentUser) {
                     window.location.href = 'signin-new.html';
                     return;
@@ -641,7 +654,7 @@
         // Save profile
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const successEl = document.getElementById('profileSuccess');
             const errorEl = document.getElementById('profileError');
             successEl.style.display = 'none';
@@ -671,7 +684,7 @@
         async function loadConnectedAccounts() {
             // Check if user has Google or GitHub connected
             const identities = currentUser.identities || [];
-            
+
             const googleIdentity = identities.find(i => i.provider === 'google');
             const githubIdentity = identities.find(i => i.provider === 'github');
 
@@ -784,7 +797,7 @@
                 // Delete user data
                 await supabase.from('projects').delete().eq('user_id', currentUser.id);
                 await supabase.from('user_profiles').delete().eq('user_id', currentUser.id);
-                
+
                 // Sign out
                 await signOut();
                 alert('Account deleted successfully');
@@ -827,7 +840,7 @@
         // Initialize
         initSettings();
     </script>
-    
+
     <!-- Tawk.to Live Chat Widget -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

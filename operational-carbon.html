@@ -1,70 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Carbon Tracking - CarbonConstruct</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css">
-    
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        
+
         html {
             scroll-behavior: smooth;
         }
-        
+
         :root {
             --primary-green: #059669;
             --dark-green: #047857;
             --light-green: #d1fae5;
         }
-        
+
         .carbon-card {
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        
+
         .carbon-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-        
+
         .chart-container {
             height: 400px;
             position: relative;
         }
-        
+
         .tab-button {
             transition: all 0.3s;
         }
-        
+
         .tab-button.active {
             background-color: #059669;
             color: white;
         }
-        
+
         .section-hidden {
             display: none;
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    
+
     <!-- Navigation Header -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,7 +106,7 @@
             <p class="text-xl text-orange-100 mb-8">
                 Complete Scope 1, 2 & 3 emissions tracking for construction site operations
             </p>
-            
+
             <!-- Scopes Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <!-- Scope 1 -->
@@ -106,7 +119,7 @@
                     <p class="text-3xl font-bold" id="scope1Summary">0</p>
                     <p class="text-sm">tonnes CO2-e</p>
                 </div>
-                
+
                 <!-- Scope 2 -->
                 <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6">
                     <div class="flex items-center justify-between mb-2">
@@ -117,7 +130,7 @@
                     <p class="text-3xl font-bold" id="scope2Summary">0</p>
                     <p class="text-sm">tonnes CO2-e</p>
                 </div>
-                
+
                 <!-- Scope 3 -->
                 <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6">
                     <div class="flex items-center justify-between mb-2">
@@ -128,7 +141,7 @@
                     <p class="text-3xl font-bold" id="scope3Summary">0</p>
                     <p class="text-sm">tonnes CO2-e</p>
                 </div>
-                
+
                 <!-- Total -->
                 <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-lg p-6 border-2 border-white">
                     <div class="flex items-center justify-between mb-2">
@@ -146,7 +159,7 @@
     <!-- Main Content -->
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
+
             <!-- Tab Navigation -->
             <div class="bg-white rounded-lg shadow-lg mb-8">
                 <div class="flex flex-wrap border-b border-gray-200">
@@ -175,7 +188,7 @@
                     <p class="text-gray-600 mb-6">
                         Track fuel combustion from equipment and vehicles YOU own or control on site.
                     </p>
-                    
+
                     <!-- Sub-tabs for Scope 1 Categories -->
                     <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
                         <button class="scope1-subtab active bg-orange-100 text-orange-700 px-4 py-2 rounded-lg font-medium" data-subtab="equipment">
@@ -191,16 +204,16 @@
                             <i class="fas fa-temperature-high mr-2"></i>Heating/Drying
                         </button>
                     </div>
-                    
+
                     <!-- Equipment Sub-tab -->
                     <div id="s1Equipment" class="scope1-content">
                         <h3 class="text-lg font-semibold mb-4">Site Equipment Fuel Usage</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Equipment Input Form -->
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Equipment</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Category</label>
@@ -219,30 +232,30 @@
                                             <option value="grading">Grading Equipment</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Type</label>
                                         <select id="s1EquipmentType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
                                             <option value="">Select type...</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
                                         <input type="number" id="s1OperatingHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 240">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Fuel Used (L) - Optional if using database rates</label>
                                         <input type="number" id="s1FuelUsed" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Leave blank to auto-calculate">
                                     </div>
-                                    
+
                                     <button id="addEquipmentBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Equipment
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <!-- Equipment List -->
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Equipment</h4>
@@ -256,16 +269,16 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Vehicles Sub-tab -->
                     <div id="s1Vehicles" class="scope1-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Site Vehicles</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Vehicle Input Form -->
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Vehicle</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Vehicle Type</label>
@@ -283,23 +296,23 @@
                                             <option value="serviceTruck">Service Truck</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Distance Travelled (km)</label>
                                         <input type="number" id="s1VehicleDistance" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 5000">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">OR Fuel Used (L) - Optional</label>
                                         <input type="number" id="s1VehicleFuel" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="If you know actual fuel used">
                                     </div>
-                                    
+
                                     <button id="addVehicleBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Vehicle
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <!-- Vehicle List -->
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Vehicles</h4>
@@ -313,15 +326,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Generators Sub-tab -->
                     <div id="s1Generators" class="scope1-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Site Generators</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Generator</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Generator Size</label>
@@ -335,24 +348,24 @@
                                             <option value="500kVA">500kVA (XXX-Large)</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
                                         <input type="number" id="s1GenHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 480">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Load Factor (%)</label>
                                         <input type="number" id="s1GenLoad" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="75" value="75">
                                         <p class="text-xs text-gray-500 mt-1">Generators rarely run at 100% - typical is 60-80%</p>
                                     </div>
-                                    
+
                                     <button id="addGeneratorBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Generator
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Generators</h4>
                                 <div id="generatorList" class="space-y-2">
@@ -365,15 +378,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Heating Sub-tab -->
                     <div id="s1Heating" class="scope1-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Heating & Drying Equipment</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Heating Equipment</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Type</label>
@@ -385,18 +398,18 @@
                                             <option value="dehumidifier_diesel">Dehumidifier (Diesel)</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
                                         <input type="number" id="s1HeatingHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 120">
                                     </div>
-                                    
+
                                     <button id="addHeatingBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Equipment
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Heating Equipment</h4>
                                 <div id="heatingList" class="space-y-2">
@@ -422,7 +435,7 @@
                     <p class="text-gray-600 mb-6">
                         Track electricity purchased from the grid for site operations.
                     </p>
-                    
+
                     <!-- Sub-tabs for Scope 2 -->
                     <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
                         <button class="scope2-subtab active bg-teal-100 text-teal-700 px-4 py-2 rounded-lg font-medium" data-subtab="sitepower">
@@ -435,26 +448,26 @@
                             <i class="fas fa-battery-full mr-2"></i>Electric Equipment
                         </button>
                     </div>
-                    
+
                     <!-- Site Power Sub-tab -->
                     <div id="s2SitePower" class="scope2-content">
                         <h3 class="text-lg font-semibold mb-4">Site Power Connection</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Power Usage</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
                                         <input type="text" id="s2PowerDesc" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., Monthly site power">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Electricity Used (kWh)</label>
                                         <input type="number" id="s2PowerKWh" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 15000">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">State/Territory</label>
                                         <select id="s2PowerState" class="w-full border border-gray-300 rounded-lg px-4 py-2">
@@ -469,18 +482,18 @@
                                             <option value="nt">NT</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Number of Days</label>
                                         <input type="number" id="s2PowerDays" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 30">
                                     </div>
-                                    
+
                                     <button id="addPowerBtn" class="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Power Usage
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Power Usage</h4>
                                 <div id="powerList" class="space-y-2">
@@ -493,15 +506,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Facilities Sub-tab -->
                     <div id="s2Facilities" class="scope2-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Site Facilities</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Facility</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Facility Type</label>
@@ -518,12 +531,12 @@
                                             <option value="hvac_portable">Portable HVAC</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Days in Use</label>
                                         <input type="number" id="s2FacilityDays" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 180">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">State/Territory</label>
                                         <select id="s2FacilityState" class="w-full border border-gray-300 rounded-lg px-4 py-2">
@@ -538,13 +551,13 @@
                                             <option value="nt">NT</option>
                                         </select>
                                     </div>
-                                    
+
                                     <button id="addFacilityBtn" class="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Facility
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Facilities</h4>
                                 <div id="facilityList" class="space-y-2">
@@ -557,15 +570,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Electric Equipment Sub-tab -->
                     <div id="s2ElectricEquip" class="scope2-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Electric Equipment (Hoists, Lifts, etc.)</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Electric Equipment</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Type</label>
@@ -580,12 +593,12 @@
                                             <option value="forklift_electric">Electric Forklift</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
                                         <input type="number" id="s2ElecHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 480">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">State/Territory</label>
                                         <select id="s2ElecState" class="w-full border border-gray-300 rounded-lg px-4 py-2">
@@ -600,13 +613,13 @@
                                             <option value="nt">NT</option>
                                         </select>
                                     </div>
-                                    
+
                                     <button id="addElecEquipBtn" class="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Equipment
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Electric Equipment</h4>
                                 <div id="elecEquipList" class="space-y-2">
@@ -632,7 +645,7 @@
                     <p class="text-gray-600 mb-6">
                         Track emissions from transport, waste, water, commuting, and temporary works.
                     </p>
-                    
+
                     <!-- Sub-tabs for Scope 3 -->
                     <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
                         <button class="scope3-subtab active bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium" data-subtab="transport">
@@ -651,31 +664,31 @@
                             <i class="fas fa-hammer mr-2"></i>Temp Works
                         </button>
                     </div>
-                    
+
                     <!-- Transport Sub-tab -->
                     <div id="s3Transport" class="scope3-content">
                         <h3 class="text-lg font-semibold mb-4">Material Transport to Site</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Transport</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Material</label>
                                         <input type="text" id="s3TransMaterial" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., Concrete">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Weight (tonnes)</label>
                                         <input type="number" id="s3TransWeight" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 500">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Distance (km)</label>
                                         <input type="number" id="s3TransDistance" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 30">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Transport Mode</label>
                                         <select id="s3TransMode" class="w-full border border-gray-300 rounded-lg px-4 py-2">
@@ -685,13 +698,13 @@
                                             <option value="sea">Sea Freight</option>
                                         </select>
                                     </div>
-                                    
+
                                     <button id="addTransportBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Transport
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Transport</h4>
                                 <div id="transportList" class="space-y-2">
@@ -704,26 +717,26 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Waste Sub-tab -->
                     <div id="s3Waste" class="scope3-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Construction Waste</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Waste</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Material</label>
                                         <input type="text" id="s3WasteMaterial" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., General waste">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
                                         <input type="number" id="s3WasteWeight" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 5000">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Disposal Method</label>
                                         <select id="s3WasteMethod" class="w-full border border-gray-300 rounded-lg px-4 py-2">
@@ -734,13 +747,13 @@
                                             <option value="recycling_concrete">Recycling (Concrete)</option>
                                         </select>
                                     </div>
-                                    
+
                                     <button id="addWasteBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Waste
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Waste</h4>
                                 <div id="wasteList" class="space-y-2">
@@ -753,15 +766,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Water Sub-tab -->
                     <div id="s3Water" class="scope3-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Water Usage</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Water Usage</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Water Type</label>
@@ -771,19 +784,19 @@
                                             <option value="wastewater">Wastewater (Sewage)</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Volume (kL - kilolitres)</label>
                                         <input type="number" id="s3WaterVolume" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 500">
                                         <p class="text-xs text-gray-500 mt-1">1 kL = 1,000 litres</p>
                                     </div>
-                                    
+
                                     <button id="addWaterBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Water
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Water Usage</h4>
                                 <div id="waterList" class="space-y-2">
@@ -796,31 +809,31 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Commuting Sub-tab -->
                     <div id="s3Commuting" class="scope3-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Employee Commuting</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Commuting</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Number of Employees</label>
                                         <input type="number" id="s3CommuteEmployees" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 50">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Average Distance (km one-way)</label>
                                         <input type="number" id="s3CommuteDistance" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 25">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Working Days</label>
                                         <input type="number" id="s3CommuteDays" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 180">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Transport Mode</label>
                                         <select id="s3CommuteMode" class="w-full border border-gray-300 rounded-lg px-4 py-2">
@@ -830,13 +843,13 @@
                                             <option value="motorbike">Motorbike</option>
                                         </select>
                                     </div>
-                                    
+
                                     <button id="addCommuteBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Commuting
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Commuting</h4>
                                 <div id="commuteList" class="space-y-2">
@@ -849,15 +862,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Temporary Works Sub-tab -->
                     <div id="s3TempWorks" class="scope3-content section-hidden">
                         <h3 class="text-lg font-semibold mb-4">Temporary Works (Scaffolding, Formwork, etc.)</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Add Temporary Works</h4>
-                                
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
@@ -871,24 +884,24 @@
                                             <option value="hoarding_steel">Hoarding (Steel)</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Area (m²)</label>
                                         <input type="number" id="s3TempArea" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 1000">
                                     </div>
-                                    
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Number of Uses/Reuses</label>
                                         <input type="number" id="s3TempUses" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 50" value="50">
                                         <p class="text-xs text-gray-500 mt-1">Higher reuse = lower emissions per use</p>
                                     </div>
-                                    
+
                                     <button id="addTempWorksBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Temp Works
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-6">
                                 <h4 class="font-semibold text-gray-800 mb-4">Added Temporary Works</h4>
                                 <div id="tempWorksList" class="space-y-2">
@@ -911,7 +924,7 @@
                         <i class="fas fa-chart-bar text-green-600 mr-2"></i>
                         Operational Carbon Dashboard
                     </h2>
-                    
+
                     <!-- Scope Breakdown Chart -->
                     <div class="mb-8">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Emissions by Scope</h3>
@@ -919,7 +932,7 @@
                             <canvas id="scopesBreakdownChart"></canvas>
                         </div>
                     </div>
-                    
+
                     <!-- Category Breakdown -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div>
@@ -941,7 +954,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Export and Save -->
                     <div class="flex gap-4 justify-center">
                         <button id="exportDataBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">

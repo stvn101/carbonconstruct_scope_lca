@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Completing Sign In - CarbonConstruct</title>
@@ -54,21 +67,21 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./auth-supabase.js"></script>
-    
+
     <script>
         // This page handles OAuth callbacks from Google/GitHub
         async function handleCallback() {
             try {
                 // Get the session
                 const session = await window.auth.getSession();
-                
+
                 if (session) {
                     console.log('✅ OAuth authentication successful');
-                    
+
                     // Redirect to dashboard
                     const redirectTo = localStorage.getItem('redirectAfterLogin') || '/dashboard.html';
                     localStorage.removeItem('redirectAfterLogin');
-                    
+
                     setTimeout(() => {
                         window.location.href = redirectTo;
                     }, 1000);

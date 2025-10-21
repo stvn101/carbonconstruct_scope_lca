@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - CarbonConstruct</title>
@@ -60,7 +73,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="auth-right">
             <div class="auth-form-container">
                 <div class="auth-header">
@@ -96,22 +109,22 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First name</label>
-                            <input 
-                                type="text" 
-                                id="firstName" 
-                                name="firstName" 
-                                required 
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                required
                                 placeholder="John"
                                 autocomplete="given-name"
                             >
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last name</label>
-                            <input 
-                                type="text" 
-                                id="lastName" 
-                                name="lastName" 
-                                required 
+                            <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                required
                                 placeholder="Smith"
                                 autocomplete="family-name"
                             >
@@ -120,11 +133,11 @@
 
                     <div class="form-group">
                         <label for="email">Work email</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            required 
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
                             placeholder="you@company.com"
                             autocomplete="email"
                         >
@@ -132,11 +145,11 @@
 
                     <div class="form-group">
                         <label for="company">Company name</label>
-                        <input 
-                            type="text" 
-                            id="company" 
-                            name="company" 
-                            required 
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            required
                             placeholder="Acme Construction"
                             autocomplete="organization"
                         >
@@ -145,11 +158,11 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <div class="password-input-wrapper">
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                required 
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
                                 placeholder="Create a strong password"
                                 autocomplete="new-password"
                                 minlength="8"
@@ -213,7 +226,7 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth-supabase.js"></script>
-    
+
     <script>
         // Redirect if already authenticated
         window.auth.redirectIfAuthenticated();
@@ -229,13 +242,13 @@
             const password = e.target.value;
             const strengthBars = document.querySelectorAll('.strength-bar');
             const strengthText = document.querySelector('.strength-text');
-            
+
             let strength = 0;
             if (password.length >= 8) strength++;
             if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
             if (password.match(/[0-9]/)) strength++;
             if (password.match(/[^a-zA-Z0-9]/)) strength++;
-            
+
             strengthBars.forEach((bar, index) => {
                 bar.classList.remove('active', 'weak', 'fair', 'good', 'strong');
                 if (index < strength) {
@@ -246,7 +259,7 @@
                     else bar.classList.add('strong');
                 }
             });
-            
+
             const strengthMessages = [
                 'Use 8+ characters with mix of letters, numbers & symbols',
                 'Weak - Add more character types',
@@ -274,7 +287,7 @@
             const btn = document.getElementById('submitBtn');
             const btnText = document.getElementById('btnText');
             const btnSpinner = document.getElementById('btnSpinner');
-            
+
             btn.disabled = isLoading;
             btnText.style.display = isLoading ? 'none' : 'inline';
             btnSpinner.style.display = isLoading ? 'inline-block' : 'none';
@@ -284,14 +297,14 @@
             event.preventDefault();
             hideError();
             setLoading(true);
-            
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const company = document.getElementById('company').value;
             const marketing = document.getElementById('marketing').checked;
-            
+
             // Sign up with metadata
             const result = await window.auth.signUpWithEmail(email, password, {
                 firstName,
@@ -300,7 +313,7 @@
                 fullName: `${firstName} ${lastName}`,
                 marketingOptIn: marketing
             });
-            
+
             if (result.success) {
                 // Show success message
                 alert('✅ Account created! Please check your email to verify your account.');
@@ -350,7 +363,7 @@
         `;
         document.head.appendChild(style);
     </script>
-    
+
     <!-- Tawk.to Live Chat Widget -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

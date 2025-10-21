@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - CarbonConstruct</title>
@@ -25,7 +38,7 @@
 
             <div class="order-summary">
                 <h2>Order Summary</h2>
-                
+
                 <div class="plan-selected" id="planDetails">
                     <div class="plan-header">
                         <div>
@@ -37,7 +50,7 @@
                             <span class="price-period">/mo</span>
                         </div>
                     </div>
-                    
+
                     <ul class="plan-features">
                         <li>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -152,11 +165,11 @@
                         <h3>Account Information</h3>
                         <div class="form-group">
                             <label for="email">Email address</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                required 
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
                                 placeholder="you@company.com"
                             >
                         </div>
@@ -267,7 +280,7 @@
         // Initialize Stripe
         const stripe = Stripe('pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz'); // Replace with your actual key
         const elements = stripe.elements();
-        
+
         // Custom styling for Stripe Elements
         const style = {
             base: {
@@ -348,7 +361,7 @@
             } else {
                 // Send to your server
                 console.log('PaymentMethod created:', paymentMethod);
-                
+
                 // In production, send this to your server:
                 // const response = await fetch('/create-subscription', {
                 //     method: 'POST',
@@ -370,7 +383,7 @@
         function applyPromo() {
             const promoInput = document.getElementById('promoInput');
             const code = promoInput.value.toUpperCase();
-            
+
             const validCodes = {
                 'LAUNCH50': { discount: 50, type: 'percent' },
                 'EARLYBIRD': { discount: 20, type: 'percent' },
@@ -412,7 +425,7 @@
             alert('Plan selection modal would open here');
         }
     </script>
-    
+
     <!-- Tawk.to Live Chat Widget -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

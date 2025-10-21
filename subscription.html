@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription Management - CarbonConstruct</title>
@@ -480,7 +493,7 @@
             try {
                 // Get current user
                 currentUser = await getCurrentUser();
-                
+
                 if (!currentUser) {
                     window.location.href = 'signin-new.html';
                     return;
@@ -561,7 +574,7 @@
             }
 
             const plan = PLANS.find(p => p.id === subscription.plan_id) || PLANS[0];
-            
+
             if (subscription.status === 'trialing') {
                 card.className = 'current-plan-card trial';
                 const daysLeft = Math.ceil((new Date(subscription.trial_end) - new Date()) / (1000 * 60 * 60 * 24));
@@ -618,7 +631,7 @@
         // Load available plans
         async function loadAvailablePlans() {
             const grid = document.getElementById('plansGrid');
-            
+
             grid.innerHTML = PLANS.map(plan => `
                 <div class="plan-card ${plan.featured ? 'featured' : ''}">
                     ${plan.featured ? '<div class="featured-badge">MOST POPULAR</div>' : ''}
@@ -635,7 +648,7 @@
                             </li>
                         `).join('')}
                     </ul>
-                    <button 
+                    <button
                         class="btn ${plan.featured ? 'btn-primary' : 'btn-secondary'} btn-block"
                         onclick="selectPlan('${plan.id}')"
                         ${currentSubscription?.plan_id === plan.id ? 'disabled' : ''}
@@ -711,13 +724,13 @@
                 // In production, you'd call your backend to create a Stripe portal session
                 // For now, show a message
                 alert('Redirecting to Stripe billing portal...\n\nNote: This requires a backend endpoint to create a portal session.');
-                
+
                 // Example implementation:
                 // const { data, error } = await supabase.functions.invoke('create-portal-session', {
                 //     body: { customer_id: currentSubscription.stripe_customer_id }
                 // });
                 // if (data?.url) window.location.href = data.url;
-                
+
             } catch (error) {
                 console.error('Error:', error);
                 alert('Failed to open billing portal. Please try again.');
@@ -733,7 +746,7 @@
                     // Update subscription to cancel at period end
                     const { error } = await supabase
                         .from('subscriptions')
-                        .update({ 
+                        .update({
                             cancel_at_period_end: true,
                             updated_at: new Date().toISOString()
                         })
@@ -758,7 +771,7 @@
             try {
                 const { error } = await supabase
                     .from('subscriptions')
-                    .update({ 
+                    .update({
                         cancel_at_period_end: false,
                         updated_at: new Date().toISOString()
                     })
@@ -778,10 +791,10 @@
         // Helper function
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-AU', { 
-                day: 'numeric', 
-                month: 'long', 
-                year: 'numeric' 
+            return date.toLocaleDateString('en-AU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
             });
         }
 
@@ -802,7 +815,7 @@
         // Initialize on page load
         initSubscription();
     </script>
-    
+
     <!-- Tawk.to Live Chat Widget -->
     <script src="tawk-config.js"></script>
     <script type="text/javascript">

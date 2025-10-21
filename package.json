@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vercel dev",
     "lint": "eslint . --ext js --max-warnings 0",
-    "build": "echo 'Static site - no build required'",
+    "build": "node build.js",
     "deploy": "vercel --prod"
   },
   "dependencies": {

@@ -98,9 +98,9 @@
                                         <stop offset="100%" style="stop-color:#10B981;stop-opacity:0" />
                                     </linearGradient>
                                 </defs>
-                                <path d="M 0 200 L 50 180 L 100 150 L 150 170 L 200 120 L 250 140 L 300 80 L 350 100 L 400 60" 
+                                <path d="M 0 200 L 50 180 L 100 150 L 150 170 L 200 120 L 250 140 L 300 80 L 350 100 L 400 60"
                                       stroke="#10B981" stroke-width="3" fill="none"/>
-                                <path d="M 0 200 L 50 180 L 100 150 L 150 170 L 200 120 L 250 140 L 300 80 L 350 100 L 400 60 L 400 250 L 0 250 Z" 
+                                <path d="M 0 200 L 50 180 L 100 150 L 150 170 L 200 120 L 250 140 L 300 80 L 350 100 L 400 60 L 400 250 L 0 250 Z"
                                       fill="url(#chartGradient)"/>
                             </svg>
                         </div>
@@ -656,8 +656,22 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    
+    <!-- Environment Variables Configuration -->
+    <script>
+        // Global environment variables for the application
+        window.ENV = {
+            // EC3 API Configuration (Building Transparency - 50,000+ EPDs)
+            EC3_API_KEY: 'nK72LVKPVJxFb21fMIFpmtaLawqwvg',
+            EC3_BEARER_TOKEN: null,
+            
+            // Supabase Configuration (4,343+ Australian Materials)
+            SUPABASE_URL: 'https://jaqzoyouuzhchuyzafii.supabase.co',
+            SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE'
+        };
+        
+        console.log('🌍 Environment loaded:', window.ENV.EC3_API_KEY ? '✅ EC3 API Key configured' : '❌ EC3 API Key missing');
+    </script>    <script src="script.js"></script>
+
     <!-- Tawk.to Live Chat Widget -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

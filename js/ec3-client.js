@@ -1,16 +1,16 @@
 /**
  * EC3 (Embodied Carbon in Construction Calculator) API Client
  * Building Transparency - https://buildingtransparency.org/
- * 
+ *
  * EC3 is the world's largest database of embodied carbon data for construction materials
  * - 50,000+ Environmental Product Declarations (EPDs)
  * - 1,000+ manufacturers globally
  * - ISO 14025 compliant
  * - Free API access with authentication
- * 
+ *
  * This is THE industry standard for embodied carbon data.
  * Steve has permission from Building Transparency to use this API!
- * 
+ *
  * Integration Strategy:
  * - Primary: Supabase (4,500+ Australian materials - fast, cached)
  * - Secondary: EC3 API (50,000+ global EPDs - comprehensive, live)
@@ -24,11 +24,11 @@ class EC3Client {
         this.apiKey = null;
         this.bearerToken = null;
         this.initialized = false;
-        
+
         // Cache settings
         this.cache = new Map();
         this.cacheExpiry = 24 * 60 * 60 * 1000; // 24 hours
-        
+
         // Rate limiting (be respectful to their API)
         this.requestQueue = [];
         this.rateLimitMs = 100; // 100ms between requests
@@ -37,7 +37,7 @@ class EC3Client {
 
     /**
      * Initialize EC3 API connection
-     * 
+     *
      * @param {Object} config - Configuration object
      * @param {string} config.apiKey - Your EC3 API key
      * @param {string} config.bearerToken - Your bearer token (if using OAuth)
@@ -57,7 +57,7 @@ class EC3Client {
 
             // Test connection
             const testResult = await this.testConnection();
-            
+
             if (testResult.success) {
                 this.initialized = true;
                 console.log('✅ EC3 API connected successfully');
@@ -85,10 +85,12 @@ class EC3Client {
             'Accept': 'application/json'
         };
 
+        // EC3 API uses Bearer token authentication (not X-API-Key)
         if (this.bearerToken) {
             headers['Authorization'] = `Bearer ${this.bearerToken}`;
         } else if (this.apiKey) {
-            headers['X-API-Key'] = this.apiKey;
+            // Use API key as Bearer token (EC3's preferred method)
+            headers['Authorization'] = `Bearer ${this.apiKey}`;
         }
 
         return headers;
@@ -106,7 +108,7 @@ class EC3Client {
         const now = Date.now();
         const timeSinceLastRequest = now - this.lastRequestTime;
         if (timeSinceLastRequest < this.rateLimitMs) {
-            await new Promise(resolve => 
+            await new Promise(resolve =>
                 setTimeout(resolve, this.rateLimitMs - timeSinceLastRequest)
             );
         }
@@ -124,7 +126,7 @@ class EC3Client {
 
         try {
             const response = await fetch(url, config);
-            
+
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(`EC3 API error (${response.status}): ${errorText}`);
@@ -170,7 +172,7 @@ class EC3Client {
 
     /**
      * Search materials in EC3 database
-     * 
+     *
      * @param {string} query - Search term
      * @param {Object} filters - Optional filters
      * @returns {Array} Array of matching materials with EPD data
@@ -231,10 +233,10 @@ class EC3Client {
         try {
             const data = await this.makeRequest(`/materials/${ec3Id}`);
             const material = this.transformEC3Material(data);
-            
+
             // Cache the result
             this.saveToCache(cacheKey, material);
-            
+
             return material;
 
         } catch (error) {
@@ -307,10 +309,10 @@ class EC3Client {
 
             const data = await this.makeRequest(`/materials?${params.toString()}`);
             const materials = this.transformEC3Materials(data.results || []);
-            
+
             // Cache results
             this.saveToCache(cacheKey, materials);
-            
+
             return materials;
 
         } catch (error) {
@@ -325,21 +327,21 @@ class EC3Client {
     transformEC3Material(ec3Data) {
         // EC3 uses GWP (Global Warming Potential) in kg CO2e
         // This is exactly what we need!
-        
+
         return {
             id: ec3Data.id || ec3Data.ec3_id,
             name: ec3Data.name || ec3Data.product_name,
             category: ec3Data.category || ec3Data.masterformat,
             subcategory: ec3Data.subcategory,
             description: ec3Data.description,
-            
+
             // Embodied carbon data
             embodiedCarbon: this.extractGWP(ec3Data),
             unit: ec3Data.declared_unit || 'kg',
-            
+
             // LCA stages (EC3 has detailed breakdown)
             lcaStages: this.extractLCAStages(ec3Data),
-            
+
             // EPD information
             epd: {
                 number: ec3Data.epd_number,
@@ -349,17 +351,17 @@ class EC3Client {
                 programOperator: ec3Data.program_operator,
                 geography: ec3Data.geography || ec3Data.plant_geography
             },
-            
+
             // Additional properties
             density: ec3Data.density,
             recyclability: ec3Data.end_of_life?.recyclability,
             recycledContent: ec3Data.recycled_content,
-            
+
             // Metadata
             source: 'EC3',
             ec3Id: ec3Data.id,
             lastUpdated: ec3Data.updated_at || new Date().toISOString(),
-            
+
             // Link to EC3
             ec3Link: `https://buildingtransparency.org/ec3/materials/${ec3Data.id}`
         };
@@ -390,11 +392,11 @@ class EC3Client {
         if (ec3Data.impacts?.gwp) {
             return ec3Data.impacts.gwp;
         }
-        
+
         // Try to extract from LCA stages
         const stages = ec3Data.lca_stages || {};
         const a1a3 = (stages.a1 || 0) + (stages.a2 || 0) + (stages.a3 || 0);
-        
+
         return a1a3 || 0;
     }
 
@@ -404,7 +406,7 @@ class EC3Client {
     extractLCAStages(ec3Data) {
         const stages = ec3Data.lca_stages || {};
         const total = this.extractGWP(ec3Data);
-        
+
         // If we have detailed stages, use them
         if (stages.a1 || stages.a2 || stages.a3) {
             return {
@@ -413,7 +415,7 @@ class EC3Client {
                 a5: (stages.a5 || 0) / total || 0.05
             };
         }
-        
+
         // Otherwise use typical distributions
         return {
             a1a3: 0.90,
@@ -449,13 +451,13 @@ class EC3Client {
     getFromCache(key) {
         const cached = this.cache.get(key);
         if (!cached) return null;
-        
+
         // Check if expired
         if (Date.now() - cached.timestamp > this.cacheExpiry) {
             this.cache.delete(key);
             return null;
         }
-        
+
         return cached.data;
     }
 
@@ -485,7 +487,7 @@ class EC3Client {
         try {
             // Get summary stats from EC3
             const data = await this.makeRequest('/stats');
-            
+
             return {
                 available: true,
                 totalEPDs: data.total_epds || '50,000+',
@@ -512,19 +514,19 @@ class EC3Client {
     async hybridSearch(query, supabaseResults = []) {
         // Get EC3 results
         const ec3Results = await this.searchMaterials(query);
-        
+
         // Combine and deduplicate
         const combined = [...supabaseResults];
         const existingNames = new Set(supabaseResults.map(m => m.name.toLowerCase()));
-        
+
         ec3Results.forEach(material => {
             if (!existingNames.has(material.name.toLowerCase())) {
                 combined.push(material);
             }
         });
-        
+
         console.log(`🔍 Hybrid search: ${supabaseResults.length} local + ${ec3Results.length} EC3 = ${combined.length} total`);
-        
+
         return combined;
     }
 
@@ -534,9 +536,9 @@ class EC3Client {
     async saveToSupabase(material) {
         // This would integrate with your Supabase client
         // to cache frequently-used EC3 materials locally
-        
+
         console.log('💾 Saving EC3 material to Supabase cache:', material.name);
-        
+
         // Implementation depends on your Supabase schema
         // You'd call supabaseClient to insert this material
     }

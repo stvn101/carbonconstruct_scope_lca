@@ -1,0 +1,30 @@
+{
+  "vercel_import": {
+    "added": [],
+    "failed": [],
+    "errors": {
+      "env_file": ".env.local not found in project root"
+    }
+  },
+  "supabase_rest": {
+    "status": "fail",
+    "http_status": null,
+    "response_example": [],
+    "error": "Environment variables unavailable; could not perform request"
+  },
+  "ec3_oauth": {
+    "token_endpoint_exists": false,
+    "envs_present": false,
+    "recommendations": [
+      "Ensure .env.local is present with EC3 credentials before rerunning checks"
+    ]
+  },
+  "stripe_webhook": {
+    "handler_ok": false,
+    "envs_present": false,
+    "recommendations": [
+      "Provide Stripe environment variables in .env.local for validation"
+    ]
+  },
+  "next_steps": "Add .env.local with required secrets, rerun import and validation"
+}

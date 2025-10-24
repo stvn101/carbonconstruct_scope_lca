@@ -426,7 +426,7 @@
         let currentUser = null;
         let currentSubscription = null;
         const STRIPE_PUBLIC_KEY = window.ENV?.STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || null;
-        
+
         if (!STRIPE_PUBLIC_KEY) {
             console.error('Stripe publishable key not configured');
         }

@@ -5,7 +5,7 @@
 
 const TARGET_URL = 'https://jaqzoyouuzhchuyzafii.supabase.co';
 // WARNING: This is a test file with hardcoded credentials removed for security
-// Configure environment variables before running  
+// Configure environment variables before running
 const TARGET_KEY = process.env.SUPABASE_ANON_KEY || 'anon-key-not-configured';
 const EC3_API_KEY = 'nK72LVKPVJxFb21fMIFpmtaLawqwvg';
 
@@ -115,16 +115,16 @@ async function testEC3() {
 
 async function main() {
     console.log('🧪 CarbonConstruct - Database Connection Tests');
-    console.log('=' .repeat(50));
+    console.log('='.repeat(50));
 
     const supabaseResult = await testSupabase();
     const ec3Result = await testEC3();
 
-    console.log('\n' + '=' .repeat(50));
+    console.log('\n' + '='.repeat(50));
     console.log('📋 Test Summary:');
     console.log(`   Supabase: ${supabaseResult ? '✅ PASS' : '❌ FAIL'}`);
     console.log(`   EC3 API:  ${ec3Result ? '✅ PASS' : '❌ FAIL'}`);
-    console.log('=' .repeat(50));
+    console.log('='.repeat(50));
 
     if (supabaseResult && ec3Result) {
         console.log('\n🎉 All connections working! You can use the app now.');

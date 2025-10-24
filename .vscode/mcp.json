@@ -34,6 +34,14 @@
       "env": {
         "BROWSERBASE_API_KEY": "${input:browserbase-api-key}"
       }
+    },
+    "stripe": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@stripe/mcp"],
+      "env": {
+        "STRIPE_SECRET_KEY": "${input:stripe-secret-key}"
+      }
     }
   },
   "inputs": [
@@ -47,8 +55,13 @@
       "type": "promptString",
       "id": "supabase-anon-key",
       "description": "Supabase Anonymous API Key",
-      "password": true,
-      "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE"
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "stripe-secret-key",
+      "description": "Stripe Secret Key (for payment management)",
+      "password": true
     }
   ]
 }

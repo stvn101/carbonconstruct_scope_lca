@@ -1,14 +1,18 @@
 # Environment variables with sensitive data
 .env.local
 .env
+.env.*
+!.env.example
 js/config.local.js
 
 # Node modules (if using Node.js)
 node_modules/
+node_modules
 
 # Build outputs
 dist/
 build/
+.next
 
 # IDE files
 .vscode/
@@ -24,6 +28,7 @@ Thumbs.db
 # Logs
 *.log
 logs/
+npm-debug.log*
 
 # Temporary files
 *.tmp
@@ -34,3 +39,4 @@ all_materials_export.json
 exported_materials_data.json
 failed_materials.json
 .vercel
+supabase/.temp

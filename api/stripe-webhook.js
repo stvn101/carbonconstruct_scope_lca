@@ -21,9 +21,9 @@ export default async function handler(req, res) {
 
     if (!stripe || !webhookSecret) {
         console.error('Missing Stripe configuration');
-        res.status(500).json({ 
-            success: false, 
-            error: 'Stripe not configured' 
+        res.status(500).json({
+            success: false,
+            error: 'Stripe not configured'
         });
         return;
     }
@@ -38,9 +38,9 @@ export default async function handler(req, res) {
             event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
         } catch (err) {
             console.error('Webhook signature verification failed:', err.message);
-            res.status(400).json({ 
-                success: false, 
-                error: 'Invalid signature' 
+            res.status(400).json({
+                success: false,
+                error: 'Invalid signature'
             });
             return;
         }

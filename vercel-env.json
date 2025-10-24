@@ -1,0 +1,11 @@
+{
+  "env": [
+    { "key": "NEXT_PUBLIC_EC3_API_KEY", "value": "YOUR_EC3_API_KEY", "target": ["development", "preview", "production"] },
+    { "key": "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "value": "YOUR_STRIPE_PUBLISHABLE_KEY", "target": ["development", "preview", "production"] },
+    { "key": "EC3_CLIENT_ID", "value": "YOUR_EC3_CLIENT_ID", "type": "secret", "target": ["production"] },
+    { "key": "EC3_CLIENT_SECRET", "value": "YOUR_EC3_CLIENT_SECRET", "type": "secret", "target": ["production"] },
+    { "key": "EC3_REDIRECT_URI", "value": "YOUR_EC3_REDIRECT_URI", "type": "secret", "target": ["production"] },
+    { "key": "STRIPE_SECRET_KEY", "value": "YOUR_STRIPE_SECRET_KEY", "type": "secret", "target": ["production"] },
+    { "key": "STRIPE_WEBHOOK_SECRET", "value": "YOUR_STRIPE_WEBHOOK_SECRET", "type": "secret", "target": ["production"] }
+  ]
+}

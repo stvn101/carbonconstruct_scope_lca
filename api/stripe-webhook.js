@@ -1,4 +1,9 @@
 // Stripe Webhook Handler - Serverless function for Stripe events
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,9 +20,6 @@ export default async function handler(req, res) {
         res.status(405).json({ error: 'Method not allowed' });
         return;
     }
-
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
     if (!stripe || !webhookSecret) {
         console.error('Missing Stripe configuration');

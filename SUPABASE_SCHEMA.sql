@@ -143,8 +143,16 @@ CREATE INDEX IF NOT EXISTS idx_materials_category ON unified_materials(category)
 CREATE INDEX IF NOT EXISTS idx_materials_source ON unified_materials(source);
 
 -- Enable full-text search on material names and descriptions
-CREATE INDEX IF NOT EXISTS idx_materials_search 
+CREATE INDEX IF NOT EXISTS idx_materials_search
 ON unified_materials USING gin(to_tsvector('english', name || ' ' || COALESCE(description, '')));
+
+-- Ensure Row Level Security and read access for anonymous clients
+ALTER TABLE unified_materials ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY IF NOT EXISTS "Allow anon read access" ON unified_materials
+    FOR SELECT
+    TO anon
+    USING (true);
 
 -- =====================================================
 -- 6. ACTIVITY LOG TABLE

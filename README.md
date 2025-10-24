@@ -250,7 +250,7 @@ In `signin.html`, replace placeholder testimonial:
 
 3. **Update checkout.html**
    ```javascript
-   const stripe = Stripe('pk_live_YOUR_KEY'); // Production
+   const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Production
    // or
    const stripe = Stripe('pk_test_YOUR_KEY'); // Testing
    ```

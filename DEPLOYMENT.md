@@ -55,12 +55,12 @@ Add these:
 ```bash
 # Supabase
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... # Optional, for server-side
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY_HERE
+SUPABASE_SERVICE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY # Optional, for server-side
 
 # Stripe
-STRIPE_PUBLIC_KEY=pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz
-STRIPE_SECRET_KEY=sk_live_... # Get from Stripe Dashboard
+STRIPE_PUBLIC_KEY=YOUR_STRIPE_PUBLISHABLE_KEY
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY # Get from Stripe Dashboard
 
 # Application
 NEXT_PUBLIC_APP_URL=https://carbonconstruct-scope-lca.vercel.app
@@ -538,7 +538,7 @@ git checkout stvn101-patch-1
 git pull origin main
 git merge --no-ff origin/main
 pnpm lint && pnpm build
-grep -R "sk_live\|pk_live\|anon" -n src public || true
+grep -R "STRIPE_SECRET_KEY\|STRIPE_PUBLISHABLE_KEY\|SUPABASE_ANON_KEY" -n src public || true
 ```
 
 ### Populate environment variables (Vercel → Production)
@@ -548,9 +548,9 @@ SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
 NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
 NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-STRIPE_SECRET_KEY=sk_live_***
-STRIPE_WEBHOOK_SECRET=whsec_***
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_***
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY
+STRIPE_WEBHOOK_SECRET=YOUR_STRIPE_WEBHOOK_SECRET
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=YOUR_STRIPE_PUBLISHABLE_KEY
 EC3_API_KEY=***
 APP_URL=https://carbonconstruct.com.au
 NEXT_PUBLIC_APP_URL=https://carbonconstruct.com.au

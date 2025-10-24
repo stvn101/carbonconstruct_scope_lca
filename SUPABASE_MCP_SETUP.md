@@ -22,7 +22,7 @@ The Supabase MCP server is configured in `.vscode/mcp.json` with the following f
 The MCP server requires authentication using the Supabase anonymous API key. When prompted by VS Code, use this key:
 
 ```
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
+YOUR_SUPABASE_ANON_KEY_HERE
 ```
 
 ## Project Configuration

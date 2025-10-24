@@ -10,7 +10,7 @@
 The EC3 API (Building Transparency) requires OAuth2 authentication with Client ID + Client Secret.
 
 ### You Have:
-- ✅ Client Secret: `UfKIX9yTjbmYsCnGBfhwtRykzHXasggIt1AhaTHQ`
+- ✅ Client Secret: `YOUR_EC3_CLIENT_SECRET`
 - ❓ Client ID: **NEEDED** (check your Building Transparency account)
 
 ### To Enable EC3:

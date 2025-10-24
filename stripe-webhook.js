@@ -5,8 +5,8 @@
  * Deploy to Vercel as an API route.
  * 
  * Environment variables required:
- * - STRIPE_SECRET_KEY (rk_live_...)
- * - STRIPE_WEBHOOK_SECRET (whsec_...)
+ * - STRIPE_SECRET_KEY (YOUR_STRIPE_SECRET_KEY)
+ * - STRIPE_WEBHOOK_SECRET (YOUR_STRIPE_WEBHOOK_SECRET)
  * - SUPABASE_URL
  * - SUPABASE_SERVICE_ROLE_KEY (for admin operations)
  */

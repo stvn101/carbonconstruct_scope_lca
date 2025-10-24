@@ -83,13 +83,13 @@ Since your Vercel env vars are already configured, verify these exist:
 ```bash
 # Supabase
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=eyJhbG...  # Public key
-SUPABASE_SERVICE_ROLE_KEY=eyJhbG...  # Admin key (for webhooks)
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY  # Public key
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY  # Admin key (for webhooks)
 
 # Stripe
-STRIPE_PUBLIC_KEY=pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz
-STRIPE_SECRET_KEY=rk_live_...  # Your restricted key
-STRIPE_WEBHOOK_SECRET=whsec_...  # From Stripe webhook setup
+STRIPE_PUBLIC_KEY=YOUR_STRIPE_PUBLISHABLE_KEY
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY  # Your restricted key
+STRIPE_WEBHOOK_SECRET=YOUR_STRIPE_WEBHOOK_SECRET  # From Stripe webhook setup
 ```
 
 ✅ You mentioned these are already configured, so this should be complete.
@@ -117,8 +117,8 @@ The webhook handler (`api/stripe-webhook.js`) needs to be registered with Stripe
    checkout.session.completed
    ```
 6. Click "Add endpoint"
-7. Copy the **Signing secret** (starts with `whsec_`)
-8. Add to Vercel: `STRIPE_WEBHOOK_SECRET=whsec_...`
+7. Copy the **Signing secret** provided by Stripe
+8. Add to Vercel: `STRIPE_WEBHOOK_SECRET=YOUR_STRIPE_WEBHOOK_SECRET`
 
 ---
 
@@ -139,7 +139,7 @@ const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
 ```javascript
 // Initialize Supabase client
 const supabaseUrl = 'https://your-project.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+const supabaseKey = 'YOUR_SUPABASE_ANON_KEY_HERE';
 ```
 
 **Note:** In production, you'd typically use environment variables, but since you're deploying to Vercel as static files, hardcoding the **public** anon key is safe (it's designed to be public).

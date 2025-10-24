@@ -37,7 +37,7 @@ All files committed and ready to push to:
 **Your live Stripe public key is already configured in `checkout.html`:**
 
 ```
-pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz
+YOUR_STRIPE_PUBLISHABLE_KEY
 ```
 
 This is **safe** to commit (it's a public key), but you'll need to:
@@ -143,8 +143,8 @@ Go to: https://vercel.com/stvn101/carbonconstruct-scope-lca/settings/environment
 Add:
 ```
 SUPABASE_URL=https://[your-project].supabase.co
-SUPABASE_ANON_KEY=eyJ[your-anon-key]...
-STRIPE_SECRET_KEY=sk_live_[your-secret-key]...
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY
 ```
 
 ### 3. Test Materials Database

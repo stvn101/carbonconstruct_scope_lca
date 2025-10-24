@@ -1,20 +1,5 @@
 {
   "servers": {
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["@playwright/mcp"],
-      "env": {
-        "HEADLESS": "true",
-        "BROWSER": "chromium"
-      }
-    },
-    "fetch": {
-      "type": "stdio",
-      "command": "C:/Users/SteveDev/Downloads/code_sandbox_light_34cdb6f4_1760690233/carbonconstruct_scope_lca/.venv/Scripts/python.exe",
-      "args": ["-m", "mcp_server_fetch"],
-      "env": {}
-    },
     "supabase": {
       "type": "http",
       "url": "https://mcp.supabase.com/mcp",
@@ -27,14 +12,6 @@
         "Authorization": "Bearer ${input:supabase-anon-key}"
       }
     },
-    "browserbase": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["@browserbase/mcp-server-browserbase"],
-      "env": {
-        "BROWSERBASE_API_KEY": "${input:browserbase-api-key}"
-      }
-    },
     "stripe": {
       "type": "stdio",
       "command": "npx",
@@ -42,15 +19,25 @@
       "env": {
         "STRIPE_SECRET_KEY": "${input:stripe-secret-key}"
       }
+    },
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-token}"
+      }
+    },
+    "vercel": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@vercel/mcp-server"],
+      "env": {
+        "VERCEL_TOKEN": "${input:vercel-token}"
+      }
     }
   },
   "inputs": [
-    {
-      "type": "promptString",
-      "id": "browserbase-api-key",
-      "description": "Browserbase API Key (optional - for cloud browser automation)",
-      "password": true
-    },
     {
       "type": "promptString",
       "id": "supabase-anon-key",
@@ -61,6 +48,18 @@
       "type": "promptString",
       "id": "stripe-secret-key",
       "description": "Stripe Secret Key (for payment management)",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "github-token",
+      "description": "GitHub Personal Access Token (for repository management)",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "vercel-token",
+      "description": "Vercel API Token (for deployment management)",
       "password": true
     }
   ]

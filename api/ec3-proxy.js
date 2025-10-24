@@ -44,41 +44,17 @@ export default async function handler(req, res) {
         // Add authorization header if provided
         if (authHeader) {
             fetchOptions.headers['Authorization'] = authHeader;
+        } else if (process.env.EC3_ACCESS_TOKEN) {
+            // Use environment variable for API access
+            fetchOptions.headers['Authorization'] = `Bearer ${process.env.EC3_ACCESS_TOKEN}`;
         }
 
         // Make request to EC3 API
         const response = await fetch(ec3Url, fetchOptions);
 
         if (!response.ok) {
-            // If unauthorized and no auth header, try with a known public token format
-            if (response.status === 401 && !authHeader) {
-                // Try again with the token you provided in your curl commands
-                const retryOptions = {
-                    ...fetchOptions,
-                    headers: {
-                        ...fetchOptions.headers,
-                        'Authorization': 'Bearer nK72LVKPVJxFb21fMIFpmtaLawqwvg'
-                    }
-                };
-
-                const retryResponse = await fetch(ec3Url, retryOptions);
-
-                if (retryResponse.ok) {
-                    const data = await retryResponse.json();
-                    return res.status(200).json({
-                        success: true,
-                        data: data,
-                        endpoint: endpoint,
-                        authenticated: true,
-                        timestamp: new Date().toISOString()
-                    });
-                }
-            }
-
-            throw new Error(`EC3 API responded with status: ${response.status}`);
-        }
-
-        const data = await response.json();
+            throw new Error(`EC3 API responded with status: ${response.status} - ${response.statusText}`);
+        } const data = await response.json();
 
         // Return the data
         res.status(200).json({

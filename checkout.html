@@ -277,8 +277,13 @@
     </div>
 
     <script>
-        // Initialize Stripe
-        const stripe = Stripe('pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz'); // Replace with your actual key
+        // Initialize Stripe - get key from environment or build process
+        const STRIPE_PUBLIC_KEY = window.ENV?.STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+        if (!STRIPE_PUBLIC_KEY) {
+            console.error('Stripe publishable key not configured');
+            alert('Payment system not configured. Please contact support.');
+        }
+        const stripe = Stripe(STRIPE_PUBLIC_KEY);
         const elements = stripe.elements();
 
         // Custom styling for Stripe Elements

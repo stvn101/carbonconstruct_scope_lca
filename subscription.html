@@ -425,7 +425,11 @@
 
         let currentUser = null;
         let currentSubscription = null;
-        const STRIPE_PUBLIC_KEY = 'pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz';
+        const STRIPE_PUBLIC_KEY = window.ENV?.STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || null;
+        
+        if (!STRIPE_PUBLIC_KEY) {
+            console.error('Stripe publishable key not configured');
+        }
 
         // Plan configurations
         const PLANS = [

@@ -3,7 +3,9 @@
  */
 
 const TARGET_URL = 'https://jaqzoyouuzhchuyzafii.supabase.co';
-const TARGET_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzgxNDI2OCwiZXhwIjoyMDU5MzkwMjY4fQ.cXc6pTnP8yEyIeGo9u1RaGV7433oTajbpbBKYtuHV6M';
+// WARNING: This is a test file with hardcoded credentials removed for security
+// Configure environment variables before running
+const TARGET_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'service-role-key-not-configured';
 
 async function checkSchema() {
     console.log('🔍 Checking schema in target database...\n');

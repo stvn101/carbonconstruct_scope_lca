@@ -11,9 +11,9 @@ console.log('🚀 Starting CarbonConstruct build process...');
 
 // Environment variables to inject
 const ENV_VARS = {
-    EC3_API_KEY: process.env.NEXT_PUBLIC_EC3_API_KEY || 'nK72LVKPVJxFb21fMIFpmtaLawqwvg', // fallback for local dev
-    SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jaqzoyouuzhchuyzafii.supabase.co',
-    SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE'
+    EC3_API_KEY: process.env.NEXT_PUBLIC_EC3_API_KEY || null, // No fallback for security
+    SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || null,
+    SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || null
 };
 
 console.log('🔑 Environment variables:');

@@ -70,7 +70,7 @@ Once VS Code loads the MCP configuration, you'll have access to:
 ```
 
 ### 2. Enter Your Stripe Secret Key
-When prompted in VS Code, enter your **rotated** Stripe secret key (format: `sk_live_...` or `sk_test_...`)
+When prompted in VS Code, enter your **rotated** Stripe secret key (matching the mode you are using)
 
 ### 3. Access MCP Tools
 The Stripe MCP tools will be available in:

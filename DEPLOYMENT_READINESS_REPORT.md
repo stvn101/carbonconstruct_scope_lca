@@ -16,17 +16,17 @@
 ```bash
 # Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://jaqzoyouuzhchuyzafii.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY_HERE
 SUPABASE_SERVICE_ROLE_KEY=[Add in Vercel - for admin operations]
 
 # EC3 API Configuration
-NEXT_PUBLIC_EC3_API_KEY=nK72LVKPVJxFb21fMIFpmtaLawqwvg
+NEXT_PUBLIC_EC3_API_KEY=YOUR_EC3_API_KEY
 NEXT_PUBLIC_EC3_BEARER_TOKEN=[Same as API key]
 
 # Stripe Configuration
-STRIPE_SECRET_KEY=[Add in Vercel - rk_live_...]
-STRIPE_WEBHOOK_SECRET=[Add in Vercel - whsec_...]
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=[Add in Vercel - pk_live_...]
+STRIPE_SECRET_KEY=[Add in Vercel - YOUR_STRIPE_SECRET_KEY]
+STRIPE_WEBHOOK_SECRET=[Add in Vercel - YOUR_STRIPE_WEBHOOK_SECRET]
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=[Add in Vercel - YOUR_STRIPE_PUBLISHABLE_KEY]
 
 # Application URLs
 NEXT_PUBLIC_APP_URL=https://carbonconstruct.com.au
@@ -312,9 +312,9 @@ carbonconstruct_scope_lca/
    - NEXT_PUBLIC_SUPABASE_ANON_KEY
    - SUPABASE_SERVICE_ROLE_KEY ⚠️ (Service role - server-side only)
    - NEXT_PUBLIC_EC3_API_KEY
-   - STRIPE_SECRET_KEY ⚠️ (rk_live_...)
-   - STRIPE_WEBHOOK_SECRET ⚠️ (whsec_...)
-   - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY (pk_live_...)
+   - STRIPE_SECRET_KEY ⚠️ (YOUR_STRIPE_SECRET_KEY)
+   - STRIPE_WEBHOOK_SECRET ⚠️ (YOUR_STRIPE_WEBHOOK_SECRET)
+   - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY (YOUR_STRIPE_PUBLISHABLE_KEY)
    - NEXT_PUBLIC_APP_URL
    ```
 
@@ -372,7 +372,7 @@ carbonconstruct_scope_lca/
 3. **Test Mode → Live Mode:**
    ```
    Toggle to Live mode
-   Update all keys in Vercel to live keys (rk_live_, pk_live_)
+   Update all keys in Vercel to live keys (use the rotated Stripe secret and publishable keys)
    ```
 
 ### In Supabase Dashboard:

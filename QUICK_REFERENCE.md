@@ -21,7 +21,7 @@ Advantage: Market dominance
 
 **Supabase** (4,500+ Australian materials):
 - Project URL: `https://xxxxx.supabase.co`
-- Anon Key: `eyJhbGci...`
+- Anon Key: `YOUR_SUPABASE_ANON_KEY`
 - Get from: supabase.com → Your Project → Settings → API
 
 **EC3 API** (50,000+ global EPDs):

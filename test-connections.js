@@ -3,11 +3,23 @@
  * Run this with Node.js to test Supabase and EC3 connections
  */
 
-const TARGET_URL = 'https://jaqzoyouuzhchuyzafii.supabase.co';
+const TARGET_URL = process.env.SUPABASE_TARGET_URL || process.env.SUPABASE_URL;
 // WARNING: This is a test file with hardcoded credentials removed for security
 // Configure environment variables before running
-const TARGET_KEY = process.env.SUPABASE_ANON_KEY || 'anon-key-not-configured';
-const EC3_API_KEY = 'nK72LVKPVJxFb21fMIFpmtaLawqwvg';
+const TARGET_KEY = process.env.SUPABASE_ANON_KEY;
+const EC3_API_KEY = process.env.NEXT_PUBLIC_EC3_API_KEY || process.env.EC3_API_KEY;
+
+if (!TARGET_URL) {
+    throw new Error('Missing SUPABASE_TARGET_URL or SUPABASE_URL environment variable');
+}
+
+if (!TARGET_KEY) {
+    throw new Error('Missing SUPABASE_ANON_KEY environment variable');
+}
+
+if (!EC3_API_KEY) {
+    throw new Error('Missing NEXT_PUBLIC_EC3_API_KEY or EC3_API_KEY environment variable');
+}
 
 async function testSupabase() {
     console.log('\n📊 Testing Supabase Connection...\n');

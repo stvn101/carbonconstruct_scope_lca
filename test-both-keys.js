@@ -2,8 +2,16 @@
  * Test both EC3 keys
  */
 
-const KEY1 = 'nK72LVKPVJxFb21fMIFpmtaLawqwvg';  // Original from .env
-const KEY2 = 'UfKIX9yTjbmYsCnGBfhwtRykzHXasggIt1AhaTHQ';  // Just provided
+const KEY1 = process.env.NEXT_PUBLIC_EC3_API_KEY || process.env.EC3_API_KEY;
+const KEY2 = process.env.EC3_CLIENT_SECRET;
+
+if (!KEY1) {
+    throw new Error('Missing NEXT_PUBLIC_EC3_API_KEY or EC3_API_KEY environment variable');
+}
+
+if (!KEY2) {
+    throw new Error('Missing EC3_CLIENT_SECRET environment variable');
+}
 
 async function testKey(key, name) {
     console.log(`\n${'='.repeat(60)}`);

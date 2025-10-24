@@ -82,7 +82,7 @@ You now have a **complete, production-ready website** with all the code from our
 ### ✅ Stripe
 - Public Key: **Configured in checkout.html**
 - Status: **Live mode**
-- Key: `pk_live_51RKejrP7JT8gu0Wng...`
+- Key: `YOUR_STRIPE_PUBLISHABLE_KEY`
 
 ### ✅ GitHub
 - Repository: **stvn101/carbonconstruct_scope_lca**
@@ -140,8 +140,8 @@ Go to: https://vercel.com/stvn101/carbonconstruct-scope-lca/settings/environment
 Add:
 ```
 SUPABASE_URL=https://[your-project].supabase.co
-SUPABASE_ANON_KEY=eyJ[your-anon-key]...
-STRIPE_SECRET_KEY=sk_live_[your-secret-key]...
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY
 ```
 
 ### 4. **TEST MATERIALS SEARCH** (1 minute)

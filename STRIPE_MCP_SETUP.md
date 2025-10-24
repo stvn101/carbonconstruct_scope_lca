@@ -121,7 +121,7 @@ If the MCP server fails to start:
 
 #### Authentication Errors
 
-- Make sure you're using `sk_live_...` or `sk_test_...` format
+- Make sure you're using the correct Stripe secret key for the selected mode
 - Verify the key hasn't been deactivated in Stripe Dashboard
 - Check that key permissions include required scopes
 

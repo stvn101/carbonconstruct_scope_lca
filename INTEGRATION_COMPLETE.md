@@ -334,7 +334,7 @@ getUserProfile()          // Fetch profile from database
 ```javascript
 // In auth-supabase.js, line 6-7:
 const supabaseUrl = 'https://your-project.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+const supabaseKey = 'YOUR_SUPABASE_ANON_KEY_HERE';
 ```
 - [ ] Replace with your actual Supabase URL
 - [ ] Replace with your actual anon key

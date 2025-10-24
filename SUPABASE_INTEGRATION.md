@@ -88,7 +88,7 @@ CREATE INDEX idx_materials_name ON materials(name);
 
    You need:
    - Project URL: https://jaqzoyouuzhchuyzafii.supabase.co
-   - anon public key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
+   - anon public key: YOUR_SUPABASE_ANON_KEY_HERE
    ```
 
 4. **Set Up Row Level Security (Optional but Recommended)**
@@ -109,7 +109,7 @@ Create a file called `.env.local` in your project root:
 ```bash
 # .env.local (DO NOT COMMIT THIS FILE!)
 NEXT_PUBLIC_SUPABASE_URL=https://jaqzoyouuzhchuyzafii.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY_HERE
 ```
 
 **🚨 CRITICAL**: Add `.env.local` to `.gitignore` (already done)
@@ -127,7 +127,7 @@ Add Supabase script and initialize:
     // Make environment variables available
     window.ENV = {
         SUPABASE_URL: 'https://jaqzoyouuzhchuyzafii.supabase.co',
-        SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE'
+        SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY_HERE'
     };
 </script>
 
@@ -409,7 +409,7 @@ git push -u origin main
 
    ```
    NEXT_PUBLIC_SUPABASE_URL = https://jaqzoyouuzhchuyzafii.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTQyNjgsImV4cCI6MjA1OTM5MDI2OH0.NRKgoHt0rISen_jzkJpztRwmc4DFMeQDAinCu3eCDRE
+   NEXT_PUBLIC_SUPABASE_ANON_KEY = YOUR_SUPABASE_ANON_KEY_HERE
    ```
 
 5. **Deploy** (takes 30 seconds)

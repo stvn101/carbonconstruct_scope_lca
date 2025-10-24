@@ -59,7 +59,8 @@
     <div class="debug-section">
         <h3>Test Actions</h3>
         <button onclick="testOAuthStart()">Test OAuth Start</button>
-        <button onclick="testEC3API()">Test EC3 API Direct</button>
+        <button onclick="testEC3API()">Test EC3 API via Proxy</button>
+        <button onclick="testDirectEC3()">Test Direct EC3 API</button>
         <button onclick="clearStorage()">Clear OAuth Storage</button>
         <button onclick="goToMain()">Go to Main EC3 Page</button>
     </div>
@@ -153,8 +154,32 @@
         }
 
         async function testEC3API() {
-            log('Testing EC3 API direct access...', 'info');
+            log('Testing EC3 API through proxy...', 'info');
             
+            try {
+                // Test through our serverless proxy
+                const response = await fetch('/api/ec3-proxy?endpoint=materials&page_size=1', {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                log(`Proxy Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Proxy Response: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    const errorText = await response.text();
+                    log(`Proxy Error: ${errorText}`, 'error');
+                }
+            } catch (error) {
+                log(`Proxy Request failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDirectEC3() {
+            log('Testing direct EC3 API (expect CORS error)...', 'info');
             try {
                 const response = await fetch('https://api.buildingtransparency.org/api/materials?page_size=1', {
                     headers: {
@@ -162,17 +187,17 @@
                     }
                 });
                 
-                log(`API Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                log(`Direct API Response status: ${response.status}`, response.ok ? 'success' : 'error');
                 
                 if (response.ok) {
                     const data = await response.json();
-                    log(`API Response: ${JSON.stringify(data, null, 2)}`, 'success');
+                    log(`Direct API Response: ${JSON.stringify(data, null, 2)}`, 'success');
                 } else {
                     const errorText = await response.text();
-                    log(`API Error: ${errorText}`, 'error');
+                    log(`Direct API Error: ${errorText}`, 'error');
                 }
             } catch (error) {
-                log(`API Request failed: ${error.message}`, 'error');
+                log(`Direct API failed (CORS): ${error.message}`, 'warning');
             }
         }
 

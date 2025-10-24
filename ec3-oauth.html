@@ -344,21 +344,27 @@
 
         // Load EC3 statistics
         async function loadEC3Stats() {
-            if (!oauthState.accessToken) return;
-
             try {
-                const response = await fetch('https://api.buildingtransparency.org/api/materials?page_size=1', {
+                // Use our serverless proxy to avoid CORS issues
+                const response = await fetch('/api/ec3-proxy?endpoint=materials&page_size=1', {
                     headers: {
-                        'Authorization': `Bearer ${oauthState.accessToken}`,
                         'Accept': 'application/json'
                     }
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('totalEPDs').textContent = data.count ? data.count.toLocaleString() + '+' : '50,000+';
-                    document.getElementById('manufacturers').textContent = '1,000+';
-                    document.getElementById('categories').textContent = '50+';
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        const data = result.data;
+                        document.getElementById('totalEPDs').textContent = data.count ? data.count.toLocaleString() + '+' : '50,000+';
+                        document.getElementById('manufacturers').textContent = '1,000+';
+                        document.getElementById('categories').textContent = '50+';
+                    } else {
+                        // Fallback to default values
+                        document.getElementById('totalEPDs').textContent = '50,000+';
+                        document.getElementById('manufacturers').textContent = '1,000+';
+                        document.getElementById('categories').textContent = '50+';
+                    }
                 } else {
                     // Fallback to default values
                     document.getElementById('totalEPDs').textContent = '50,000+';

@@ -10,20 +10,20 @@ Multiple hardcoded API keys, tokens, and secrets were found throughout the codeb
 
 ### Supabase Credentials
 
-- **Project URL**: `https://jaqzoyouuzhchuyzafii.supabase.co`
-- **Anonymous Key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` (JWT token)
-- **Service Role Key**: `eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91...` (JWT token)
+- **Project URL**: `https://your-supabase-project.supabase.co`
+- **Anonymous Key**: `YOUR_SUPABASE_ANON_KEY_HERE` (JWT token)
+- **Service Role Key**: `YOUR_SUPABASE_SERVICE_ROLE_KEY` (JWT token)
 
 ### Stripe Credentials
 
-- **Live Secret Key**: `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`
-- **Live Publishable Key**: `pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz`
-- **Webhook Secret**: `whsec_S8zhNSx2y9CcgSvAxbOhUaY4l0d1cLvI`
+- **Live Secret Key**: `YOUR_STRIPE_SECRET_KEY`
+- **Live Publishable Key**: `YOUR_STRIPE_PUBLISHABLE_KEY`
+- **Webhook Secret**: `YOUR_STRIPE_WEBHOOK_SECRET`
 
 ### EC3 API Credentials
 
-- **API Key**: `Mc8RCkwnszMZP6cEyYBCrgBdBOOjUc`
-- **Bearer Token**: `nK72LVKPVJxFb21fMIFpmtaLawqwvg` (previously removed)
+- **API Key**: `YOUR_EC3_API_KEY`
+- **Bearer Token**: `YOUR_EC3_BEARER_TOKEN` (previously removed)
 
 ## 📋 Files Modified (13 files)
 

@@ -57,8 +57,8 @@ console.log('🎉 Build completed successfully!');
 console.log('📦 Static files are ready for deployment');
 
 // Verify EC3 API configuration
-if (ENV_VARS.EC3_API_KEY && ENV_VARS.EC3_API_KEY !== 'nK72LVKPVJxFb21fMIFpmtaLawqwvg') {
-    console.log('✅ Using production EC3 API key');
+if (ENV_VARS.EC3_API_KEY) {
+    console.log('✅ EC3 API key configured');
 } else {
-    console.log('⚠️  Using development EC3 API key');
+    console.log('⚠️  EC3 API key not provided');
 }

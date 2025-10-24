@@ -7,13 +7,29 @@
 const fs = require('fs');
 const path = require('path');
 
-// Source Supabase (hkgryypdqiyigoztvran)
-const SOURCE_URL = 'https://hkgryypdqiyigoztvran.supabase.co';
-const SOURCE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrZ3J5eXBkcWl5aWdvenR2cmFuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDkwNjg4NiwiZXhwIjoyMDcwNDgyODg2fQ.IKOMZmT6waRegWgXE2glpJ0Am3_1KUu0TVKnNw2ULS0';
+// Source Supabase
+const SOURCE_URL = process.env.SUPABASE_SOURCE_URL;
+const SOURCE_KEY = process.env.SUPABASE_SOURCE_SERVICE_ROLE_KEY;
 
-// Target Supabase (jaqzoyouuzhchuyzafii)
-const TARGET_URL = 'https://jaqzoyouuzhchuyzafii.supabase.co';
-const TARGET_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzgxNDI2OCwiZXhwIjoyMDU5MzkwMjY4fQ.cXc6pTnP8yEyIeGo9u1RaGV7433oTajbpbBKYtuHV6M';
+// Target Supabase
+const TARGET_URL = process.env.SUPABASE_TARGET_URL || process.env.SUPABASE_URL;
+const TARGET_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SOURCE_URL) {
+    throw new Error('Missing SUPABASE_SOURCE_URL environment variable');
+}
+
+if (!SOURCE_KEY) {
+    throw new Error('Missing SUPABASE_SOURCE_SERVICE_ROLE_KEY environment variable');
+}
+
+if (!TARGET_URL) {
+    throw new Error('Missing SUPABASE_TARGET_URL or SUPABASE_URL environment variable');
+}
+
+if (!TARGET_KEY) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
+}
 
 async function fetchFromSupabase(url, key, query) {
     const response = await fetch(`${url}/rest/v1/${query}`, {

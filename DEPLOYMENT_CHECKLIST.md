@@ -12,18 +12,18 @@
 ### 2. Update Authentication Code
 - [ ] Open `auth-supabase.js`
 - [ ] Line 6: Replace `YOUR_SUPABASE_URL` with: `https://your-project.supabase.co`
-- [ ] Line 7: Replace `YOUR_SUPABASE_ANON_KEY` with: `eyJhbG...` (your actual anon key)
+- [ ] Line 7: Replace `YOUR_SUPABASE_ANON_KEY` with your actual Supabase anon key value
 - [ ] Save file
 
 ### 3. Verify Vercel Environment Variables
 Go to Vercel Dashboard → Settings → Environment Variables. Confirm these exist:
 
 - [ ] `SUPABASE_URL` = https://your-project.supabase.co
-- [ ] `SUPABASE_ANON_KEY` = eyJhbG... (public anon key)
-- [ ] `SUPABASE_SERVICE_ROLE_KEY` = eyJhbG... (admin key, for webhooks)
-- [ ] `STRIPE_PUBLIC_KEY` = pk_live_51RKejrP7JT8gu0WngS6oEMcUaQdgGb5XaYcEy5e2kq6Dx75lgaizFV1Fk2lmpgE7nGav6F0fDlMhSYcgecftwpu800mMRyCFJz
-- [ ] `STRIPE_SECRET_KEY` = rk_live_... (your restricted key)
-- [ ] `STRIPE_WEBHOOK_SECRET` = whsec_... (will get after deploying webhook)
+- [ ] `SUPABASE_ANON_KEY` = YOUR_SUPABASE_ANON_KEY (public anon key)
+- [ ] `SUPABASE_SERVICE_ROLE_KEY` = YOUR_SUPABASE_SERVICE_ROLE_KEY (admin key, for webhooks)
+- [ ] `STRIPE_PUBLIC_KEY` = YOUR_STRIPE_PUBLISHABLE_KEY
+- [ ] `STRIPE_SECRET_KEY` = YOUR_STRIPE_SECRET_KEY (your restricted key)
+- [ ] `STRIPE_WEBHOOK_SECRET` = YOUR_STRIPE_WEBHOOK_SECRET (will get after deploying webhook)
 
 ---
 
@@ -99,9 +99,9 @@ Go to Stripe Dashboard → Developers → Webhooks:
   - [ ] `invoice.payment_failed`
   - [ ] `checkout.session.completed`
 - [ ] Click "Add endpoint"
-- [ ] **Copy webhook signing secret** (starts with `whsec_`)
+- [ ] **Copy webhook signing secret** (Stripe-provided secret string)
 - [ ] Go to Vercel → Settings → Environment Variables
-- [ ] Add: `STRIPE_WEBHOOK_SECRET` = `whsec_...` (paste the secret)
+- [ ] Add: `STRIPE_WEBHOOK_SECRET` = `YOUR_STRIPE_WEBHOOK_SECRET` (paste the secret)
 - [ ] Redeploy Vercel (trigger new deployment to load new env var)
 
 ### 9. Update Navigation Links

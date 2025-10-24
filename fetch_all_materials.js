@@ -6,8 +6,16 @@ const fs = require('fs');
 const path = require('path');
 
 // Source Supabase (hkgryypdqiyigoztvran)
-const SOURCE_URL = 'https://hkgryypdqiyigoztvran.supabase.co';
-const SOURCE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrZ3J5eXBkcWl5aWdvenR2cmFuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDkwNjg4NiwiZXhwIjoyMDcwNDgyODg2fQ.IKOMZmT6waRegWgXE2glpJ0Am3_1KUu0TVKnNw2ULS0';
+const SOURCE_URL = process.env.SUPABASE_SOURCE_URL;
+const SOURCE_KEY = process.env.SUPABASE_SOURCE_SERVICE_ROLE_KEY;
+
+if (!SOURCE_URL) {
+    throw new Error('Missing SUPABASE_SOURCE_URL environment variable');
+}
+
+if (!SOURCE_KEY) {
+    throw new Error('Missing SUPABASE_SOURCE_SERVICE_ROLE_KEY environment variable');
+}
 
 async function fetchFromSupabase(url, key, query) {
     const response = await fetch(`${url}/rest/v1/${query}`, {

@@ -2,7 +2,11 @@
  * Generate EC3 Bearer Token
  */
 
-const CLIENT_SECRET = 'UfKIX9yTjbmYsCnGBfhwtRykzHXasggIt1AhaTHQ';
+const CLIENT_SECRET = process.env.EC3_CLIENT_SECRET;
+
+if (!CLIENT_SECRET) {
+    throw new Error('Missing EC3_CLIENT_SECRET environment variable');
+}
 
 async function getToken() {
     console.log('🔐 Generating EC3 Bearer Token...\n');

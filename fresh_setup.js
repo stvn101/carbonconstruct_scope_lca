@@ -6,8 +6,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const TARGET_URL = 'https://jaqzoyouuzhchuyzafii.supabase.co';
-const TARGET_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcXpveW91dXpoY2h1eXphZmlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzgxNDI2OCwiZXhwIjoyMDU5MzkwMjY4fQ.cXc6pTnP8yEyIeGo9u1RaGV7433oTajbpbBKYtuHV6M';
+const TARGET_URL = process.env.SUPABASE_TARGET_URL || process.env.SUPABASE_URL;
+const TARGET_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!TARGET_URL) {
+    throw new Error('Missing SUPABASE_TARGET_URL or SUPABASE_URL environment variable');
+}
+
+if (!TARGET_KEY) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
+}
 
 async function runSQL(sql) {
     const response = await fetch(`${TARGET_URL}/rest/v1/rpc/exec_sql`, {

@@ -58,11 +58,11 @@ This guide gets your production authentication and subscription management live 
 3. Get your credentials from Supabase:
    - Dashboard → Settings → API
    - Copy "Project URL" (looks like: https://xxx.supabase.co)
-   - Copy "anon public" key (starts with: eyJhbG...)
+   - Copy "anon public" key (starts with a long Base64 string)
 4. Replace in code:
    ```javascript
    const supabaseUrl = 'https://your-actual-project.supabase.co';
-   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+   const supabaseKey = 'YOUR_SUPABASE_ANON_KEY_HERE';
    ```
 5. Save file
 
@@ -126,7 +126,7 @@ git push origin main
      - [x] `invoice.payment_failed`
      - [x] `checkout.session.completed`
    - Click "Add endpoint"
-   - **Copy the signing secret** (starts with `whsec_...`)
+   - **Copy the signing secret** (starts with `YOUR_STRIPE_WEBHOOK_SECRET`)
 
 2. **Add Secret to Vercel:**
    - Go to [Vercel Dashboard](https://vercel.com/dashboard)
@@ -134,7 +134,7 @@ git push origin main
    - Settings → Environment Variables
    - Click "Add New"
    - **Name:** `STRIPE_WEBHOOK_SECRET`
-   - **Value:** `whsec_...` (paste the secret you copied)
+   - **Value:** `YOUR_STRIPE_WEBHOOK_SECRET` (paste the secret you copied)
    - Click "Save"
 
 3. **Redeploy Vercel:**

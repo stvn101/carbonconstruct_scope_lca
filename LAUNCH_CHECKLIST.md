@@ -70,7 +70,7 @@ Use this to go from "code on iPhone" to "live production site" with 4,500+ mater
 - [ ] List your column names (exactly as they are!)
 - [ ] Go to Settings → API
 - [ ] Copy Project URL: `https://xxxxx.supabase.co`
-- [ ] Copy anon public key: `eyJhbGci...`
+- [ ] Copy anon public key: `YOUR_SUPABASE_ANON_KEY`
 
 ### Document Your Schema
 Create a note with your EXACT table structure:

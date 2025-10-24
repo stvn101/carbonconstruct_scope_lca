@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Target database connection string - Session mode
-const TARGET_CONNECTION_STRING = 'postgres://postgres:kMazoLUQg9k7Xp0n@db.jaqzoyouuzhchuyzafii.supabase.co:6543/postgres';
+const TARGET_CONNECTION_STRING = process.env.SUPABASE_TARGET_CONNECTION_STRING;
 
 async function importWithPg() {
     console.log('🚀 Direct PostgreSQL Migration...\n');
@@ -37,13 +37,11 @@ async function importWithPg() {
     console.log('🔌 Connecting to PostgreSQL...');
     console.log('⚠️  You need to set the connection string with your database password!\n');
 
-    if (TARGET_CONNECTION_STRING.includes('[YOUR_PASSWORD]')) {
-        console.error('❌ Please edit this script and replace [YOUR_PASSWORD] with your actual database password.');
-        console.log('\nTo find your password:');
-        console.log('1. Go to: https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/settings/database');
-        console.log('2. Look for "Connection string" > "URI"');
-        console.log('3. Copy the connection string (it includes the password)');
-        console.log('4. Replace the TARGET_CONNECTION_STRING in this file\n');
+    if (!TARGET_CONNECTION_STRING) {
+        console.error('❌ Missing SUPABASE_TARGET_CONNECTION_STRING environment variable.');
+        console.log('\nPlease configure the connection string before running this script.');
+        console.log('Example:');
+        console.log('  SUPABASE_TARGET_CONNECTION_STRING="postgres://postgres:[PASSWORD]@db.[project].supabase.co:6543/postgres"\n');
         process.exit(1);
     }
 

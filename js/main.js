@@ -13,6 +13,9 @@ const appState = {
         designLife: 50,
         materials: [],
         totalCarbon: 0,
+        wholeLifeCarbon: 0,
+        embodiedCarbon: 0,
+        carbonScope: 'embodied',
         carbonIntensity: 0,
         lcaResults: null,
         scopesResults: null,
@@ -136,7 +139,8 @@ function addMaterial() {
         quantity: quantity,
         unit: unit,
         embodiedCarbon: materialData.embodiedCarbon,
-        emissions: calculateMaterialCarbon(category, type, quantity)
+        emissions: calculateMaterialCarbon(category, type, quantity),
+        biogenicCarbon: materialData.biogenicCarbon || 0
     };
     
     appState.currentProject.materials.push(material);
@@ -242,12 +246,20 @@ function calculateAll() {
     appState.currentProject.scopesResults = scopesResults;
     
     // Calculate totals
-    appState.currentProject.totalCarbon = lcaResults.totals.embodiedCarbon;
-    appState.currentProject.carbonIntensity = appState.currentProject.totalCarbon / appState.currentProject.gfa;
+    appState.currentProject.embodiedCarbon = lcaResults.totals.embodiedCarbon;
+    appState.currentProject.wholeLifeCarbon = lcaResults.totals.wholeLifeCarbon;
+    appState.currentProject.totalCarbon = lcaResults.totals.wholeLifeCarbon;
+    appState.currentProject.carbonScope = 'wholeLife';
+    appState.currentProject.carbonIntensity = appState.currentProject.gfa > 0
+        ? appState.currentProject.totalCarbon / appState.currentProject.gfa
+        : 0;
     
     // Check compliance
     const complianceData = {
         totalCarbon: appState.currentProject.totalCarbon,
+        embodiedCarbon: appState.currentProject.embodiedCarbon,
+        wholeLifeCarbon: appState.currentProject.wholeLifeCarbon,
+        carbonScope: appState.currentProject.carbonScope,
         gfa: appState.currentProject.gfa,
         projectType: appState.currentProject.projectType,
         materials: appState.currentProject.materials
@@ -340,10 +352,33 @@ function updateSummaryDisplay() {
     const totalCarbon = appState.currentProject.totalCarbon;
     const carbonIntensity = appState.currentProject.carbonIntensity;
     const gfa = appState.currentProject.gfa;
-    
+    const scope = appState.currentProject.carbonScope === 'wholeLife' ? 'Whole Life' : 'Embodied Only';
+
+    // Update labels to reflect whole-of-life scope (EN 15978 aggregation guidance)
+    const totalCarbonElement = document.getElementById('totalCarbon');
+    const totalCarbonLabel = totalCarbonElement ? totalCarbonElement.previousElementSibling : null;
+    if (totalCarbonLabel) {
+        totalCarbonLabel.textContent = scope === 'Whole Life'
+            ? 'Whole Life Carbon (A1-A5 + B + C)'
+            : 'Embodied Carbon (A1-A5)';
+    }
+    const totalCarbonUnits = totalCarbonElement ? totalCarbonElement.nextElementSibling : null;
+    if (totalCarbonUnits) {
+        totalCarbonUnits.textContent = scope === 'Whole Life'
+            ? 'kg CO2-e (Whole Life)'
+            : 'kg CO2-e (Embodied)';
+    }
+    const intensityElement = document.getElementById('carbonIntensity');
+    const intensityLabel = intensityElement ? intensityElement.previousElementSibling : null;
+    if (intensityLabel) {
+        intensityLabel.textContent = scope === 'Whole Life'
+            ? 'Whole Life Carbon Intensity'
+            : 'Embodied Carbon Intensity';
+    }
+
     document.getElementById('totalCarbon').textContent = totalCarbon.toLocaleString();
     document.getElementById('carbonIntensity').textContent = carbonIntensity.toFixed(1);
-    
+
     // Calculate tree equivalent
     // One mature tree absorbs ~25 kg CO2 per year
     const treesNeeded = Math.ceil(totalCarbon / 25 / 10);
@@ -444,6 +479,22 @@ async function loadProject(projectId) {
     try {
         const project = await storageManager.loadProject(projectId);
         appState.currentProject = project;
+        const loadedScope = project.carbonScope || 'embodied';
+        appState.currentProject.carbonScope = loadedScope;
+        const embodiedBaseline = typeof project.embodiedCarbon === 'number'
+            ? project.embodiedCarbon
+            : project.totalCarbon;
+        const wholeLifeBaseline = typeof project.wholeLifeCarbon === 'number'
+            ? project.wholeLifeCarbon
+            : (loadedScope === 'wholeLife' ? project.totalCarbon : embodiedBaseline);
+        appState.currentProject.embodiedCarbon = embodiedBaseline;
+        appState.currentProject.wholeLifeCarbon = wholeLifeBaseline;
+        appState.currentProject.totalCarbon = loadedScope === 'wholeLife'
+            ? wholeLifeBaseline
+            : embodiedBaseline;
+        appState.currentProject.carbonIntensity = appState.currentProject.gfa > 0
+            ? appState.currentProject.totalCarbon / appState.currentProject.gfa
+            : 0;
         appState.isModified = false;
         
         // Populate form
@@ -515,6 +566,9 @@ function createNewProject() {
         designLife: 50,
         materials: [],
         totalCarbon: 0,
+        wholeLifeCarbon: 0,
+        embodiedCarbon: 0,
+        carbonScope: 'embodied',
         carbonIntensity: 0,
         lcaResults: null,
         scopesResults: null,

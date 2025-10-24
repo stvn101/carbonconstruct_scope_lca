@@ -124,7 +124,7 @@ class ComplianceChecker {
      * Calculate NABERS Rating
      * NABERS Energy + Carbon Neutral ratings
      */
-    calculateNABERS(carbonIntensity, operationalCarbon = null) {
+    calculateNABERS(carbonIntensity, operationalCarbon = null, scope = 'Embodied') {
         // Find rating based on embodied carbon intensity
         let rating = 0;
         for (const [stars, threshold] of Object.entries(this.nabersThresholds).reverse()) {
@@ -151,8 +151,9 @@ class ComplianceChecker {
                 carbonIntensity: carbonIntensity.toFixed(1),
                 targetRating: 5.0,
                 benchmarkForTarget: this.nabersThresholds[5],
-                improvementNeeded: carbonIntensity > this.nabersThresholds[5] ? 
-                    (carbonIntensity - this.nabersThresholds[5]).toFixed(1) : 0
+                improvementNeeded: carbonIntensity > this.nabersThresholds[5] ?
+                    (carbonIntensity - this.nabersThresholds[5]).toFixed(1) : 0,
+                reportingScope: scope
             },
             requirements: [
                 'Whole Building Assessment',
@@ -383,18 +384,24 @@ class ComplianceChecker {
      * Generate comprehensive compliance report
      */
     generateComplianceReport(projectData) {
-        const carbonIntensity = projectData.totalCarbon / projectData.gfa;
-        
+        const scope = projectData.carbonScope === 'wholeLife' ? 'Whole Life' : 'Embodied';
+        const reportingTotal = scope === 'Whole Life'
+            ? (projectData.wholeLifeCarbon ?? projectData.totalCarbon)
+            : (projectData.embodiedCarbon ?? projectData.totalCarbon);
+        const carbonIntensity = projectData.gfa > 0 ? (reportingTotal / projectData.gfa) : 0;
+
+        // EN 15978 requires clarity on scope selection when benchmarking
         const ncc = this.checkNCC(carbonIntensity, projectData.projectType, projectData.gfa);
-        const nabers = this.calculateNABERS(carbonIntensity, projectData.operationalCarbon);
+        const nabers = this.calculateNABERS(carbonIntensity, projectData.operationalCarbon, scope);
         const greenStar = this.calculateGreenStar(carbonIntensity, projectData.materials);
-        const tcfd = this.checkTCFD(projectData.totalCarbon, projectData.companySize);
-        
+        const tcfd = this.checkTCFD(reportingTotal, projectData.companySize);
+
         return {
             summary: {
                 carbonIntensity: carbonIntensity.toFixed(1),
-                totalCarbon: projectData.totalCarbon.toFixed(0),
+                totalCarbon: reportingTotal.toFixed(0),
                 gfa: projectData.gfa,
+                scope: scope,
                 overallCompliance: ncc.compliant ? 'Compliant' : 'Non-Compliant'
             },
             standards: {

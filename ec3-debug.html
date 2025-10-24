@@ -45,7 +45,7 @@
 </head>
 <body>
     <h1>EC3 OAuth Debug Tool</h1>
-    
+
     <div class="debug-section">
         <h3>Current OAuth State</h3>
         <div id="currentState">Loading...</div>
@@ -91,7 +91,7 @@
         function displayCurrentState() {
             const saved = localStorage.getItem('ec3_oauth_state');
             const stateDiv = document.getElementById('currentState');
-            
+
             if (saved) {
                 try {
                     const state = JSON.parse(saved);
@@ -130,7 +130,7 @@
 
         function testOAuthStart() {
             log('Testing OAuth start...', 'info');
-            
+
             const state = generateState();
             localStorage.setItem('oauth_state', state);
             log(`Generated state: ${state}`, 'info');
@@ -145,7 +145,7 @@
 
             const authURL = `${EC3_OAUTH_CONFIG.authUrl}?${params.toString()}`;
             log(`Auth URL: ${authURL}`, 'info');
-            
+
             if (confirm('Redirect to EC3 OAuth? This will leave this debug page.')) {
                 window.location.href = authURL;
             } else {
@@ -155,7 +155,7 @@
 
         async function testEC3API() {
             log('Testing EC3 API through proxy...', 'info');
-            
+
             try {
                 // Test through our serverless proxy
                 const response = await fetch('/api/ec3-proxy?endpoint=materials&page_size=1', {
@@ -163,9 +163,9 @@
                         'Accept': 'application/json'
                     }
                 });
-                
+
                 log(`Proxy Response status: ${response.status}`, response.ok ? 'success' : 'error');
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     log(`Proxy Response: ${JSON.stringify(data, null, 2)}`, 'success');
@@ -186,9 +186,9 @@
                         'Accept': 'application/json'
                     }
                 });
-                
+
                 log(`Direct API Response status: ${response.status}`, response.ok ? 'success' : 'error');
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     log(`Direct API Response: ${JSON.stringify(data, null, 2)}`, 'success');
@@ -217,13 +217,13 @@
             log('Debug page loaded', 'info');
             displayCurrentState();
             displayConfig();
-            
+
             // Check URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
             const state = urlParams.get('state');
             const error = urlParams.get('error');
-            
+
             if (code) log(`OAuth code in URL: ${code}`, 'info');
             if (state) log(`OAuth state in URL: ${state}`, 'info');
             if (error) log(`OAuth error in URL: ${error}`, 'error');

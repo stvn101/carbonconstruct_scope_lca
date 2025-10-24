@@ -1,6 +1,11 @@
 // EC3 OAuth Token Exchange API Endpoint
 // This should be deployed as a serverless function or API route
 
+const CLIENT_ID = process.env.EC3_CLIENT_ID;
+const CLIENT_SECRET = process.env.EC3_CLIENT_SECRET;
+const REDIRECT_URI = process.env.EC3_REDIRECT_URI;
+const EC3_API_KEY = process.env.NEXT_PUBLIC_EC3_API_KEY;
+
 export default async function handler(req, res) {
     // Only allow POST requests
     if (req.method !== 'POST') {
@@ -18,25 +23,24 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { code, client_id, redirect_uri } = req.body;
+        const { code } = req.body;
 
         // Validate required parameters
-        if (!code || !client_id || !redirect_uri) {
+        if (!code) {
             return res.status(400).json({
-                error: 'Missing required parameters: code, client_id, redirect_uri'
+                error: 'Missing required parameter: code'
             });
         }
 
-        // EC3 OAuth configuration (store these as environment variables)
-        const EC3_CLIENT_SECRET = process.env.EC3_CLIENT_SECRET;
-        const EC3_TOKEN_URL = 'https://buildingtransparency.org/api/oauth/token/';
-
-        if (!EC3_CLIENT_SECRET) {
-            console.error('EC3_CLIENT_SECRET environment variable not set');
+        if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
+            console.error('EC3 OAuth environment variables not fully configured');
             return res.status(500).json({
                 error: 'Server configuration error'
             });
         }
+
+        // EC3 OAuth configuration
+        const EC3_TOKEN_URL = 'https://buildingtransparency.org/api/oauth/token/';
 
         // Exchange authorization code for access token
         const tokenResponse = await fetch(EC3_TOKEN_URL, {
@@ -44,14 +48,15 @@ export default async function handler(req, res) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json',
-                'User-Agent': 'CarbonConstruct/1.0'
+                'User-Agent': 'CarbonConstruct/1.0',
+                ...(EC3_API_KEY ? { 'x-api-key': EC3_API_KEY } : {})
             },
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
-                client_id: client_id,
-                client_secret: EC3_CLIENT_SECRET,
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
                 code: code,
-                redirect_uri: redirect_uri
+                redirect_uri: REDIRECT_URI
             })
         });
 

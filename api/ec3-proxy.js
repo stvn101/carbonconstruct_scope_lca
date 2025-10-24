@@ -1,4 +1,10 @@
 // EC3 API Proxy - Serverless function to bypass CORS
+
+const CLIENT_ID = process.env.EC3_CLIENT_ID;
+const CLIENT_SECRET = process.env.EC3_CLIENT_SECRET;
+const REDIRECT_URI = process.env.EC3_REDIRECT_URI;
+const EC3_API_KEY = process.env.NEXT_PUBLIC_EC3_API_KEY;
+
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,6 +20,10 @@ export default async function handler(req, res) {
     if (req.method !== 'GET') {
         res.status(405).json({ error: 'Method not allowed' });
         return;
+    }
+
+    if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
+        console.warn('EC3 OAuth environment variables are not fully configured. Public EC3 requests will still proceed.');
     }
 
     try {
@@ -37,16 +47,14 @@ export default async function handler(req, res) {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'User-Agent': 'CarbonConstruct/1.0'
+                'User-Agent': 'CarbonConstruct/1.0',
+                ...(EC3_API_KEY ? { 'x-api-key': EC3_API_KEY } : {})
             }
         };
 
         // Add authorization header if provided
         if (authHeader) {
             fetchOptions.headers['Authorization'] = authHeader;
-        } else if (process.env.EC3_ACCESS_TOKEN) {
-            // Use environment variable for API access
-            fetchOptions.headers['Authorization'] = `Bearer ${process.env.EC3_ACCESS_TOKEN}`;
         }
 
         // Make request to EC3 API
@@ -54,7 +62,8 @@ export default async function handler(req, res) {
 
         if (!response.ok) {
             throw new Error(`EC3 API responded with status: ${response.status} - ${response.statusText}`);
-        } const data = await response.json();
+        }
+        const data = await response.json();
 
         // Return the data
         res.status(200).json({

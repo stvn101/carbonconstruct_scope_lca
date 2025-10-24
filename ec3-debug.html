@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC3 OAuth Debug - CarbonConstruct</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .debug-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .success { border-color: #10B981; background: #f0fdf4; }
+        .error { border-color: #EF4444; background: #fef2f2; }
+        .warning { border-color: #F59E0B; background: #fffbeb; }
+        button {
+            background: #10B981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #059669;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>EC3 OAuth Debug Tool</h1>
+    
+    <div class="debug-section">
+        <h3>Current OAuth State</h3>
+        <div id="currentState">Loading...</div>
+    </div>
+
+    <div class="debug-section">
+        <h3>OAuth Configuration</h3>
+        <div id="configInfo">Loading...</div>
+    </div>
+
+    <div class="debug-section">
+        <h3>Test Actions</h3>
+        <button onclick="testOAuthStart()">Test OAuth Start</button>
+        <button onclick="testEC3API()">Test EC3 API Direct</button>
+        <button onclick="clearStorage()">Clear OAuth Storage</button>
+        <button onclick="goToMain()">Go to Main EC3 Page</button>
+    </div>
+
+    <div class="debug-section">
+        <h3>Debug Log</h3>
+        <div id="debugLog" class="log"></div>
+    </div>
+
+    <script>
+        // EC3 OAuth Configuration
+        const EC3_OAUTH_CONFIG = {
+            clientId: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX',
+            redirectUri: 'https://carbonconstruct.com.au/ec3-callback.html',
+            scope: 'read',
+            authUrl: 'https://buildingtransparency.org/api/oauth/authorize/',
+            tokenUrl: 'https://buildingtransparency.org/api/oauth/token/'
+        };
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('debugLog');
+            logDiv.innerHTML += `<div>[${timestamp}] ${type.toUpperCase()}: ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+        }
+
+        function displayCurrentState() {
+            const saved = localStorage.getItem('ec3_oauth_state');
+            const stateDiv = document.getElementById('currentState');
+            
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+                    stateDiv.innerHTML = `
+                        <div class="success">
+                            <strong>OAuth State Found:</strong><br>
+                            Connected: ${state.connected}<br>
+                            Has Access Token: ${!!state.accessToken}<br>
+                            Has Refresh Token: ${!!state.refreshToken}<br>
+                            Expires At: ${state.expiresAt || 'Not set'}
+                        </div>
+                    `;
+                    log('OAuth state loaded from localStorage', 'success');
+                } catch (error) {
+                    stateDiv.innerHTML = `<div class="error">Error parsing saved state: ${error.message}</div>`;
+                    log(`Error parsing saved state: ${error.message}`, 'error');
+                }
+            } else {
+                stateDiv.innerHTML = `<div class="warning">No OAuth state found in localStorage</div>`;
+                log('No OAuth state found', 'warning');
+            }
+        }
+
+        function displayConfig() {
+            document.getElementById('configInfo').innerHTML = `
+                <strong>Client ID:</strong> ${EC3_OAUTH_CONFIG.clientId}<br>
+                <strong>Redirect URI:</strong> ${EC3_OAUTH_CONFIG.redirectUri}<br>
+                <strong>Auth URL:</strong> ${EC3_OAUTH_CONFIG.authUrl}<br>
+                <strong>Scope:</strong> ${EC3_OAUTH_CONFIG.scope}
+            `;
+        }
+
+        function generateState() {
+            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        function testOAuthStart() {
+            log('Testing OAuth start...', 'info');
+            
+            const state = generateState();
+            localStorage.setItem('oauth_state', state);
+            log(`Generated state: ${state}`, 'info');
+
+            const params = new URLSearchParams({
+                response_type: 'code',
+                client_id: EC3_OAUTH_CONFIG.clientId,
+                redirect_uri: EC3_OAUTH_CONFIG.redirectUri,
+                scope: EC3_OAUTH_CONFIG.scope,
+                state: state
+            });
+
+            const authURL = `${EC3_OAUTH_CONFIG.authUrl}?${params.toString()}`;
+            log(`Auth URL: ${authURL}`, 'info');
+            
+            if (confirm('Redirect to EC3 OAuth? This will leave this debug page.')) {
+                window.location.href = authURL;
+            } else {
+                log('OAuth start cancelled by user', 'warning');
+            }
+        }
+
+        async function testEC3API() {
+            log('Testing EC3 API direct access...', 'info');
+            
+            try {
+                const response = await fetch('https://api.buildingtransparency.org/api/materials?page_size=1', {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                log(`API Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`API Response: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    const errorText = await response.text();
+                    log(`API Error: ${errorText}`, 'error');
+                }
+            } catch (error) {
+                log(`API Request failed: ${error.message}`, 'error');
+            }
+        }
+
+        function clearStorage() {
+            localStorage.removeItem('ec3_oauth_state');
+            localStorage.removeItem('oauth_state');
+            log('Cleared OAuth storage', 'success');
+            displayCurrentState();
+        }
+
+        function goToMain() {
+            window.location.href = 'ec3-oauth.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Debug page loaded', 'info');
+            displayCurrentState();
+            displayConfig();
+            
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            const error = urlParams.get('error');
+            
+            if (code) log(`OAuth code in URL: ${code}`, 'info');
+            if (state) log(`OAuth state in URL: ${state}`, 'info');
+            if (error) log(`OAuth error in URL: ${error}`, 'error');
+        });
+    </script>
+</body>
+</html>

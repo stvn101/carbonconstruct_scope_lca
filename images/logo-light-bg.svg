@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">CarbonConstruct logo on light background</title>
+  <desc id="desc">Green leaf with circuit branches inside a minimal square frame.</desc>
+  <defs>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7CFA85" />
+      <stop offset="50%" stop-color="#3AC75F" />
+      <stop offset="100%" stop-color="#1F9B4A" />
+    </linearGradient>
+    <linearGradient id="leafHighlight" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#D8FFD6" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#5CCB63" stop-opacity="0.2" />
+    </linearGradient>
+  </defs>
+  <rect x="32" y="32" width="448" height="448" rx="48" ry="48" fill="#ffffff" />
+  <path d="M128 96h256c17.673 0 32 14.327 32 32v256c0 17.673-14.327 32-32 32H128c-17.673 0-32-14.327-32-32V128c0-17.673 14.327-32 32-32z" fill="none" stroke="#0B3B1F" stroke-width="28" stroke-linejoin="round" />
+  <path d="M192 360c44-96 144-160 208-176-16 120-92 216-188 216-36 0-64-16-72-40-4-12-2-26 4-40 8-18 24-36 44-52" fill="url(#leafGradient)" />
+  <path d="M204 348c24-72 112-140 176-158-4 56-28 110-64 148-28 30-68 54-108 54-20 0-36-6-46-16-6-6-8-14-6-22 2-8 10-18 22-26" fill="url(#leafHighlight)" />
+  <path d="M208 352c32-88 128-152 184-168" fill="none" stroke="#0E5C2F" stroke-width="18" stroke-linecap="round" />
+  <path d="M160 352c0-40 56-72 96-96" fill="none" stroke="#0E5C2F" stroke-width="18" stroke-linecap="round" />
+  <path d="M184 384h56" stroke="#0E5C2F" stroke-width="18" stroke-linecap="round" />
+  <path d="M184 384a24 24 0 1 1-48 0 24 24 0 0 1 48 0z" fill="#ffffff" stroke="#0E5C2F" stroke-width="14" />
+  <path d="M272 416h40" stroke="#0E5C2F" stroke-width="18" stroke-linecap="round" />
+  <path d="M272 416a24 24 0 1 1-48 0 24 24 0 0 1 48 0z" fill="#ffffff" stroke="#0E5C2F" stroke-width="14" />
+  <path d="M344 368h24" stroke="#0E5C2F" stroke-width="18" stroke-linecap="round" />
+  <path d="M368 368a20 20 0 1 1-40 0 20 20 0 0 1 40 0z" fill="#ffffff" stroke="#0E5C2F" stroke-width="12" />
+</svg>

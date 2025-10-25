@@ -19,6 +19,34 @@
     <title>Operational Carbon Tracking - CarbonConstruct</title>
 
     <!-- Tailwind CSS -->
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#3DD68C',
+                            'primary-dark': '#1E4A40',
+                            forest: '#47876D',
+                            sage: '#7A9B8E',
+                            'sage-light': '#AFC2B9',
+                            mint: '#E0F4ED',
+                            navy: '#1E2A35',
+                            midnight: '#0E1621',
+                            steel: '#4A5A6A',
+                            surface: '#F3F8F6',
+                            border: '#C9DAD3',
+                            contrast: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Chart.js -->
@@ -43,9 +71,9 @@
         }
 
         :root {
-            --primary-green: #059669;
-            --dark-green: #047857;
-            --light-green: #d1fae5;
+            --primary-green: #3DD68C;
+            --dark-green: #1E4A40;
+            --light-green: #E0F4ED;
         }
 
         .carbon-card {
@@ -67,7 +95,7 @@
         }
 
         .tab-button.active {
-            background-color: #059669;
+            background-color: var(--dark-green);
             color: white;
         }
 
@@ -76,22 +104,22 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-brand-mint">
 
     <!-- Navigation Header -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <i class="fas fa-industry text-green-600 text-2xl mr-3"></i>
-                    <span class="text-xl font-bold text-gray-800">CarbonConstruct</span>
-                    <span class="ml-3 text-sm text-gray-500">Operational Carbon Tracking</span>
+                    <i class="fas fa-industry text-brand-forest text-2xl mr-3"></i>
+                    <span class="text-xl font-bold text-brand-navy">CarbonConstruct</span>
+                    <span class="ml-3 text-sm text-brand-sage">Operational Carbon Tracking</span>
                 </div>
                 <div class="flex space-x-4">
-                    <a href="index.html" class="text-gray-700 hover:text-green-600 font-medium">
+                    <a href="index.html" class="text-brand-steel hover:text-brand-forest font-medium">
                         <i class="fas fa-home mr-2"></i>Main Dashboard
                     </a>
-                    <button id="calculateAllBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+                    <button id="calculateAllBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                         <i class="fas fa-calculator mr-2"></i>Calculate All
                     </button>
                 </div>
@@ -100,10 +128,10 @@
     </nav>
 
     <!-- Hero Section with Totals -->
-    <section class="bg-gradient-to-r from-orange-600 to-red-600 text-white py-12">
+    <section class="bg-gradient-to-r from-brand-primary to-brand-forest text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="text-4xl font-bold mb-4">Operational Carbon Tracking</h1>
-            <p class="text-xl text-orange-100 mb-8">
+            <p class="text-xl text-brand-mint mb-8">
                 Complete Scope 1, 2 & 3 emissions tracking for construction site operations
             </p>
 
@@ -162,7 +190,7 @@
 
             <!-- Tab Navigation -->
             <div class="bg-white rounded-lg shadow-lg mb-8">
-                <div class="flex flex-wrap border-b border-gray-200">
+                <div class="flex flex-wrap border-b border-brand-border">
                     <button class="tab-button active px-6 py-4 font-medium text-sm" data-tab="scope1">
                         <i class="fas fa-fire mr-2"></i>Scope 1: Direct Emissions
                     </button>
@@ -181,26 +209,26 @@
             <!-- SCOPE 1 TAB CONTENT -->
             <div id="scope1Tab" class="tab-content">
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
-                        <i class="fas fa-fire text-orange-600 mr-2"></i>
+                    <h2 class="text-2xl font-bold text-brand-navy mb-4">
+                        <i class="fas fa-fire text-brand-forest mr-2"></i>
                         Scope 1: Direct Emissions
                     </h2>
-                    <p class="text-gray-600 mb-6">
+                    <p class="text-brand-sage mb-6">
                         Track fuel combustion from equipment and vehicles YOU own or control on site.
                     </p>
 
                     <!-- Sub-tabs for Scope 1 Categories -->
                     <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
-                        <button class="scope1-subtab active bg-orange-100 text-orange-700 px-4 py-2 rounded-lg font-medium" data-subtab="equipment">
+                        <button class="scope1-subtab active bg-brand-mint text-brand-primary-dark px-4 py-2 rounded-lg font-medium" data-subtab="equipment">
                             <i class="fas fa-cog mr-2"></i>Equipment
                         </button>
-                        <button class="scope1-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="vehicles">
+                        <button class="scope1-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="vehicles">
                             <i class="fas fa-truck mr-2"></i>Vehicles
                         </button>
-                        <button class="scope1-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="generators">
+                        <button class="scope1-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="generators">
                             <i class="fas fa-plug mr-2"></i>Generators
                         </button>
-                        <button class="scope1-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="heating">
+                        <button class="scope1-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="heating">
                             <i class="fas fa-temperature-high mr-2"></i>Heating/Drying
                         </button>
                     </div>
@@ -211,13 +239,13 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Equipment Input Form -->
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Equipment</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Equipment</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Category</label>
-                                        <select id="s1EquipmentCategory" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Equipment Category</label>
+                                        <select id="s1EquipmentCategory" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select category...</option>
                                             <option value="cranes">Cranes</option>
                                             <option value="excavators">Excavators</option>
@@ -234,37 +262,37 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Type</label>
-                                        <select id="s1EquipmentType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Equipment Type</label>
+                                        <select id="s1EquipmentType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select type...</option>
                                         </select>
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
-                                        <input type="number" id="s1OperatingHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 240">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Operating Hours</label>
+                                        <input type="number" id="s1OperatingHours" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 240">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fuel Used (L) - Optional if using database rates</label>
-                                        <input type="number" id="s1FuelUsed" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Leave blank to auto-calculate">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Fuel Used (L) - Optional if using database rates</label>
+                                        <input type="number" id="s1FuelUsed" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="Leave blank to auto-calculate">
                                     </div>
 
-                                    <button id="addEquipmentBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
+                                    <button id="addEquipmentBtn" class="w-full bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Equipment
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Equipment List -->
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Equipment</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Equipment</h4>
                                 <div id="equipmentList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No equipment added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No equipment added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Equipment Emissions:</p>
-                                    <p class="text-2xl font-bold text-orange-600" id="equipmentTotal">0 tonnes CO2-e</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Equipment Emissions:</p>
+                                    <p class="text-2xl font-bold text-brand-forest" id="equipmentTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
                         </div>
@@ -276,13 +304,13 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Vehicle Input Form -->
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Vehicle</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Vehicle</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Vehicle Type</label>
-                                        <select id="s1VehicleType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Vehicle Type</label>
+                                        <select id="s1VehicleType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select type...</option>
                                             <option value="ute_petrol">Ute (Petrol)</option>
                                             <option value="ute_diesel">Ute (Diesel)</option>
@@ -298,30 +326,30 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Distance Travelled (km)</label>
-                                        <input type="number" id="s1VehicleDistance" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 5000">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Distance Travelled (km)</label>
+                                        <input type="number" id="s1VehicleDistance" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 5000">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">OR Fuel Used (L) - Optional</label>
-                                        <input type="number" id="s1VehicleFuel" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="If you know actual fuel used">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">OR Fuel Used (L) - Optional</label>
+                                        <input type="number" id="s1VehicleFuel" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="If you know actual fuel used">
                                     </div>
 
-                                    <button id="addVehicleBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
+                                    <button id="addVehicleBtn" class="w-full bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Vehicle
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Vehicle List -->
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Vehicles</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Vehicles</h4>
                                 <div id="vehicleList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No vehicles added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No vehicles added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Vehicle Emissions:</p>
-                                    <p class="text-2xl font-bold text-orange-600" id="vehicleTotal">0 tonnes CO2-e</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Vehicle Emissions:</p>
+                                    <p class="text-2xl font-bold text-brand-forest" id="vehicleTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
                         </div>
@@ -332,13 +360,13 @@
                         <h3 class="text-lg font-semibold mb-4">Site Generators</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Generator</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Generator</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Generator Size</label>
-                                        <select id="s1GeneratorSize" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Generator Size</label>
+                                        <select id="s1GeneratorSize" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select size...</option>
                                             <option value="20kVA">20kVA (Small)</option>
                                             <option value="45kVA">45kVA (Medium)</option>
@@ -350,30 +378,30 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
-                                        <input type="number" id="s1GenHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 480">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Operating Hours</label>
+                                        <input type="number" id="s1GenHours" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 480">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Load Factor (%)</label>
-                                        <input type="number" id="s1GenLoad" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="75" value="75">
-                                        <p class="text-xs text-gray-500 mt-1">Generators rarely run at 100% - typical is 60-80%</p>
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Load Factor (%)</label>
+                                        <input type="number" id="s1GenLoad" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="75" value="75">
+                                        <p class="text-xs text-brand-sage-light mt-1">Generators rarely run at 100% - typical is 60-80%</p>
                                     </div>
 
-                                    <button id="addGeneratorBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
+                                    <button id="addGeneratorBtn" class="w-full bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Generator
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Generators</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Generators</h4>
                                 <div id="generatorList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No generators added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No generators added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Generator Emissions:</p>
-                                    <p class="text-2xl font-bold text-orange-600" id="generatorTotal">0 tonnes CO2-e</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Generator Emissions:</p>
+                                    <p class="text-2xl font-bold text-brand-forest" id="generatorTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
                         </div>
@@ -384,13 +412,13 @@
                         <h3 class="text-lg font-semibold mb-4">Heating & Drying Equipment</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Heating Equipment</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Heating Equipment</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Type</label>
-                                        <select id="s1HeatingType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Equipment Type</label>
+                                        <select id="s1HeatingType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select type...</option>
                                             <option value="dieselHeater_small">Diesel Heater (Small)</option>
                                             <option value="dieselHeater_large">Diesel Heater (Large)</option>
@@ -400,24 +428,24 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
-                                        <input type="number" id="s1HeatingHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 120">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Operating Hours</label>
+                                        <input type="number" id="s1HeatingHours" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 120">
                                     </div>
 
-                                    <button id="addHeatingBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium">
+                                    <button id="addHeatingBtn" class="w-full bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                                         <i class="fas fa-plus mr-2"></i>Add Equipment
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Heating Equipment</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Heating Equipment</h4>
                                 <div id="heatingList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No equipment added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No equipment added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Heating Emissions:</p>
-                                    <p class="text-2xl font-bold text-orange-600" id="heatingTotal">0 tonnes CO2-e</p>
+                                <div class="mt-4 pt-4 border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Heating Emissions:</p>
+                                    <p class="text-2xl font-bold text-brand-forest" id="heatingTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
                         </div>
@@ -428,11 +456,11 @@
             <!-- SCOPE 2 TAB CONTENT -->
             <div id="scope2Tab" class="tab-content section-hidden">
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <h2 class="text-2xl font-bold text-brand-navy mb-4">
                         <i class="fas fa-bolt text-teal-600 mr-2"></i>
                         Scope 2: Purchased Electricity
                     </h2>
-                    <p class="text-gray-600 mb-6">
+                    <p class="text-brand-sage mb-6">
                         Track electricity purchased from the grid for site operations.
                     </p>
 
@@ -441,10 +469,10 @@
                         <button class="scope2-subtab active bg-teal-100 text-teal-700 px-4 py-2 rounded-lg font-medium" data-subtab="sitepower">
                             <i class="fas fa-plug mr-2"></i>Site Power
                         </button>
-                        <button class="scope2-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="facilities">
+                        <button class="scope2-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="facilities">
                             <i class="fas fa-building mr-2"></i>Site Facilities
                         </button>
-                        <button class="scope2-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="electricequip">
+                        <button class="scope2-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="electricequip">
                             <i class="fas fa-battery-full mr-2"></i>Electric Equipment
                         </button>
                     </div>
@@ -454,23 +482,23 @@
                         <h3 class="text-lg font-semibold mb-4">Site Power Connection</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Power Usage</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Power Usage</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                                        <input type="text" id="s2PowerDesc" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., Monthly site power">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Description</label>
+                                        <input type="text" id="s2PowerDesc" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., Monthly site power">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Electricity Used (kWh)</label>
-                                        <input type="number" id="s2PowerKWh" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 15000">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Electricity Used (kWh)</label>
+                                        <input type="number" id="s2PowerKWh" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 15000">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">State/Territory</label>
-                                        <select id="s2PowerState" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">State/Territory</label>
+                                        <select id="s2PowerState" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="national">National Average</option>
                                             <option value="nsw">NSW</option>
                                             <option value="vic">VIC</option>
@@ -484,8 +512,8 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Days</label>
-                                        <input type="number" id="s2PowerDays" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 30">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Number of Days</label>
+                                        <input type="number" id="s2PowerDays" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 30">
                                     </div>
 
                                     <button id="addPowerBtn" class="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium">
@@ -494,13 +522,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Power Usage</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Power Usage</h4>
                                 <div id="powerList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No power usage added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No power usage added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Power Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Power Emissions:</p>
                                     <p class="text-2xl font-bold text-teal-600" id="powerTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -512,13 +540,13 @@
                         <h3 class="text-lg font-semibold mb-4">Site Facilities</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Facility</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Facility</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Facility Type</label>
-                                        <select id="s2FacilityType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Facility Type</label>
+                                        <select id="s2FacilityType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select type...</option>
                                             <option value="siteOffice_small">Site Office (Small)</option>
                                             <option value="siteOffice_large">Site Office (Large)</option>
@@ -533,13 +561,13 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Days in Use</label>
-                                        <input type="number" id="s2FacilityDays" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 180">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Days in Use</label>
+                                        <input type="number" id="s2FacilityDays" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 180">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">State/Territory</label>
-                                        <select id="s2FacilityState" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">State/Territory</label>
+                                        <select id="s2FacilityState" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="national">National Average</option>
                                             <option value="nsw">NSW</option>
                                             <option value="vic">VIC</option>
@@ -558,13 +586,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Facilities</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Facilities</h4>
                                 <div id="facilityList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No facilities added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No facilities added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Facility Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Facility Emissions:</p>
                                     <p class="text-2xl font-bold text-teal-600" id="facilityTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -576,13 +604,13 @@
                         <h3 class="text-lg font-semibold mb-4">Electric Equipment (Hoists, Lifts, etc.)</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Electric Equipment</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Electric Equipment</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Type</label>
-                                        <select id="s2ElecType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Equipment Type</label>
+                                        <select id="s2ElecType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="">Select type...</option>
                                             <option value="alimakHoist_single">Alimak Hoist (Single)</option>
                                             <option value="alimakHoist_double">Alimak Hoist (Double)</option>
@@ -595,13 +623,13 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Operating Hours</label>
-                                        <input type="number" id="s2ElecHours" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 480">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Operating Hours</label>
+                                        <input type="number" id="s2ElecHours" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 480">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">State/Territory</label>
-                                        <select id="s2ElecState" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">State/Territory</label>
+                                        <select id="s2ElecState" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="national">National Average</option>
                                             <option value="nsw">NSW</option>
                                             <option value="vic">VIC</option>
@@ -620,13 +648,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Electric Equipment</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Electric Equipment</h4>
                                 <div id="elecEquipList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No equipment added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No equipment added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Equipment Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Equipment Emissions:</p>
                                     <p class="text-2xl font-bold text-teal-600" id="elecEquipTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -638,11 +666,11 @@
             <!-- SCOPE 3 TAB CONTENT -->
             <div id="scope3Tab" class="tab-content section-hidden">
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <h2 class="text-2xl font-bold text-brand-navy mb-4">
                         <i class="fas fa-globe text-indigo-600 mr-2"></i>
                         Scope 3: Value Chain Emissions
                     </h2>
-                    <p class="text-gray-600 mb-6">
+                    <p class="text-brand-sage mb-6">
                         Track emissions from transport, waste, water, commuting, and temporary works.
                     </p>
 
@@ -651,16 +679,16 @@
                         <button class="scope3-subtab active bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium" data-subtab="transport">
                             <i class="fas fa-truck mr-2"></i>Transport
                         </button>
-                        <button class="scope3-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="waste">
+                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="waste">
                             <i class="fas fa-trash mr-2"></i>Waste
                         </button>
-                        <button class="scope3-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="water">
+                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="water">
                             <i class="fas fa-tint mr-2"></i>Water
                         </button>
-                        <button class="scope3-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="commuting">
+                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="commuting">
                             <i class="fas fa-car mr-2"></i>Commuting
                         </button>
-                        <button class="scope3-subtab bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium" data-subtab="tempworks">
+                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="tempworks">
                             <i class="fas fa-hammer mr-2"></i>Temp Works
                         </button>
                     </div>
@@ -670,28 +698,28 @@
                         <h3 class="text-lg font-semibold mb-4">Material Transport to Site</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Transport</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Transport</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Material</label>
-                                        <input type="text" id="s3TransMaterial" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., Concrete">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Material</label>
+                                        <input type="text" id="s3TransMaterial" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., Concrete">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Weight (tonnes)</label>
-                                        <input type="number" id="s3TransWeight" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 500">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Weight (tonnes)</label>
+                                        <input type="number" id="s3TransWeight" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 500">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Distance (km)</label>
-                                        <input type="number" id="s3TransDistance" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 30">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Distance (km)</label>
+                                        <input type="number" id="s3TransDistance" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 30">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Transport Mode</label>
-                                        <select id="s3TransMode" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Transport Mode</label>
+                                        <select id="s3TransMode" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="rigidTruck">Rigid Truck</option>
                                             <option value="articulatedTruck">Articulated Truck (Semi)</option>
                                             <option value="rail">Rail Freight</option>
@@ -705,13 +733,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Transport</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Transport</h4>
                                 <div id="transportList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No transport added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No transport added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Transport Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Transport Emissions:</p>
                                     <p class="text-2xl font-bold text-indigo-600" id="transportTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -723,23 +751,23 @@
                         <h3 class="text-lg font-semibold mb-4">Construction Waste</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Waste</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Waste</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Material</label>
-                                        <input type="text" id="s3WasteMaterial" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., General waste">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Material</label>
+                                        <input type="text" id="s3WasteMaterial" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., General waste">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
-                                        <input type="number" id="s3WasteWeight" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 5000">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Weight (kg)</label>
+                                        <input type="number" id="s3WasteWeight" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 5000">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Disposal Method</label>
-                                        <select id="s3WasteMethod" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Disposal Method</label>
+                                        <select id="s3WasteMethod" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="landfill_general">Landfill (General)</option>
                                             <option value="landfill_inert">Landfill (Inert - clean fill)</option>
                                             <option value="recycling">Recycling (General)</option>
@@ -754,13 +782,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Waste</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Waste</h4>
                                 <div id="wasteList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No waste added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No waste added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Waste Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Waste Emissions:</p>
                                     <p class="text-2xl font-bold text-indigo-600" id="wasteTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -772,13 +800,13 @@
                         <h3 class="text-lg font-semibold mb-4">Water Usage</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Water Usage</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Water Usage</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Water Type</label>
-                                        <select id="s3WaterType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Water Type</label>
+                                        <select id="s3WaterType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="potable">Potable (Drinking Water)</option>
                                             <option value="recycled">Recycled Water</option>
                                             <option value="wastewater">Wastewater (Sewage)</option>
@@ -786,9 +814,9 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Volume (kL - kilolitres)</label>
-                                        <input type="number" id="s3WaterVolume" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 500">
-                                        <p class="text-xs text-gray-500 mt-1">1 kL = 1,000 litres</p>
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Volume (kL - kilolitres)</label>
+                                        <input type="number" id="s3WaterVolume" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 500">
+                                        <p class="text-xs text-brand-sage-light mt-1">1 kL = 1,000 litres</p>
                                     </div>
 
                                     <button id="addWaterBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
@@ -797,13 +825,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Water Usage</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Water Usage</h4>
                                 <div id="waterList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No water usage added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No water usage added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Water Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Water Emissions:</p>
                                     <p class="text-2xl font-bold text-indigo-600" id="waterTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -815,28 +843,28 @@
                         <h3 class="text-lg font-semibold mb-4">Employee Commuting</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Commuting</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Commuting</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Employees</label>
-                                        <input type="number" id="s3CommuteEmployees" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 50">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Number of Employees</label>
+                                        <input type="number" id="s3CommuteEmployees" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 50">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Average Distance (km one-way)</label>
-                                        <input type="number" id="s3CommuteDistance" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 25">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Average Distance (km one-way)</label>
+                                        <input type="number" id="s3CommuteDistance" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 25">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Working Days</label>
-                                        <input type="number" id="s3CommuteDays" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 180">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Working Days</label>
+                                        <input type="number" id="s3CommuteDays" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 180">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Transport Mode</label>
-                                        <select id="s3CommuteMode" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Transport Mode</label>
+                                        <select id="s3CommuteMode" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="car_solo">Car (Single Occupancy)</option>
                                             <option value="car_carpool">Car (Carpool - avg 3 people)</option>
                                             <option value="publicTransport">Public Transport</option>
@@ -850,13 +878,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Commuting</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Commuting</h4>
                                 <div id="commuteList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No commuting added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No commuting added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Commuting Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Commuting Emissions:</p>
                                     <p class="text-2xl font-bold text-indigo-600" id="commuteTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -868,13 +896,13 @@
                         <h3 class="text-lg font-semibold mb-4">Temporary Works (Scaffolding, Formwork, etc.)</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Add Temporary Works</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Add Temporary Works</h4>
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-                                        <select id="s3TempType" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Type</label>
+                                        <select id="s3TempType" class="w-full border border-brand-border rounded-lg px-4 py-2">
                                             <option value="scaffolding">Scaffolding (Steel)</option>
                                             <option value="formwork_timber">Formwork (Timber)</option>
                                             <option value="formwork_steel">Formwork (Steel)</option>
@@ -886,14 +914,14 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Area (m²)</label>
-                                        <input type="number" id="s3TempArea" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 1000">
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Area (m²)</label>
+                                        <input type="number" id="s3TempArea" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 1000">
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Uses/Reuses</label>
-                                        <input type="number" id="s3TempUses" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 50" value="50">
-                                        <p class="text-xs text-gray-500 mt-1">Higher reuse = lower emissions per use</p>
+                                        <label class="block text-sm font-medium text-brand-steel mb-2">Number of Uses/Reuses</label>
+                                        <input type="number" id="s3TempUses" class="w-full border border-brand-border rounded-lg px-4 py-2" placeholder="e.g., 50" value="50">
+                                        <p class="text-xs text-brand-sage-light mt-1">Higher reuse = lower emissions per use</p>
                                     </div>
 
                                     <button id="addTempWorksBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">
@@ -902,13 +930,13 @@
                                 </div>
                             </div>
 
-                            <div class="border border-gray-200 rounded-lg p-6">
-                                <h4 class="font-semibold text-gray-800 mb-4">Added Temporary Works</h4>
+                            <div class="border border-brand-border rounded-lg p-6">
+                                <h4 class="font-semibold text-brand-navy mb-4">Added Temporary Works</h4>
                                 <div id="tempWorksList" class="space-y-2">
-                                    <p class="text-sm text-gray-500 text-center py-8">No temporary works added yet</p>
+                                    <p class="text-sm text-brand-sage-light text-center py-8">No temporary works added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                    <p class="text-sm text-gray-600">Total Temp Works Emissions:</p>
+                                <div class="mt-4 pt-4 border-t border-brand-border">
+                                    <p class="text-sm text-brand-sage">Total Temp Works Emissions:</p>
                                     <p class="text-2xl font-bold text-indigo-600" id="tempWorksTotal">0 tonnes CO2-e</p>
                                 </div>
                             </div>
@@ -920,14 +948,14 @@
             <!-- DASHBOARD TAB CONTENT -->
             <div id="dashboardTab" class="tab-content section-hidden">
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                        <i class="fas fa-chart-bar text-green-600 mr-2"></i>
+                    <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                        <i class="fas fa-chart-bar text-brand-forest mr-2"></i>
                         Operational Carbon Dashboard
                     </h2>
 
                     <!-- Scope Breakdown Chart -->
                     <div class="mb-8">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Emissions by Scope</h3>
+                        <h3 class="text-lg font-semibold text-brand-navy mb-4">Emissions by Scope</h3>
                         <div class="chart-container" style="height: 400px;">
                             <canvas id="scopesBreakdownChart"></canvas>
                         </div>
@@ -936,19 +964,19 @@
                     <!-- Category Breakdown -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Scope 1 Breakdown</h3>
+                            <h3 class="text-lg font-semibold text-brand-navy mb-4">Scope 1 Breakdown</h3>
                             <div class="chart-container" style="height: 300px;">
                                 <canvas id="scope1Chart"></canvas>
                             </div>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Scope 2 Breakdown</h3>
+                            <h3 class="text-lg font-semibold text-brand-navy mb-4">Scope 2 Breakdown</h3>
                             <div class="chart-container" style="height: 300px;">
                                 <canvas id="scope2Chart"></canvas>
                             </div>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Scope 3 Breakdown</h3>
+                            <h3 class="text-lg font-semibold text-brand-navy mb-4">Scope 3 Breakdown</h3>
                             <div class="chart-container" style="height: 300px;">
                                 <canvas id="scope3Chart"></canvas>
                             </div>
@@ -957,13 +985,13 @@
 
                     <!-- Export and Save -->
                     <div class="flex gap-4 justify-center">
-                        <button id="exportDataBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
+                        <button id="exportDataBtn" class="bg-brand-midnight hover:bg-brand-forest text-white px-6 py-3 rounded-lg font-medium">
                             <i class="fas fa-download mr-2"></i>Export Data (JSON)
                         </button>
-                        <button id="exportPDFBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium">
+                        <button id="exportPDFBtn" class="bg-brand-primary hover:bg-brand-primary-dark text-white px-6 py-3 rounded-lg font-medium">
                             <i class="fas fa-file-pdf mr-2"></i>Generate PDF Report
                         </button>
-                        <button id="saveProjectBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium">
+                        <button id="saveProjectBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-6 py-3 rounded-lg font-medium">
                             <i class="fas fa-save mr-2"></i>Save Project
                         </button>
                     </div>
@@ -973,10 +1001,10 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-12">
+    <footer class="bg-brand-midnight text-white py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-lg font-semibold mb-2">CarbonConstruct - Operational Carbon Tracking</p>
-            <p class="text-gray-400 text-sm">
+            <p class="text-brand-sage-light text-sm">
                 Compliant with GHG Protocol, TCFD, NGER Act, and Australian climate disclosure requirements
             </p>
         </div>

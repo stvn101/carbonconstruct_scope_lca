@@ -5,16 +5,16 @@
 
 /* CSS Reset & Variables */
 :root {
-    --primary-green: #10B981;
-    --primary-green-dark: #059669;
-    --primary-green-light: #D1FAE5;
-    --text-primary: #111827;
-    --text-secondary: #6B7280;
-    --text-light: #9CA3AF;
+    --primary-green: #3DD68C;
+    --primary-green-dark: #1E4A40;
+    --primary-green-light: #E0F4ED;
+    --text-primary: #1E2A35;
+    --text-secondary: #4A5A6A;
+    --text-light: #7A9B8E;
     --background: #FFFFFF;
-    --background-gray: #F9FAFB;
-    --background-dark: #1F2937;
-    --border-color: #E5E7EB;
+    --background-gray: #F3F8F6;
+    --background-dark: #0E1621;
+    --border-color: #C9DAD3;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -109,6 +109,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-green);
 }
 
+/* underline animation */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -285,7 +286,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -876,7 +877,7 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 .cta-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
     color: white;
 }
 

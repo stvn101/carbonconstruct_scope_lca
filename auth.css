@@ -12,7 +12,7 @@
    LEFT SIDE - Branding & Benefits
    ============================================ */
 .auth-left {
-    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
     color: white;
     padding: 64px;
     display: flex;
@@ -29,7 +29,7 @@
     right: -20%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+    background: radial-gradient(circle, rgba(139, 195, 74, 0.2) 0%, rgba(139, 195, 74, 0) 70%);
     border-radius: 50%;
 }
 
@@ -251,7 +251,7 @@
 
 .social-btn:hover {
     background: var(--background-gray);
-    border-color: var(--text-secondary);
+    border-color: var(--accent-lime);
 }
 
 /* ============================================
@@ -319,7 +319,7 @@
 .form-group input:focus {
     outline: none;
     border-color: var(--primary-green);
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.18);
 }
 
 .form-group input::placeholder {
@@ -400,11 +400,11 @@
 }
 
 .strength-bar.active.good {
-    background: #3B82F6;
+    background: var(--accent-lime);
 }
 
 .strength-bar.active.strong {
-    background: #10B981;
+    background: var(--primary-green);
 }
 
 .strength-text {
@@ -518,7 +518,7 @@
     gap: 8px;
     margin-top: 24px;
     padding: 12px;
-    background: rgba(16, 185, 129, 0.05);
+    background: rgba(139, 195, 74, 0.12);
     border-radius: 8px;
     font-size: 13px;
     color: var(--primary-green-dark);

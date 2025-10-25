@@ -3,6 +3,32 @@
  * Additional styling beyond Tailwind CSS for specific CarbonConstruct needs
  */
 
+:root {
+    --brand-primary: #3DD68C;
+    --brand-primary-dark: #1E4A40;
+    --brand-forest: #47876D;
+    --brand-mint: #E0F4ED;
+    --brand-sage: #7A9B8E;
+    --brand-navy: #1E2A35;
+    --brand-midnight: #0E1621;
+    --brand-steel: #4A5A6A;
+    --surface-muted: #F3F8F6;
+    --surface-contrast: #FFFFFF;
+    --border-subtle: #C9DAD3;
+    --status-success-bg: var(--brand-mint);
+    --status-success-border: var(--brand-primary);
+    --status-success-text: var(--brand-forest);
+    --status-info-bg: rgba(74, 90, 106, 0.1);
+    --status-info-border: var(--brand-steel);
+    --status-info-text: var(--brand-midnight);
+    --status-warning-bg: rgba(122, 155, 142, 0.15);
+    --status-warning-border: var(--brand-sage);
+    --status-warning-text: var(--brand-forest);
+    --status-danger-bg: rgba(14, 22, 33, 0.08);
+    --status-danger-border: var(--brand-midnight);
+    --status-danger-text: var(--brand-midnight);
+}
+
 /* Ensure proper font loading */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
@@ -22,7 +48,7 @@ html {
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
     color: white;
     text-decoration: none;
     font-weight: 500;
@@ -32,8 +58,8 @@ html {
 }
 
 .nav-ec3:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, var(--brand-primary-dark) 0%, var(--brand-forest) 100%);
+    box-shadow: 0 4px 8px rgba(61, 214, 140, 0.3);
     transform: translateY(-1px);
     color: white;
 }
@@ -101,7 +127,7 @@ button:disabled {
 button:focus,
 input:focus,
 select:focus {
-    outline: 2px solid #059669;
+    outline: 2px solid var(--brand-forest);
     outline-offset: 2px;
 }
 
@@ -140,22 +166,22 @@ select:focus {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--surface-muted);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #059669;
+    background: var(--brand-forest);
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #047857;
+    background: var(--brand-primary-dark);
 }
 
 /* Loading spinner (if needed in future) */
 .spinner {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #059669;
+    border: 3px solid var(--surface-muted);
+    border-top: 3px solid var(--brand-forest);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -181,8 +207,8 @@ select:focus {
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 200px;
-    background-color: #333;
-    color: #fff;
+    background-color: var(--brand-midnight);
+    color: var(--surface-contrast);
     text-align: center;
     border-radius: 6px;
     padding: 8px;
@@ -222,34 +248,34 @@ select:focus {
 }
 
 .alert-success {
-    background-color: #d1fae5;
-    border: 1px solid #059669;
-    color: #065f46;
+    background-color: var(--status-success-bg);
+    border: 1px solid var(--status-success-border);
+    color: var(--status-success-text);
 }
 
 .alert-warning {
-    background-color: #fef3c7;
-    border: 1px solid #f59e0b;
-    color: #92400e;
+    background-color: var(--status-warning-bg);
+    border: 1px solid var(--status-warning-border);
+    color: var(--status-warning-text);
 }
 
 .alert-error {
-    background-color: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #991b1b;
+    background-color: var(--status-danger-bg);
+    border: 1px solid var(--status-danger-border);
+    color: var(--status-danger-text);
 }
 
 /* Gradient backgrounds for compliance sections */
 .gradient-green {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    background: linear-gradient(135deg, var(--brand-primary-dark) 0%, var(--brand-forest) 100%);
 }
 
 .gradient-blue {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(135deg, var(--brand-sage) 0%, var(--brand-steel) 100%);
 }
 
 .gradient-yellow {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-forest) 100%);
 }
 
 /* Mobile menu toggle (if navigation becomes hamburger menu) */
@@ -277,16 +303,16 @@ table.data-table {
 }
 
 table.data-table th {
-    background-color: #f3f4f6;
+    background-color: var(--surface-muted);
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
-    color: #374151;
+    color: var(--brand-steel);
 }
 
 table.data-table tbody tr:hover {
-    background-color: #f9fafb;
+    background-color: var(--surface-muted);
 }
 
 /* Chart legends responsive */
@@ -298,59 +324,59 @@ table.data-table tbody tr:hover {
 
 /* Compliance status colors */
 .status-excellent {
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: var(--status-success-bg);
+    color: var(--status-success-text);
 }
 
 .status-good {
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: rgba(122, 155, 142, 0.12);
+    color: var(--brand-sage);
 }
 
 .status-average {
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: rgba(224, 244, 237, 0.5);
+    color: var(--brand-forest);
 }
 
 .status-poor {
-    background-color: #fee2e2;
-    color: #991b1b;
+    background-color: rgba(14, 22, 33, 0.08);
+    color: var(--brand-midnight);
 }
 
 /* Material category colors */
 .category-concrete {
-    border-left: 4px solid #3b82f6;
+    border-left: 4px solid var(--brand-forest);
 }
 
 .category-steel {
-    border-left: 4px solid #6b7280;
+    border-left: 4px solid var(--brand-steel);
 }
 
 .category-timber {
-    border-left: 4px solid #92400e;
+    border-left: 4px solid var(--brand-sage);
 }
 
 .category-masonry {
-    border-left: 4px solid #dc2626;
+    border-left: 4px solid var(--brand-midnight);
 }
 
 .category-insulation {
-    border-left: 4px solid #f59e0b;
+    border-left: 4px solid var(--brand-primary);
 }
 
 .category-glazing {
-    border-left: 4px solid #06b6d4;
+    border-left: 4px solid var(--brand-primary-dark);
 }
 
 .category-finishes {
-    border-left: 4px solid #8b5cf6;
+    border-left: 4px solid var(--brand-sage);
 }
 
 /* Empty state styling */
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
-    color: #9ca3af;
+    color: var(--text-light);
 }
 
 .empty-state i {
@@ -366,7 +392,7 @@ footer {
 
 /* Hero section overlay */
 .hero-overlay {
-    background: linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(61, 214, 140, 0.95) 0%, rgba(30, 74, 64, 0.95) 100%);
 }
 
 /* Ensure proper spacing on mobile */
@@ -390,14 +416,14 @@ input[type="text"]:focus,
 input[type="number"]:focus,
 select:focus,
 textarea:focus {
-    border-color: #059669;
-    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    border-color: var(--brand-forest);
+    box-shadow: 0 0 0 3px rgba(71, 135, 109, 0.2);
 }
 
 /* Disabled input styling */
 input:disabled,
 select:disabled {
-    background-color: #f3f4f6;
+    background-color: var(--surface-muted);
     cursor: not-allowed;
 }
 

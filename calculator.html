@@ -19,6 +19,34 @@
     <title>CarbonConstruct - Embodied Carbon Calculator</title>
 
     <!-- Tailwind CSS for rapid, professional styling -->
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#3DD68C',
+                            'primary-dark': '#1E4A40',
+                            forest: '#47876D',
+                            sage: '#7A9B8E',
+                            'sage-light': '#AFC2B9',
+                            mint: '#E0F4ED',
+                            navy: '#1E2A35',
+                            midnight: '#0E1621',
+                            steel: '#4A5A6A',
+                            surface: '#F3F8F6',
+                            border: '#C9DAD3',
+                            contrast: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Chart.js for data visualization - construction pros need to SEE the data -->
@@ -46,9 +74,9 @@
 
         /* Custom color scheme - professional greens for sustainability */
         :root {
-            --primary-green: #059669;
-            --dark-green: #047857;
-            --light-green: #d1fae5;
+            --primary-green: #3DD68C;
+            --dark-green: #1E4A40;
+            --light-green: #E0F4ED;
         }
 
         .carbon-card {
@@ -72,28 +100,28 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-brand-mint">
 
     <!-- Navigation Header -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <i class="fas fa-leaf text-green-600 text-2xl mr-3"></i>
-                    <span class="text-xl font-bold text-gray-800">CarbonConstruct</span>
-                    <span class="ml-3 text-sm text-gray-500">Embodied Carbon Calculator</span>
+                    <i class="fas fa-leaf text-brand-forest text-2xl mr-3"></i>
+                    <span class="text-xl font-bold text-brand-navy">CarbonConstruct</span>
+                    <span class="ml-3 text-sm text-brand-sage">Embodied Carbon Calculator</span>
                 </div>
                 <div class="hidden md:flex space-x-6">
-                    <a href="#calculator" class="text-gray-700 hover:text-green-600 font-medium">Calculator</a>
-                    <a href="#lca" class="text-gray-700 hover:text-green-600 font-medium">LCA</a>
-                    <a href="operational-carbon.html" class="text-orange-600 hover:text-orange-700 font-semibold">
+                    <a href="#calculator" class="text-brand-steel hover:text-brand-forest font-medium">Calculator</a>
+                    <a href="#lca" class="text-brand-steel hover:text-brand-forest font-medium">LCA</a>
+                    <a href="operational-carbon.html" class="text-brand-primary hover:text-brand-primary-dark font-semibold">
                         <i class="fas fa-industry mr-1"></i>Operational Carbon
                     </a>
-                    <a href="#compliance" class="text-gray-700 hover:text-green-600 font-medium">Compliance</a>
-                    <a href="#reports" class="text-gray-700 hover:text-green-600 font-medium">Reports</a>
-                    <a href="#saved" class="text-gray-700 hover:text-green-600 font-medium">Saved Projects</a>
+                    <a href="#compliance" class="text-brand-steel hover:text-brand-forest font-medium">Compliance</a>
+                    <a href="#reports" class="text-brand-steel hover:text-brand-forest font-medium">Reports</a>
+                    <a href="#saved" class="text-brand-steel hover:text-brand-forest font-medium">Saved Projects</a>
                 </div>
-                <button id="newProjectBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+                <button id="newProjectBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                     <i class="fas fa-plus mr-2"></i>New Project
                 </button>
             </div>
@@ -101,39 +129,39 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-green-600 to-green-800 text-white py-12">
+    <section class="bg-gradient-to-r from-brand-forest to-brand-midnight text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="text-4xl font-bold mb-4">Embodied Carbon Calculator</h1>
-            <p class="text-xl text-green-100 mb-6">
+            <p class="text-xl text-brand-mint mb-6">
                 Complete Life Cycle Assessment (LCA) for Australian Construction Projects
             </p>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
                     <i class="fas fa-check-circle text-2xl mb-2"></i>
                     <h3 class="font-semibold">NCC Compliant</h3>
-                    <p class="text-sm text-green-100">National Construction Code</p>
+                    <p class="text-sm text-brand-mint">National Construction Code</p>
                 </div>
                 <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
                     <i class="fas fa-star text-2xl mb-2"></i>
                     <h3 class="font-semibold">NABERS Ready</h3>
-                    <p class="text-sm text-green-100">Energy & Carbon Rating</p>
+                    <p class="text-sm text-brand-mint">Energy & Carbon Rating</p>
                 </div>
                 <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
                     <i class="fas fa-building text-2xl mb-2"></i>
                     <h3 class="font-semibold">GBCA Standards</h3>
-                    <p class="text-sm text-green-100">Green Star the Gold Standard</p>
+                    <p class="text-sm text-brand-mint">Green Star the Gold Standard</p>
                 </div>
                 <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
                     <i class="fas fa-chart-line text-2xl mb-2"></i>
                     <h3 class="font-semibold">Full LCA</h3>
-                    <p class="text-sm text-green-100">Cradle to Grave Analysis</p>
+                    <p class="text-sm text-brand-mint">Cradle to Grave Analysis</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- NEW: Operational Carbon Tracking Banner -->
-    <section class="bg-gradient-to-r from-orange-500 to-red-500 text-white py-8">
+    <section class="bg-gradient-to-r from-brand-primary to-brand-forest text-white py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-between">
                 <div class="mb-4 md:mb-0">
@@ -141,12 +169,12 @@
                         <i class="fas fa-fire mr-2"></i>
                         NEW: Track Scope 1 & 2 Emissions
                     </h2>
-                    <p class="text-orange-100">
+                    <p class="text-brand-mint">
                         Complete operational carbon tracking for site equipment, electricity, transport, waste & more.
                         <strong>Required for TCFD compliance!</strong>
                     </p>
                 </div>
-                <a href="operational-carbon.html" class="bg-white text-orange-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-bold text-lg whitespace-nowrap">
+                <a href="operational-carbon.html" class="bg-white text-brand-forest hover:bg-brand-mint px-6 py-3 rounded-lg font-bold text-lg whitespace-nowrap">
                     Track Operational Carbon Emissions
                 </a>
             </div>
@@ -156,19 +184,19 @@
     <!-- Main Calculator Section -->
     <section id="calculator" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                <i class="fas fa-calculator text-green-600 mr-2"></i>
+            <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                <i class="fas fa-calculator text-brand-forest mr-2"></i>
                 Project Details
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Name</label>
-                    <input type="text" id="projectName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="e.g., Melbourne Office Tower">
+                    <label class="block text-sm font-medium text-brand-steel mb-2">Project Name</label>
+                    <input type="text" id="projectName" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent" placeholder="e.g., Melbourne Office Tower">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Type</label>
-                    <select id="projectType" title="Select project type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <label class="block text-sm font-medium text-brand-steel mb-2">Project Type</label>
+                    <select id="projectType" title="Select project type" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
                         <option value="">Select Type</option>
                         <option value="residential">Residential</option>
                         <option value="commercial">Commercial</option>
@@ -178,28 +206,28 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Gross Floor Area (m2)</label>
-                    <input type="number" id="gfa" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="e.g., 5000">
+                    <label class="block text-sm font-medium text-brand-steel mb-2">Gross Floor Area (m2)</label>
+                    <input type="number" id="gfa" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent" placeholder="e.g., 5000">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Design Life (years)</label>
-                    <input type="number" id="designLife" value="50" placeholder="e.g., 50" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <label class="block text-sm font-medium text-brand-steel mb-2">Design Life (years)</label>
+                    <input type="number" id="designLife" value="50" placeholder="e.g., 50" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
                 </div>
             </div>
         </div>
 
         <!-- Material Input Section -->
         <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                <i class="fas fa-cubes text-green-600 mr-2"></i>
+            <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                <i class="fas fa-cubes text-brand-forest mr-2"></i>
                 Materials & Quantities
             </h2>
 
             <div class="mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Material Category</label>
-                        <select id="materialCategory" title="Material Category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <label class="block text-sm font-medium text-brand-steel mb-2">Material Category</label>
+                        <select id="materialCategory" title="Material Category" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
                             <option value="">Select Category</option>
                             <option value="concrete">Concrete</option>
                             <option value="steel">Steel</option>
@@ -211,18 +239,18 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Specific Material</label>
-                        <select id="materialType" title="Specific Material" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <label class="block text-sm font-medium text-brand-steel mb-2">Specific Material</label>
+                        <select id="materialType" title="Specific Material" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
                             <option value="">Select Material</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
-                        <input type="number" id="materialQuantity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="0">
+                        <label class="block text-sm font-medium text-brand-steel mb-2">Quantity</label>
+                        <input type="number" id="materialQuantity" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent" placeholder="0">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Unit</label>
-                        <select id="materialUnit" title="Material Unit" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <label class="block text-sm font-medium text-brand-steel mb-2">Unit</label>
+                        <select id="materialUnit" title="Material Unit" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
                             <option value="m3">m3│</option>
                             <option value="tonnes">tonnes</option>
                             <option value="m2">m2</option>
@@ -231,14 +259,14 @@
                         </select>
                     </div>
                 </div>
-                <button id="addMaterialBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium">
+                <button id="addMaterialBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-6 py-2 rounded-lg font-medium">
                     <i class="fas fa-plus mr-2"></i>Add Material
                 </button>
             </div>
 
             <!-- Materials List -->
-            <div id="materialsList" class="border-t border-gray-200 pt-4">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Added Materials</h3>
+            <div id="materialsList" class="border-t border-brand-border pt-4">
+                <h3 class="text-lg font-semibold text-brand-navy mb-4">Added Materials</h3>
                 <div id="materialsTable" class="overflow-x-auto">
                     <!-- Materials will be added here dynamically -->
                 </div>
@@ -247,15 +275,15 @@
     </section>
 
     <!-- LCA Section -->
-    <section id="lca" class="bg-gray-100 py-12">
+    <section id="lca" class="bg-brand-mint py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                    <i class="fas fa-recycle text-green-600 mr-2"></i>
+                <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                    <i class="fas fa-recycle text-brand-forest mr-2"></i>
                     Life Cycle Assessment (LCA)
                 </h2>
 
-                <p class="text-gray-600 mb-6">
+                <p class="text-brand-sage mb-6">
                     Complete cradle-to-grave analysis following ISO 14040/14044 standards and EN 15978 for construction products.
                 </p>
 
@@ -318,31 +346,31 @@
     <section id="scopes" class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                    <i class="fas fa-layer-group text-green-600 mr-2"></i>
+                <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                    <i class="fas fa-layer-group text-brand-forest mr-2"></i>
                     GHG Protocol Scopes (1, 2, 3)
                 </h2>
 
-                <p class="text-gray-600 mb-6">
+                <p class="text-brand-sage mb-6">
                     Greenhouse Gas emissions categorized following the GHG Protocol Corporate Standard for comprehensive reporting.
                 </p>
 
                 <!-- Scopes Breakdown -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <!-- Scope 1: Direct Emissions -->
-                    <div class="carbon-card bg-orange-50 border-2 border-orange-200 rounded-lg p-6">
+                    <div class="carbon-card bg-brand-mint border-2 border-brand-border rounded-lg p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-orange-900">Scope 1</h3>
-                            <i class="fas fa-fire text-orange-600 text-2xl"></i>
+                            <h3 class="text-lg font-semibold text-brand-midnight">Scope 1</h3>
+                            <i class="fas fa-fire text-brand-forest text-2xl"></i>
                         </div>
-                        <p class="text-sm text-orange-700 mb-4">Direct emissions from owned or controlled sources</p>
-                        <ul class="text-sm text-orange-700 mb-4 space-y-1">
+                        <p class="text-sm text-brand-primary-dark mb-4">Direct emissions from owned or controlled sources</p>
+                        <ul class="text-sm text-brand-primary-dark mb-4 space-y-1">
                             <li>ΓÇó On-site fuel combustion</li>
                             <li>ΓÇó Company vehicles</li>
                             <li>ΓÇó Fugitive emissions</li>
                         </ul>
-                        <p class="text-3xl font-bold text-orange-900" id="scope1Total">0</p>
-                        <p class="text-sm text-orange-600">kg CO2-e</p>
+                        <p class="text-3xl font-bold text-brand-midnight" id="scope1Total">0</p>
+                        <p class="text-sm text-brand-forest">kg CO2-e</p>
                     </div>
 
                     <!-- Scope 2: Indirect Energy Emissions -->
@@ -387,127 +415,127 @@
     </section>
 
     <!-- Compliance Section -->
-    <section id="compliance" class="bg-gray-100 py-12">
+    <section id="compliance" class="bg-brand-mint py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                    <i class="fas fa-clipboard-check text-green-600 mr-2"></i>
+                <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                    <i class="fas fa-clipboard-check text-brand-forest mr-2"></i>
                     Australian Compliance Standards
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- NCC Compliance -->
-                    <div class="border-2 border-gray-200 rounded-lg p-6">
+                    <div class="border-2 border-brand-border rounded-lg p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">NCC 2022</h3>
-                            <span id="nccStatus" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">Pending</span>
+                            <h3 class="text-lg font-semibold text-brand-midnight">NCC 2022</h3>
+                            <span id="nccStatus" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">Pending</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-4">National Construction Code Volume One & Two</p>
-                        <ul class="text-sm text-gray-700 space-y-2">
+                        <p class="text-sm text-brand-sage mb-4">National Construction Code Volume One & Two</p>
+                        <ul class="text-sm text-brand-steel space-y-2">
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Section J - Energy Efficiency</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>JV3 - Greenhouse & Energy Min Standards</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>DTS & Performance Solutions</span>
                             </li>
                         </ul>
-                        <div class="mt-4 pt-4 border-t border-gray-200">
-                            <p class="text-xs text-gray-500">Embodied Energy: <span id="nccEmbodiedEnergy" class="font-semibold">0 MJ/m3</span></p>
-                            <p class="text-xs text-gray-500">Carbon Intensity: <span id="nccCarbonIntensity" class="font-semibold">0 kg CO2-e/m┬▓</span></p>
+                        <div class="mt-4 pt-4 border-t border-brand-border">
+                            <p class="text-xs text-brand-sage-light">Embodied Energy: <span id="nccEmbodiedEnergy" class="font-semibold">0 MJ/m3</span></p>
+                            <p class="text-xs text-brand-sage-light">Carbon Intensity: <span id="nccCarbonIntensity" class="font-semibold">0 kg CO2-e/m┬▓</span></p>
                         </div>
                     </div>
 
                     <!-- NABERS Compliance -->
-                    <div class="border-2 border-gray-200 rounded-lg p-6">
+                    <div class="border-2 border-brand-border rounded-lg p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">NABERS</h3>
-                            <span id="nabersRating" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">0Γÿà</span>
+                            <h3 class="text-lg font-semibold text-brand-midnight">NABERS</h3>
+                            <span id="nabersRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0Γÿà</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-4">National Australian Built Environment Rating System</p>
-                        <ul class="text-sm text-gray-700 space-y-2">
+                        <p class="text-sm text-brand-sage mb-4">National Australian Built Environment Rating System</p>
+                        <ul class="text-sm text-brand-steel space-y-2">
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Energy Rating</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Carbon Neutral Certification</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Whole Building Assessment</span>
                             </li>
                         </ul>
-                        <div class="mt-4 pt-4 border-t border-gray-200">
-                            <p class="text-xs text-gray-500">Target Rating: <span class="font-semibold">5.0+ Stars</span></p>
-                            <p class="text-xs text-gray-500">Benchmark: <span id="nabersBenchmark" class="font-semibold">Loading...</span></p>
+                        <div class="mt-4 pt-4 border-t border-brand-border">
+                            <p class="text-xs text-brand-sage-light">Target Rating: <span class="font-semibold">5.0+ Stars</span></p>
+                            <p class="text-xs text-brand-sage-light">Benchmark: <span id="nabersBenchmark" class="font-semibold">Loading...</span></p>
                         </div>
                     </div>
 
                     <!-- GBCA Green Star -->
-                    <div class="border-2 border-gray-200 rounded-lg p-6">
+                    <div class="border-2 border-brand-border rounded-lg p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">GBCA Green Star</h3>
-                            <span id="greenStarRating" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium">0Γÿà</span>
+                            <h3 class="text-lg font-semibold text-brand-midnight">GBCA Green Star</h3>
+                            <span id="greenStarRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0Γÿà</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-4">Green Building Council of Australia</p>
-                        <ul class="text-sm text-gray-700 space-y-2">
+                        <p class="text-sm text-brand-sage mb-4">Green Building Council of Australia</p>
+                        <ul class="text-sm text-brand-steel space-y-2">
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Materials Category</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Life Cycle Impacts</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
                                 <span>Responsible Materials Sourcing</span>
                             </li>
                         </ul>
-                        <div class="mt-4 pt-4 border-gray-200">
-                            <p class="text-xs text-gray-500">Target: <span class="font-semibold">4+ Stars (Best Practice)</span></p>
-                            <p class="text-xs text-gray-500">Points: <span id="greenStarPoints" class="font-semibold">0/100</span></p>
+                        <div class="mt-4 pt-4 border-brand-border">
+                            <p class="text-xs text-brand-sage-light">Target: <span class="font-semibold">4+ Stars (Best Practice)</span></p>
+                            <p class="text-xs text-brand-sage-light">Points: <span id="greenStarPoints" class="font-semibold">0/100</span></p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Additional Compliance Requirements -->
-                <div class="mt-8 pt-8 border-t border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Additional Reporting Requirements</h3>
+                <div class="mt-8 pt-8 border-t border-brand-border">
+                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Additional Reporting Requirements</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="flex items-start space-x-3">
                             <i class="fas fa-file-alt text-blue-600 mt-1"></i>
                             <div>
-                                <h4 class="font-semibold text-gray-800">Climate-Related Financial Disclosures (TCFD)</h4>
-                                <p class="text-sm text-gray-600">Required for entities from January 2025</p>
+                                <h4 class="font-semibold text-brand-navy">Climate-Related Financial Disclosures (TCFD)</h4>
+                                <p class="text-sm text-brand-sage">Required for entities from January 2025</p>
                             </div>
                         </div>
                         <div class="flex items-start space-x-3">
                             <i class="fas fa-chart-bar text-blue-600 mt-1"></i>
                             <div>
-                                <h4 class="font-semibold text-gray-800">NGER Act Reporting</h4>
-                                <p class="text-sm text-gray-600">National Greenhouse and Energy Reporting</p>
+                                <h4 class="font-semibold text-brand-navy">NGER Act Reporting</h4>
+                                <p class="text-sm text-brand-sage">National Greenhouse and Energy Reporting</p>
                             </div>
                         </div>
                         <div class="flex items-start space-x-3">
                             <i class="fas fa-certificate text-blue-600 mt-1"></i>
                             <div>
-                                <h4 class="font-semibold text-gray-800">EPDs (Environmental Product Declarations)</h4>
-                                <p class="text-sm text-gray-600">Third-party verified environmental data</p>
+                                <h4 class="font-semibold text-brand-navy">EPDs (Environmental Product Declarations)</h4>
+                                <p class="text-sm text-brand-sage">Third-party verified environmental data</p>
                             </div>
                         </div>
                         <div class="flex items-start space-x-3">
                             <i class="fas fa-leaf text-blue-600 mt-1"></i>
                             <div>
-                                <h4 class="font-semibold text-gray-800">Australian Embodied Carbon Database</h4>
-                                <p class="text-sm text-gray-600">Aligned with national standards</p>
+                                <h4 class="font-semibold text-brand-navy">Australian Embodied Carbon Database</h4>
+                                <p class="text-sm text-brand-sage">Aligned with national standards</p>
                             </div>
                         </div>
                     </div>
@@ -521,18 +549,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-lg p-8">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">
-                        <i class="fas fa-file-contract text-green-600 mr-2"></i>
+                    <h2 class="text-2xl font-bold text-brand-navy">
+                        <i class="fas fa-file-contract text-brand-forest mr-2"></i>
                         Project Summary & Reports
                     </h2>
                     <div class="space-x-3">
-                        <button id="calculateBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium">
+                        <button id="calculateBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-6 py-2 rounded-lg font-medium">
                             <i class="fas fa-calculator mr-2"></i>Calculate All
                         </button>
                         <button id="saveProjectBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium">
                             <i class="fas fa-save mr-2"></i>Save Project
                         </button>
-                        <button id="exportReportBtn" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-medium">
+                        <button id="exportReportBtn" class="bg-brand-midnight hover:bg-brand-forest text-white px-6 py-2 rounded-lg font-medium">
                             <i class="fas fa-download mr-2"></i>Export Report
                         </button>
                     </div>
@@ -540,7 +568,7 @@
 
                 <!-- Total Emissions Summary -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-gradient-to-br from-green-500 to-green-700 text-white rounded-lg p-6">
+                    <div class="bg-gradient-to-br from-brand-primary to-brand-forest text-white rounded-lg p-6">
                         <h3 class="text-sm font-medium mb-2 opacity-90">Total Embodied Carbon</h3>
                         <p class="text-4xl font-bold mb-1" id="totalCarbon">0</p>
                         <p class="text-sm opacity-90">kg CO2-e</p>
@@ -555,39 +583,39 @@
                         <p class="text-4xl font-bold mb-1" id="treesEquivalent">0</p>
                         <p class="text-sm opacity-90">trees needed for 10 years</p>
                     </div>
-                    <div class="bg-gradient-to-br from-orange-500 to-orange-700 text-white rounded-lg p-6">
+                    <div class="bg-gradient-to-br from-brand-primary to-brand-forest text-white rounded-lg p-6">
                         <h3 class="text-sm font-medium mb-2 opacity-90">Car Equivalent</h3>
                 <!-- Materials Breakdown Chart -->
                 <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Carbon by Material Category</h3>
+                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Carbon by Material Category</h3>
                     <div class="chart-container chart-container-400">
                         <canvas id="materialsChart"></canvas>
                     </div>
                 </div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Carbon by Material Category</h3>
+                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Carbon by Material Category</h3>
                     <div class="chart-container" style="height: 400px;">
                         <canvas id="materialsChart"></canvas>
                     </div>
                 </div>
 
                 <!-- Benchmarking -->
-                <div class="border-t border-gray-200 pt-8">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Industry Benchmarking</h3>
+                <div class="border-t border-brand-border pt-8">
+                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Industry Benchmarking</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="text-center p-4 bg-red-50 rounded-lg">
-                            <p class="text-sm text-gray-600 mb-2">Industry Average</p>
+                            <p class="text-sm text-brand-sage mb-2">Industry Average</p>
                             <p class="text-2xl font-bold text-red-700" id="benchmarkAvg">500</p>
-                            <p class="text-sm text-gray-600">kg CO2-e/m┬▓</p>
+                            <p class="text-sm text-brand-sage">kg CO2-e/m┬▓</p>
                         </div>
                         <div class="text-center p-4 bg-yellow-50 rounded-lg">
-                            <p class="text-sm text-gray-600 mb-2">Best Practice</p>
+                            <p class="text-sm text-brand-sage mb-2">Best Practice</p>
                             <p class="text-2xl font-bold text-yellow-700" id="benchmarkBest">350</p>
-                            <p class="text-sm text-gray-600">kg CO2-e/m┬▓</p>
+                            <p class="text-sm text-brand-sage">kg CO2-e/m┬▓</p>
                         </div>
-                        <div class="text-center p-4 bg-green-50 rounded-lg">
-                            <p class="text-sm text-gray-600 mb-2">Your Project</p>
-                            <p class="text-2xl font-bold text-green-700" id="benchmarkYour">0</p>
-                            <p class="text-sm text-gray-600">kg CO2-e/m┬▓</p>
+                        <div class="text-center p-4 bg-brand-mint rounded-lg">
+                            <p class="text-sm text-brand-sage mb-2">Your Project</p>
+                            <p class="text-2xl font-bold text-brand-primary-dark" id="benchmarkYour">0</p>
+                            <p class="text-sm text-brand-sage">kg CO2-e/m┬▓</p>
                         </div>
                     </div>
                 </div>
@@ -596,11 +624,11 @@
     </section>
 
     <!-- Saved Projects Section -->
-    <section id="saved" class="bg-gray-100 py-12">
+    <section id="saved" class="bg-brand-mint py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                    <i class="fas fa-folder-open text-green-600 mr-2"></i>
+                <h2 class="text-2xl font-bold text-brand-navy mb-6">
+                    <i class="fas fa-folder-open text-brand-forest mr-2"></i>
                     Saved Projects
                 </h2>
                 <div id="savedProjectsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -611,14 +639,14 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-brand-midnight text-white py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <p class="text-lg font-semibold mb-2">CarbonConstruct - Embodied Carbon Calculator</p>
-                <p class="text-gray-400 text-sm mb-4">
+                <p class="text-brand-sage-light text-sm mb-4">
                     Compliant with NCC 2022, NABERS, GBCA Green Star, and TCFD requirements
                 </p>
-                <p class="text-gray-500 text-xs">
+                <p class="text-brand-sage-light text-xs">
                     Built for Australian construction professionals | ISO 14040/14044 | EN 15978 | GHG Protocol
                 </p>
             </div>

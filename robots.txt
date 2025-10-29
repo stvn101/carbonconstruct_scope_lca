@@ -1,0 +1,14 @@
+# robots.txt for CarbonConstruct
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test-*.html
+Disallow: /*-debug.html
+Disallow: /*.json$
+
+# Sitemap
+Sitemap: https://carbonconstruct.com.au/sitemap.xml
+
+# Crawl delay (optional, helps with load)
+Crawl-delay: 1

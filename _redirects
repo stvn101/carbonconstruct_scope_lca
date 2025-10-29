@@ -1,0 +1,12 @@
+# Netlify/Vercel style redirects file
+# This prevents redirect loops and handles common routing issues
+
+# Prevent redirect loops - handle trailing slashes consistently
+/index.html /
+/home /
+
+# API endpoints (if needed in future)
+/api/* /.netlify/functions/:splat 200
+
+# Fallback to index.html for client-side routing
+/* /index.html 200

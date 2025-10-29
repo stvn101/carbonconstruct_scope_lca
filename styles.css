@@ -3,23 +3,35 @@
    Modern, Professional Design for Carbon Calculator
    ============================================ */
 
-/* CSS Reset & Variables */
+/* CSS Reset & Variables - Modern Lime Green Theme 2025 */
 :root {
-    --primary-green: #1B5E20;
-    --primary-green-dark: #124319;
-    --primary-green-light: #E6F3E8;
-    --accent-lime: #8BC34A;
-    --text-primary: #212121;
-    --text-secondary: #424242;
-    --text-light: #616161;
-    --background: #FFFFFF;
-    --background-gray: #F3F6F1;
-    --background-dark: #162219;
-    --border-color: #D1E0D2;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* Primary Lime Green Colors */
+    --primary-green: #9FFF00;
+    --primary-green-dark: #7ACC00;
+    --primary-green-light: #E8FFB7;
+    --accent-lime: #CDFF00;
+
+    /* Carbon & Dark Tones */
+    --text-primary: #1A1A1A;
+    --text-secondary: #404040;
+    --text-light: #606060;
+    --background: #FAFAFA;
+    --background-gray: #F5FFDB;
+    --background-dark: #1A1A1A;
+    --border-color: #CDFF00;
+
+    /* Forest Green Accents */
+    --forest-green: #2D5016;
+    --forest-green-dark: #1E3510;
+
+    /* Shadows with Lime Glow */
+    --shadow-sm: 0 2px 4px rgba(159, 255, 0, 0.1);
+    --shadow: 0 4px 8px rgba(159, 255, 0, 0.15);
+    --shadow-lg: 0 12px 24px rgba(159, 255, 0, 0.2);
+    --shadow-xl: 0 20px 40px rgba(159, 255, 0, 0.25);
+    --shadow-lime: 0 8px 16px rgba(159, 255, 0, 0.3);
+
+    /* Modern Radius */
     --radius: 12px;
     --radius-lg: 16px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -174,26 +186,26 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: var(--primary-green);
-    color: white;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+    color: var(--text-primary);
     padding: 14px 28px;
     border-radius: var(--radius);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
     text-decoration: none;
     border: none;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lime);
 }
 
 .btn-primary:hover,
 .btn-primary-small:hover,
 .btn-primary-full:hover,
 .btn-primary-large:hover {
-    background: var(--primary-green-dark);
+    background: linear-gradient(135deg, var(--accent-lime) 0%, var(--primary-green) 100%);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 12px 24px rgba(159, 255, 0, 0.4);
 }
 
 .btn-primary-small {
@@ -217,14 +229,14 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: white;
-    color: var(--text-primary);
+    background: var(--background-dark);
+    color: var(--primary-green);
     padding: 14px 28px;
     border-radius: var(--radius);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
     text-decoration: none;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--primary-green);
     cursor: pointer;
     transition: var(--transition);
 }
@@ -232,9 +244,11 @@ h1, h2, h3, h4, h5, h6 {
 .btn-secondary:hover,
 .btn-secondary-full:hover,
 .btn-secondary-large:hover {
-    background: var(--background-gray);
-    border-color: var(--accent-lime);
+    background: var(--primary-green);
+    color: var(--background-dark);
+    border-color: var(--primary-green);
     transform: translateY(-2px);
+    box-shadow: var(--shadow-lime);
 }
 
 .btn-secondary-full {
@@ -298,7 +312,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--forest-green) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

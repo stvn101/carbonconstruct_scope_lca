@@ -26,18 +26,25 @@
                 extend: {
                     colors: {
                         brand: {
-                            primary: '#3DD68C',
-                            'primary-dark': '#1E4A40',
-                            forest: '#47876D',
-                            sage: '#7A9B8E',
-                            'sage-light': '#AFC2B9',
-                            mint: '#E0F4ED',
-                            navy: '#1E2A35',
-                            midnight: '#0E1621',
-                            steel: '#4A5A6A',
-                            surface: '#F3F8F6',
-                            border: '#C9DAD3',
-                            contrast: '#FFFFFF'
+                            lime: '#9FFF00',
+                            'lime-light': '#CDFF00',
+                            'lime-dark': '#7ACC00',
+                            'lime-subtle': '#E8FFB7',
+                            carbon: '#1A1A1A',
+                            'carbon-dark': '#0A0A0A',
+                            'carbon-gray': '#404040',
+                            forest: '#2D5016',
+                            'forest-dark': '#1E3510',
+                            primary: '#9FFF00',
+                            'primary-dark': '#2D5016',
+                            sage: '#7ACC00',
+                            mint: '#E8FFB7',
+                            navy: '#1A1A1A',
+                            midnight: '#0A0A0A',
+                            steel: '#404040',
+                            surface: '#F5FFDB',
+                            border: '#CDFF00',
+                            contrast: '#FAFAFA'
                         }
                     },
                     fontFamily: {
@@ -71,9 +78,9 @@
         }
 
         :root {
-            --primary-green: #3DD68C;
-            --dark-green: #1E4A40;
-            --light-green: #E0F4ED;
+            --primary-green: #9FFF00;
+            --dark-green: #2D5016;
+            --light-green: #E8FFB7;
         }
 
         .carbon-card {
@@ -104,22 +111,32 @@
         }
     </style>
 </head>
-<body class="bg-brand-mint">
+<body class="bg-brand-surface">
+
+    <!-- Modern Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="index.html" class="nav-btn" title="Home" aria-label="Go to Home">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="calculator.html" class="nav-btn" title="Calculator" aria-label="Go to Calculator">
+            <i class="fas fa-calculator"></i>
+        </a>
+    </div>
 
     <!-- Navigation Header -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-white shadow-lg sticky top-0 z-50 border-b-4 border-brand-lime">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <i class="fas fa-industry text-brand-forest text-2xl mr-3"></i>
-                    <span class="text-xl font-bold text-brand-navy">CarbonConstruct</span>
-                    <span class="ml-3 text-sm text-brand-sage">Operational Carbon Tracking</span>
+                    <i class="fas fa-industry text-brand-lime text-2xl mr-3"></i>
+                    <span class="text-xl font-bold text-brand-carbon">CarbonConstruct</span>
+                    <span class="ml-3 text-sm text-brand-lime-dark font-semibold">Operational Carbon Tracking</span>
                 </div>
                 <div class="flex space-x-4">
-                    <a href="index.html" class="text-brand-steel hover:text-brand-forest font-medium">
-                        <i class="fas fa-home mr-2"></i>Main Dashboard
+                    <a href="calculator.html" class="text-brand-carbon-gray hover:text-brand-lime-dark font-medium transition-all">
+                        <i class="fas fa-calculator mr-2"></i>Embodied Carbon
                     </a>
-                    <button id="calculateAllBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
+                    <button id="calculateAllBtn" class="bg-gradient-to-r from-brand-lime to-brand-lime-dark hover:from-brand-lime-light hover:to-brand-lime text-brand-carbon px-4 py-2 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all">
                         <i class="fas fa-calculator mr-2"></i>Calculate All
                     </button>
                 </div>
@@ -128,7 +145,7 @@
     </nav>
 
     <!-- Hero Section with Totals -->
-    <section class="bg-gradient-to-r from-brand-primary to-brand-forest text-white py-12">
+    <section class="bg-gradient-to-r from-brand-carbon to-brand-forest-dark text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="text-4xl font-bold mb-4">Operational Carbon Tracking</h1>
             <p class="text-xl text-brand-mint mb-8">

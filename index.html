@@ -19,11 +19,23 @@
     <title>CarbonConstruct - NCC-Compliant Carbon Calculator for Australian Construction</title>
     <meta name="description" content="Calculate your construction project's embodied carbon in minutes. NCC-compliant, NABERS-ready reports for Australian builders.">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Modern Navigation Buttons (Quick Access) -->
+    <div class="nav-buttons">
+        <a href="calculator.html" class="nav-btn" title="Calculator" aria-label="Go to Calculator">
+            <i class="fas fa-calculator"></i>
+        </a>
+        <a href="dashboard.html" class="nav-btn" title="Dashboard" aria-label="Go to Dashboard">
+            <i class="fas fa-chart-line"></i>
+        </a>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -59,12 +71,12 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">
+                <div class="hero-badge" style="background: #E8FFB7; color: #2D5016; border: 2px solid #9FFF00;">
                     <span class="badge-icon">🇦🇺</span>
                     <span>Australia's Most Trusted Carbon Calculator</span>
                 </div>
                 <h1 class="hero-title">
-                    Calculate Your Project's <span class="gradient-text">Carbon Footprint</span> in Under 10 Minutes
+                    Calculate Your Project's <span class="gradient-text" style="background: linear-gradient(135deg, #9FFF00 0%, #2D5016 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Carbon Footprint</span> in Under 10 Minutes
                 </h1>
                 <p class="hero-subtitle">
                     Build Greener, Measure Smarter. Generate NCC-compliant reports, identify cost-saving material swaps, and track Scope 1-3 emissions for TCFD compliance. Trusted by Australian construction.

@@ -4,7 +4,6 @@
 const CLIENT_ID = process.env.EC3_CLIENT_ID;
 const CLIENT_SECRET = process.env.EC3_CLIENT_SECRET;
 const REDIRECT_URI = process.env.EC3_REDIRECT_URI;
-const EC3_API_KEY = process.env.NEXT_PUBLIC_EC3_API_KEY;
 
 export default async function handler(req, res) {
     // Only allow POST requests
@@ -23,7 +22,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { code } = req.body;
+        const { code, client_id, redirect_uri } = req.body;
 
         // Validate required parameters
         if (!code) {
@@ -32,15 +31,30 @@ export default async function handler(req, res) {
             });
         }
 
-        if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
-            console.error('EC3 OAuth environment variables not fully configured');
+        // Use environment variables or fall back to request body
+        const finalClientId = CLIENT_ID || client_id;
+        const finalRedirectUri = REDIRECT_URI || redirect_uri;
+
+        if (!finalClientId || !CLIENT_SECRET || !finalRedirectUri) {
+            console.error('EC3 OAuth environment variables not fully configured:', {
+                hasClientId: !!finalClientId,
+                hasClientSecret: !!CLIENT_SECRET,
+                hasRedirectUri: !!finalRedirectUri
+            });
             return res.status(500).json({
-                error: 'Server configuration error'
+                error: 'Server configuration error',
+                message: 'EC3_CLIENT_ID, EC3_CLIENT_SECRET, and EC3_REDIRECT_URI must be set in environment variables'
             });
         }
 
         // EC3 OAuth configuration
         const EC3_TOKEN_URL = 'https://buildingtransparency.org/api/oauth/token/';
+
+        console.log('Exchanging authorization code for access token...', {
+            clientId: finalClientId.substring(0, 10) + '...',
+            redirectUri: finalRedirectUri,
+            codeLength: code.length
+        });
 
         // Exchange authorization code for access token
         const tokenResponse = await fetch(EC3_TOKEN_URL, {
@@ -48,15 +62,14 @@ export default async function handler(req, res) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json',
-                'User-Agent': 'CarbonConstruct/1.0',
-                ...(EC3_API_KEY ? { 'x-api-key': EC3_API_KEY } : {})
+                'User-Agent': 'CarbonConstruct/1.0'
             },
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
-                client_id: CLIENT_ID,
+                client_id: finalClientId,
                 client_secret: CLIENT_SECRET,
                 code: code,
-                redirect_uri: REDIRECT_URI
+                redirect_uri: finalRedirectUri
             })
         });
 
@@ -64,13 +77,29 @@ export default async function handler(req, res) {
             const errorText = await tokenResponse.text();
             console.error('EC3 token exchange failed:', tokenResponse.status, errorText);
 
+            let errorMessage = 'Failed to exchange authorization code';
+            if (tokenResponse.status === 400) {
+                errorMessage = 'Invalid authorization code or client credentials';
+            } else if (tokenResponse.status === 401) {
+                errorMessage = 'Client authentication failed. Check EC3_CLIENT_SECRET';
+            } else if (tokenResponse.status === 403) {
+                errorMessage = 'Access forbidden. Check OAuth app permissions';
+            }
+
             return res.status(tokenResponse.status).json({
-                error: 'Failed to exchange authorization code',
-                details: tokenResponse.status === 400 ? 'Invalid authorization code' : 'Token service unavailable'
+                error: errorMessage,
+                details: errorText,
+                status: tokenResponse.status
             });
         }
 
         const tokenData = await tokenResponse.json();
+
+        console.log('Token exchange successful!', {
+            hasAccessToken: !!tokenData.access_token,
+            hasRefreshToken: !!tokenData.refresh_token,
+            expiresIn: tokenData.expires_in
+        });
 
         // Return the token data to the client
         return res.status(200).json({
@@ -84,7 +113,8 @@ export default async function handler(req, res) {
         console.error('OAuth token exchange error:', error);
         return res.status(500).json({
             error: 'Internal server error',
-            message: error.message
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
 }

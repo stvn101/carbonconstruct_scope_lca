@@ -19,11 +19,22 @@
     <title>Connect to EC3 Database - CarbonConstruct</title>
     <meta name="description" content="Connect your CarbonConstruct account to EC3's global database of 50,000+ Environmental Product Declarations">
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Modern Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="index.html" class="nav-btn" title="Home" aria-label="Go to Home">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="calculator.html" class="nav-btn" title="Calculator" aria-label="Go to Calculator">
+            <i class="fas fa-calculator"></i>
+        </a>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -214,16 +225,13 @@
         </div>
     </footer>
 
+    <!-- Load EC3 Configuration -->
+    <script src="js/ec3-config.js"></script>
+
     <!-- EC3 OAuth Configuration -->
     <script>
-        // EC3 OAuth Configuration
-        const EC3_OAUTH_CONFIG = {
-            clientId: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX',
-            redirectUri: 'https://carbonconstruct.com.au/ec3-callback.html',
-            scope: 'read', // Adjust scope as needed
-            authUrl: 'https://buildingtransparency.org/api/oauth/authorize/',
-            tokenUrl: 'https://buildingtransparency.org/api/oauth/token/'
-        };
+        // Use centralized EC3 configuration
+        const EC3_OAUTH_CONFIG = window.EC3_CONFIG;
 
         // OAuth State Management
         let oauthState = {

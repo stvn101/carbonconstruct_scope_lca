@@ -102,7 +102,7 @@ async function main() {
         console.log('📝 Step 2: Schema creation...');
         console.log('Please run the following SQL in your Supabase SQL Editor:');
         console.log('File: unified_materials_actual_schema.sql');
-        console.log('URL: https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/sql/new\n');
+        console.log('URL: https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/sql/new\n');
         console.log('Press Enter once you have created the schema...');
 
         // Wait for user confirmation (in a real scenario)
@@ -237,7 +237,7 @@ async function main() {
 
         console.log('\n✅ Migration completed!\n');
         console.log('📋 Verification steps:');
-        console.log('1. Visit: https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/editor');
+        console.log('1. Visit: https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/editor');
         console.log('2. Check Table Editor > unified_materials');
         console.log('3. Verify row count and sample data');
 

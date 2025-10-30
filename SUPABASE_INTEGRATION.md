@@ -73,7 +73,7 @@ CREATE INDEX idx_materials_name ON materials(name);
 ### Step 1: Prepare Your Supabase Database
 
 1. **Log into Supabase Dashboard**
-   - Go to https://jaqzoyouuzhchuyzafii.supabase.co
+   - Go to https://hkgryypdqiyigoztvran.supabase.co
    - Open your project
 
 2. **Verify Your Materials Table**
@@ -87,7 +87,7 @@ CREATE INDEX idx_materials_name ON materials(name);
    Project Settings → API
 
    You need:
-   - Project URL: https://jaqzoyouuzhchuyzafii.supabase.co
+   - Project URL: https://hkgryypdqiyigoztvran.supabase.co
    - anon public key: YOUR_SUPABASE_ANON_KEY_HERE
    ```
 
@@ -108,7 +108,7 @@ Create a file called `.env.local` in your project root:
 
 ```bash
 # .env.local (DO NOT COMMIT THIS FILE!)
-NEXT_PUBLIC_SUPABASE_URL=https://jaqzoyouuzhchuyzafii.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://hkgryypdqiyigoztvran.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY_HERE
 ```
 
@@ -126,7 +126,7 @@ Add Supabase script and initialize:
 <script>
     // Make environment variables available
     window.ENV = {
-        SUPABASE_URL: 'https://jaqzoyouuzhchuyzafii.supabase.co',
+        SUPABASE_URL: 'https://hkgryypdqiyigoztvran.supabase.co',
         SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY_HERE'
     };
 </script>
@@ -408,7 +408,7 @@ git push -u origin main
 4. **Configure Environment Variables**:
 
    ```
-   NEXT_PUBLIC_SUPABASE_URL = https://jaqzoyouuzhchuyzafii.supabase.co
+   NEXT_PUBLIC_SUPABASE_URL = https://hkgryypdqiyigoztvran.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY = YOUR_SUPABASE_ANON_KEY_HERE
    ```
 

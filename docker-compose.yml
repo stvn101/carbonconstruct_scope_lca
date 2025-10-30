@@ -8,7 +8,7 @@ services:
     environment:
       - NODE_ENV=production
       # Supabase environment variables (optional - for server-side features)
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-https://jaqzoyouuzhchuyzafii.supabase.co}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-https://hkgryypdqiyigoztvran.supabase.co}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
       # EC3 API environment variables (optional)
       - NEXT_PUBLIC_EC3_API_KEY=${NEXT_PUBLIC_EC3_API_KEY}

@@ -17,10 +17,8 @@
         // OAuth Client Configuration
         // These can be overridden by environment variables
         clientId: (function() {
-            if (!window.ENV?.EC3_CLIENT_ID) {
-                throw new Error('EC3_CLIENT_ID environment variable must be set for EC3 OAuth configuration.');
-            }
-            return window.ENV.EC3_CLIENT_ID;
+            // Return the environment variable if set, otherwise null
+            return window.ENV?.EC3_CLIENT_ID || null;
         })(),
 
         // Redirect URI - automatically detects current domain

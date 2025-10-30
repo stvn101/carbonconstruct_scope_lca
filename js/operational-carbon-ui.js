@@ -950,7 +950,7 @@ function clearSavedData() {
 function rebuildAllLists() {
     // Rebuild Scope 1 lists
     rebuildListFromData('equipmentList', scopesCalc.scope1Items.filter(i =>
-        ['cranes', 'excavators', 'loaders', 'forklifts', 'accessEquipment', 'concrete', 'compaction', 'compressors', 'pumps', 'piling', 'grading'].includes(i.category)
+        !['vehicles', 'generators', 'heating'].includes(i.category)
     ), 'equipment');
 
     rebuildListFromData('vehicleList', scopesCalc.scope1Items.filter(i => i.category === 'vehicles'), 'vehicle');

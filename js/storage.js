@@ -1,6 +1,7 @@
 /**
- * Data Storage Module using RESTful Table API
- * Handles saving and loading projects to/from the database
+ * Data Storage Module using localStorage
+ * Handles saving and loading projects to/from browser localStorage
+ * All data is stored client-side and persists across browser sessions
  */
 
 class StorageManager {
@@ -27,62 +28,47 @@ class StorageManager {
     }
 
     /**
-     * Save a project to the database
+     * Save a project to localStorage
      * Returns the saved project with ID
      */
     async saveProject(projectData) {
         try {
             await this.initialize();
-            
+
+            // Get existing projects
+            const projects = this.getProjectsFromLocalStorage();
+
             // Prepare project data for storage
             const dataToSave = {
+                id: projectData.id || this.generateId(),
                 projectName: projectData.projectName || 'Untitled Project',
                 projectType: projectData.projectType || 'commercial',
                 gfa: projectData.gfa || 0,
                 designLife: projectData.designLife || 50,
-                materials: JSON.stringify(projectData.materials || []),
+                materials: projectData.materials || [],
                 totalCarbon: projectData.totalCarbon || 0,
                 carbonIntensity: projectData.carbonIntensity || 0,
-                lcaResults: JSON.stringify(projectData.lcaResults || {}),
-                scopesResults: JSON.stringify(projectData.scopesResults || {}),
-                complianceResults: JSON.stringify(projectData.complianceResults || {}),
-                lastModified: new Date().toISOString()
+                lcaResults: projectData.lcaResults || {},
+                scopesResults: projectData.scopesResults || {},
+                complianceResults: projectData.complianceResults || {},
+                lastModified: new Date().toISOString(),
+                createdAt: projectData.createdAt || new Date().toISOString()
             };
 
             // If project has an ID, update it; otherwise create new
-            if (projectData.id) {
-                const response = await fetch(`tables/${this.tableName}/${projectData.id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(dataToSave)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to update project: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                console.log('Project updated successfully:', result.id);
-                return result;
+            const existingIndex = projects.findIndex(p => p.id === dataToSave.id);
+            if (existingIndex >= 0) {
+                projects[existingIndex] = dataToSave;
+                console.log('Project updated successfully:', dataToSave.id);
             } else {
-                const response = await fetch(`tables/${this.tableName}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(dataToSave)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to save project: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                console.log('Project saved successfully:', result.id);
-                return result;
+                projects.push(dataToSave);
+                console.log('Project saved successfully:', dataToSave.id);
             }
+
+            // Save back to localStorage
+            localStorage.setItem(this.tableName, JSON.stringify(projects));
+
+            return dataToSave;
         } catch (error) {
             console.error('Error saving project:', error);
             throw error;
@@ -90,32 +76,49 @@ class StorageManager {
     }
 
     /**
-     * Load all saved projects
+     * Get all projects from localStorage
+     */
+    getProjectsFromLocalStorage() {
+        try {
+            const data = localStorage.getItem(this.tableName);
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error('Error reading from localStorage:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Generate a unique ID
+     */
+    generateId() {
+        return 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    /**
+     * Load all saved projects from localStorage
      * Returns array of projects
      */
     async loadAllProjects(page = 1, limit = 100) {
         try {
             await this.initialize();
-            
-            const response = await fetch(`tables/${this.tableName}?page=${page}&limit=${limit}&sort=-updated_at`);
-            
-            if (!response.ok) {
-                throw new Error(`Failed to load projects: ${response.statusText}`);
-            }
 
-            const result = await response.json();
-            
-            // Parse JSON fields back to objects
-            const projects = result.data.map(project => ({
-                ...project,
-                materials: this.safeJsonParse(project.materials, []),
-                lcaResults: this.safeJsonParse(project.lcaResults, {}),
-                scopesResults: this.safeJsonParse(project.scopesResults, {}),
-                complianceResults: this.safeJsonParse(project.complianceResults, {})
-            }));
+            // Get all projects from localStorage
+            const projects = this.getProjectsFromLocalStorage();
 
-            console.log(`Loaded ${projects.length} projects`);
-            return projects;
+            // Sort by lastModified (newest first)
+            projects.sort((a, b) => {
+                const dateA = new Date(a.lastModified || a.createdAt || 0);
+                const dateB = new Date(b.lastModified || b.createdAt || 0);
+                return dateB - dateA;
+            });
+
+            // Apply pagination
+            const start = (page - 1) * limit;
+            const paginatedProjects = projects.slice(start, start + limit);
+
+            console.log(`Loaded ${paginatedProjects.length} of ${projects.length} projects`);
+            return paginatedProjects;
         } catch (error) {
             console.error('Error loading projects:', error);
             return [];
@@ -123,28 +126,21 @@ class StorageManager {
     }
 
     /**
-     * Load a specific project by ID
+     * Load a specific project by ID from localStorage
      */
     async loadProject(projectId) {
         try {
             await this.initialize();
-            
-            const response = await fetch(`tables/${this.tableName}/${projectId}`);
-            
-            if (!response.ok) {
-                throw new Error(`Failed to load project: ${response.statusText}`);
+
+            const projects = this.getProjectsFromLocalStorage();
+            const project = projects.find(p => p.id === projectId);
+
+            if (!project) {
+                throw new Error(`Project not found: ${projectId}`);
             }
 
-            const project = await response.json();
-            
-            // Parse JSON fields
-            return {
-                ...project,
-                materials: this.safeJsonParse(project.materials, []),
-                lcaResults: this.safeJsonParse(project.lcaResults, {}),
-                scopesResults: this.safeJsonParse(project.scopesResults, {}),
-                complianceResults: this.safeJsonParse(project.complianceResults, {})
-            };
+            console.log('Project loaded:', projectId);
+            return project;
         } catch (error) {
             console.error('Error loading project:', error);
             throw error;
@@ -152,20 +148,20 @@ class StorageManager {
     }
 
     /**
-     * Delete a project
+     * Delete a project from localStorage
      */
     async deleteProject(projectId) {
         try {
             await this.initialize();
-            
-            const response = await fetch(`tables/${this.tableName}/${projectId}`, {
-                method: 'DELETE'
-            });
 
-            if (!response.ok) {
-                throw new Error(`Failed to delete project: ${response.statusText}`);
+            const projects = this.getProjectsFromLocalStorage();
+            const filteredProjects = projects.filter(p => p.id !== projectId);
+
+            if (projects.length === filteredProjects.length) {
+                throw new Error(`Project not found: ${projectId}`);
             }
 
+            localStorage.setItem(this.tableName, JSON.stringify(filteredProjects));
             console.log('Project deleted successfully:', projectId);
             return true;
         } catch (error) {
@@ -175,29 +171,22 @@ class StorageManager {
     }
 
     /**
-     * Search projects by name
+     * Search projects by name in localStorage
      */
     async searchProjects(searchTerm) {
         try {
             await this.initialize();
-            
-            const response = await fetch(`tables/${this.tableName}?search=${encodeURIComponent(searchTerm)}`);
-            
-            if (!response.ok) {
-                throw new Error(`Failed to search projects: ${response.statusText}`);
-            }
 
-            const result = await response.json();
-            
-            const projects = result.data.map(project => ({
-                ...project,
-                materials: this.safeJsonParse(project.materials, []),
-                lcaResults: this.safeJsonParse(project.lcaResults, {}),
-                scopesResults: this.safeJsonParse(project.scopesResults, {}),
-                complianceResults: this.safeJsonParse(project.complianceResults, {})
-            }));
+            const projects = this.getProjectsFromLocalStorage();
+            const searchLower = searchTerm.toLowerCase();
 
-            return projects;
+            const filteredProjects = projects.filter(project =>
+                project.projectName.toLowerCase().includes(searchLower) ||
+                (project.projectType && project.projectType.toLowerCase().includes(searchLower))
+            );
+
+            console.log(`Found ${filteredProjects.length} projects matching "${searchTerm}"`);
+            return filteredProjects;
         } catch (error) {
             console.error('Error searching projects:', error);
             return [];

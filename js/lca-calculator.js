@@ -45,7 +45,7 @@ class LCACalculator {
             nationalMaterials: 1000,  // Interstate
             imported: 15000          // Overseas (average)
         };
-
+        
         // Transport emissions factors (kg CO2-e per tonne-km)
         this.transportEmissions = {
             truck: 0.097,    // Road freight (common for construction)
@@ -83,24 +83,6 @@ class LCACalculator {
             glazing: { maintenance: 10, replacement: 30 },
             finishes: { maintenance: 5, replacement: 15 }
         };
-
-        // Toggle for propagating negative biogenic credits (EN 16485 / ISO 14044)
-        this.allowBiogenicCredits = false;
-    }
-
-    /**
-     * Enable or disable propagation of negative biogenic credits downstream
-     * Maintains transparent mass-balance controls per EN 16485 and ISO 14044
-     */
-    setBiogenicCreditMode(enabled = false) {
-        this.allowBiogenicCredits = Boolean(enabled);
-    }
-
-    /**
-     * Clamp stage emissions when biogenic credit mode is disabled
-     */
-    clampStageValue(value) {
-        return this.allowBiogenicCredits ? value : Math.max(0, value);
     }
 
     /**
@@ -114,26 +96,21 @@ class LCACalculator {
             return null;
         }
 
-        // Base embodied carbon (A1-A3: Product stage) with biogenic isolation per EN 16485 mass balance
-        const perUnitBiogenic = material.biogenicCarbon ?? materialData.biogenicCarbon ?? 0;
-        const totalBiogenicStorage = perUnitBiogenic * quantity;
-        const basePerUnit = Math.max(0, (materialData.embodiedCarbon || 0) - perUnitBiogenic);
-        const productStageTotal = basePerUnit * quantity;
-
-        const lcaStages = materialData.lcaStages || { a1a3: 1, a4: 0, a5: 0 };
-
-        // Break down using the material's specific LCA stage percentages (ISO 14044 compliant)
-        const a1a3 = productStageTotal * (lcaStages.a1a3 || 0);
-        const a4 = productStageTotal * (lcaStages.a4 || 0);
-        const a5 = productStageTotal * (lcaStages.a5 || 0);
+        // Base embodied carbon (A1-A3: Product stage)
+        const productStageTotal = materialData.embodiedCarbon * quantity;
+        
+        // Break down using the material's specific LCA stage percentages
+        const a1a3 = productStageTotal * materialData.lcaStages.a1a3;
+        const a4 = productStageTotal * materialData.lcaStages.a4;
+        const a5 = productStageTotal * materialData.lcaStages.a5;
         
         // B stages (Use stage) - maintenance and replacement
         const useStage = this.calculateUseStage(
-            material.category,
-            productStageTotal,
+            material.category, 
+            productStageTotal, 
             designLife
         );
-
+        
         // C stages (End of life)
         const endOfLife = this.calculateEndOfLife(
             material.category,
@@ -149,8 +126,6 @@ class LCACalculator {
 
         return {
             materialName: materialData.name,
-            category: material.category,
-            type: material.type,
             quantity: quantity,
             unit: materialData.unit,
             stages: {
@@ -181,17 +156,14 @@ class LCACalculator {
                 c3: endOfLife.processing,
                 c4: endOfLife.disposal,
                 c1c4Total: endOfLife.total,
-
+                
                 // Beyond Life Cycle
-                d: recyclingBenefit,
-
-                // Biogenic storage accounted separately per EN 16485
-                biogenicStorage: totalBiogenicStorage
+                d: recyclingBenefit
             },
             totals: {
-                embodiedCarbon: a1a3 + a4 + a5 + totalBiogenicStorage,
-                wholeLifeCarbon: a1a3 + a4 + a5 + totalBiogenicStorage + useStage.total + endOfLife.total,
-                netCarbon: a1a3 + a4 + a5 + totalBiogenicStorage + useStage.total + endOfLife.total + recyclingBenefit
+                embodiedCarbon: a1a3 + a4 + a5,
+                wholeLifeCarbon: a1a3 + a4 + a5 + useStage.total + endOfLife.total,
+                netCarbon: a1a3 + a4 + a5 + useStage.total + endOfLife.total + recyclingBenefit
             }
         };
     }
@@ -209,20 +181,20 @@ class LCACalculator {
         const maintenanceCycles = Math.floor(designLife / cycles.maintenance);
         
         // Maintenance: typically 2% of product stage per cycle
-        const maintenance = this.clampStageValue(maintenanceCycles * (productStageEmissions * 0.02));
-
+        const maintenance = maintenanceCycles * (productStageEmissions * 0.02);
+        
         // Repair: typically 5% of product stage emissions every 15 years
         const repairCycles = Math.floor(designLife / 15);
-        const repair = this.clampStageValue(repairCycles * (productStageEmissions * 0.05));
-
+        const repair = repairCycles * (productStageEmissions * 0.05);
+        
         // Replacement: full product stage emissions for each replacement
-        const replacement = this.clampStageValue(replacementCycles * productStageEmissions);
-
+        const replacement = replacementCycles * productStageEmissions;
+        
         // Refurbishment: assume one major refurb at 50% of design life
-        const refurbishment = this.clampStageValue(designLife >= 30 ? (productStageEmissions * 0.3) : 0);
-
+        const refurbishment = designLife >= 30 ? (productStageEmissions * 0.3) : 0;
+        
         const total = maintenance + repair + replacement + refurbishment;
-
+        
         return {
             maintenance,
             repair,
@@ -238,14 +210,14 @@ class LCACalculator {
      */
     calculateEndOfLife(category, productStageEmissions) {
         const eolFactor = this.endOfLifeFactors[category] || 0.08;
-        const total = this.clampStageValue(productStageEmissions * eolFactor);
-
+        const total = productStageEmissions * eolFactor;
+        
         // Typical breakdown of end-of-life emissions
         return {
-            demolition: this.clampStageValue(total * 0.40),      // C1: Demolition equipment and process
-            transport: this.clampStageValue(total * 0.30),        // C2: Transport to disposal/processing
-            processing: this.clampStageValue(total * 0.20),       // C3: Waste processing (crushing, sorting)
-            disposal: this.clampStageValue(total * 0.10),         // C4: Final disposal (landfill)
+            demolition: total * 0.40,      // C1: Demolition equipment and process
+            transport: total * 0.30,        // C2: Transport to disposal/processing
+            processing: total * 0.20,       // C3: Waste processing (crushing, sorting)
+            disposal: total * 0.10,         // C4: Final disposal (landfill)
             total: total
         };
     }
@@ -288,7 +260,6 @@ class LCACalculator {
                 b1b7: 0,
                 c1c4: 0,
                 d: 0,
-                biogenicStorage: 0,
                 embodiedCarbon: 0,
                 wholeLifeCarbon: 0,
                 netCarbon: 0
@@ -300,14 +271,13 @@ class LCACalculator {
             const lca = this.calculateFullLCA(material, material.quantity, designLife);
             if (lca) {
                 results.materials.push(lca);
-
+                
                 // Add to totals
                 results.totals.a1a3 += lca.stages.a1a3Total;
                 results.totals.a4a5 += lca.stages.a4a5Total;
                 results.totals.b1b7 += lca.stages.b1b7Total;
                 results.totals.c1c4 += lca.stages.c1c4Total;
                 results.totals.d += lca.stages.d;
-                results.totals.biogenicStorage += lca.stages.biogenicStorage || 0;
                 results.totals.embodiedCarbon += lca.totals.embodiedCarbon;
                 results.totals.wholeLifeCarbon += lca.totals.wholeLifeCarbon;
                 results.totals.netCarbon += lca.totals.netCarbon;

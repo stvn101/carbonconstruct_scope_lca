@@ -423,30 +423,16 @@ class ScopesCalculator {
             scope3: {
                 // This is where embodied carbon fits!
                 materials: lcaResults.materials.map(m => ({
-                    category: this.resolveScopeCategory(m),
-                    type: m.type || m.materialName,
+                    category: m.materialName.split(' ')[0].toLowerCase(),
+                    type: m.materialName,
                     quantity: m.quantity,
-                    unit: m.unit,
-                    emissions: Math.abs(m.totals?.embodiedCarbon || 0)
+                    emissions: m.totals.embodiedCarbon
                 })),
                 transport: [], // A4 transport
                 waste: [],     // C stages
                 endOfLife: []  // C stages
             }
         };
-    }
-
-    /**
-     * Resolve Scope 3 material category using metadata (GHG Protocol category 1)
-     */
-    resolveScopeCategory(material) {
-        if (material.category) {
-            return material.category;
-        }
-        if (material.type) {
-            return material.type;
-        }
-        return material.materialName ? material.materialName.split(' ')[0].toLowerCase() : 'materials';
     }
 }
 

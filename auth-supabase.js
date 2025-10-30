@@ -9,7 +9,7 @@
 // CONFIGURATION (from window.ENV or fallback)
 // ============================================
 
-const SUPABASE_URL = window.ENV?.NEXT_PUBLIC_SUPABASE_URL || 'https://jaqzoyouuzhchuyzafii.supabase.co';
+const SUPABASE_URL = window.ENV?.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = window.ENV?.NEXT_PUBLIC_SUPABASE_ANON_KEY || null;
 
 // Initialize Supabase client

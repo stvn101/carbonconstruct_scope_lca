@@ -966,7 +966,7 @@ function loadSavedData() {
  * Clear saved data
  */
 function clearSavedData() {
-    if (confirm('Are you sure you want to clear all unsaved data? This cannot be undone.')) {
+    if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
         localStorage.removeItem(STORAGE_KEY);
         scopesCalc.reset();
         updateAllTotals();

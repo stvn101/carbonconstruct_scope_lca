@@ -8,21 +8,43 @@
  * Last Updated: 2024
  */
 
-let FACTORS = typeof EMISSIONS_FACTORS !== 'undefined' ? EMISSIONS_FACTORS : undefined;
+const EMPTY_FACTORS = Object.freeze({
+    fuels: {},
+    equipment: {},
+    electricity: { states: {}, siteUsage: {} },
+    transport: { road: {}, rail: {}, sea: {} },
+    waste: { landfill: {}, recycling: {} },
+    water: {},
+    commuting: {},
+    temporaryWorks: {}
+});
 
-if (!FACTORS && typeof require === 'function') {
+let FACTORS_SOURCE;
+
+if (typeof EMISSIONS_FACTORS !== 'undefined') {
+    FACTORS_SOURCE = EMISSIONS_FACTORS;
+} else if (typeof require === 'function') {
     try {
-        FACTORS = require('./emissions-factors');
+        FACTORS_SOURCE = require('./emissions-factors.js');
     } catch (err) {
-        FACTORS = undefined;
+        if (err && err.code !== 'MODULE_NOT_FOUND') {
+            throw err;
+        }
+    }
+}
+
+if (!FACTORS_SOURCE) {
+    FACTORS_SOURCE = EMPTY_FACTORS;
+    if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+        console.warn('Emissions factors dataset unavailable; calculator will use empty defaults.');
     }
 }
 
 class ComprehensiveScopesCalculator {
     constructor() {
         // Load emissions factors
-        this.factors = FACTORS;
-
+        this.factors = FACTORS_SOURCE;
+        
         // Storage for all tracked emissions
         this.scope1Items = [];
         this.scope2Items = [];

@@ -893,7 +893,38 @@ function saveData() {
         showSaveIndicator();
     } catch (error) {
         console.error('Error saving data:', error);
+        showSaveErrorIndicator();
+        showSaveErrorIndicator();
     }
+}
+
+/**
+ * Show a visual indicator when auto-save fails
+ */
+function showSaveErrorIndicator() {
+    let indicator = document.getElementById('save-error-indicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'save-error-indicator';
+        indicator.style.position = 'fixed';
+        indicator.style.top = '16px';
+        indicator.style.right = '16px';
+        indicator.style.background = '#ff4d4f';
+        indicator.style.color = '#fff';
+        indicator.style.padding = '8px 16px';
+        indicator.style.borderRadius = '4px';
+        indicator.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+        indicator.style.zIndex = '10000';
+        indicator.style.fontWeight = 'bold';
+        indicator.textContent = 'Auto-save failed! Changes may not be saved.';
+        document.body.appendChild(indicator);
+    } else {
+        indicator.style.display = 'block';
+    }
+    // Hide after 5 seconds
+    setTimeout(() => {
+        if (indicator) indicator.style.display = 'none';
+    }, 5000);
 }
 
 /**
@@ -903,7 +934,6 @@ function loadSavedData() {
     try {
         const savedData = localStorage.getItem(STORAGE_KEY);
         if (!savedData) {
-            console.log('No saved data found');
             return;
         }
 
@@ -928,6 +958,7 @@ function loadSavedData() {
         }
     } catch (error) {
         console.error('Error loading saved data:', error);
+        alert('An error occurred while restoring your saved data. Your previous data could not be loaded. Please check your browser storage or contact support if this issue persists.');
     }
 }
 
@@ -935,7 +966,7 @@ function loadSavedData() {
  * Clear saved data
  */
 function clearSavedData() {
-    if (confirm('Are you sure you want to clear all unsaved data? This cannot be undone.')) {
+    if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
         localStorage.removeItem(STORAGE_KEY);
         scopesCalc.reset();
         updateAllTotals();
@@ -950,7 +981,7 @@ function clearSavedData() {
 function rebuildAllLists() {
     // Rebuild Scope 1 lists
     rebuildListFromData('equipmentList', scopesCalc.scope1Items.filter(i =>
-        ['cranes', 'excavators', 'loaders', 'forklifts', 'accessEquipment', 'concrete', 'compaction', 'compressors', 'pumps', 'piling', 'grading'].includes(i.category)
+        !['vehicles', 'generators', 'heating'].includes(i.category)
     ), 'equipment');
 
     rebuildListFromData('vehicleList', scopesCalc.scope1Items.filter(i => i.category === 'vehicles'), 'vehicle');
@@ -980,7 +1011,7 @@ function rebuildListFromData(listId, items, type) {
     list.innerHTML = '';
 
     if (items.length === 0) {
-        list.innerHTML = '<p class="text-sm text-brand-sage-light text-center py-8">No items added yet</p>';
+        list.innerHTML = '<p class="text-sm text-gray-500 text-center py-8">No items added yet</p>';
         return;
     }
 
@@ -1018,7 +1049,7 @@ function showRestoreNotification(timestamp) {
                 <p class="font-semibold">Data Restored</p>
                 <p class="text-sm">Last saved: ${formattedDate}</p>
             </div>
-            <button onclick="this.parentElement.parentElement.remove()" class="ml-4">
+            <button class="ml-4 close-notification-btn">
                 <i class="fas fa-times"></i>
             </button>
         </div>

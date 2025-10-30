@@ -34,6 +34,9 @@ npm-debug.log*
 *.tmp
 *.temp
 
+# Backup directories
+backup_old_calculator/
+
 # Migration data exports (too large for git)
 all_materials_export.json
 exported_materials_data.json

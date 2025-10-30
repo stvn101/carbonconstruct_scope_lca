@@ -201,7 +201,7 @@ async function main() {
 
         console.log('✅ Migration completed!\n');
         console.log('📋 Next steps:');
-        console.log('1. Log into https://jaqzoyouuzhchuyzafii.supabase.co');
+        console.log('1. Log into https://hkgryypdqiyigoztvran.supabase.co');
         console.log('2. Go to SQL Editor');
         console.log('3. If the table was not created, run backup_unified_materials_schema.sql');
         console.log('4. Verify the data in Table Editor > unified_materials');

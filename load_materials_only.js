@@ -212,7 +212,7 @@ async function main() {
 
             console.log('\n✅ Migration successful!\n');
             console.log('🔗 View your data:');
-            console.log('   https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/editor');
+            console.log('   https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/editor');
 
         } catch (error) {
             console.log('⚠️ Could not verify - please check manually\n');

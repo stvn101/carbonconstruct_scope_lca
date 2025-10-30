@@ -115,7 +115,7 @@ async function main() {
     } else {
         console.log('\n❌ Could not create schema via API.\n');
         console.log('Please create the schema manually:');
-        console.log('1. Go to: https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/sql/new');
+        console.log('1. Go to: https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/sql/new');
         console.log('2. Copy and paste the following SQL:\n');
         console.log('---START SQL---');
         console.log(SCHEMA_SQL);

@@ -569,3 +569,15 @@ class ComprehensiveScopesCalculator {
 
 // Initialize global calculator
 const scopesCalc = new ComprehensiveScopesCalculator();
+
+if (typeof window !== 'undefined') {
+    window.scopesCalc = scopesCalc;
+    window.ComprehensiveScopesCalculator = ComprehensiveScopesCalculator;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        ComprehensiveScopesCalculator,
+        EMISSIONS_FACTORS: FACTORS
+    };
+}

@@ -959,6 +959,7 @@ function loadSavedData() {
         }
     } catch (error) {
         console.error('Error loading saved data:', error);
+        alert('An error occurred while restoring your saved data. Your previous data could not be loaded. Please check your browser storage or contact support if this issue persists.');
     }
 }
 

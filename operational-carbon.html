@@ -115,7 +115,12 @@
                     <span class="text-xl font-bold text-brand-navy">CarbonConstruct</span>
                     <span class="ml-3 text-sm text-brand-sage">Operational Carbon Tracking</span>
                 </div>
-                <div class="flex space-x-4">
+                <div class="flex items-center space-x-4">
+                    <!-- Save Indicator -->
+                    <div id="saveIndicator" class="hidden text-sm text-brand-forest flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>Saved</span>
+                    </div>
                     <a href="index.html" class="text-brand-steel hover:text-brand-forest font-medium">
                         <i class="fas fa-home mr-2"></i>Main Dashboard
                     </a>
@@ -218,17 +223,17 @@
                     </p>
 
                     <!-- Sub-tabs for Scope 1 Categories -->
-                    <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
-                        <button class="scope1-subtab active bg-brand-mint text-brand-primary-dark px-4 py-2 rounded-lg font-medium" data-subtab="equipment">
+                    <div class="flex flex-wrap gap-2 mb-6 border-b border-brand-border pb-4">
+                        <button class="scope1-subtab active bg-brand-forest text-white px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-primary-dark" data-subtab="equipment">
                             <i class="fas fa-cog mr-2"></i>Equipment
                         </button>
-                        <button class="scope1-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="vehicles">
+                        <button class="scope1-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="vehicles">
                             <i class="fas fa-truck mr-2"></i>Vehicles
                         </button>
-                        <button class="scope1-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="generators">
+                        <button class="scope1-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="generators">
                             <i class="fas fa-plug mr-2"></i>Generators
                         </button>
-                        <button class="scope1-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="heating">
+                        <button class="scope1-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="heating">
                             <i class="fas fa-temperature-high mr-2"></i>Heating/Drying
                         </button>
                     </div>
@@ -443,7 +448,7 @@
                                 <div id="heatingList" class="space-y-2">
                                     <p class="text-sm text-brand-sage-light text-center py-8">No equipment added yet</p>
                                 </div>
-                                <div class="mt-4 pt-4 border-brand-border">
+                                <div class="mt-4 pt-4 border-t border-brand-border">
                                     <p class="text-sm text-brand-sage">Total Heating Emissions:</p>
                                     <p class="text-2xl font-bold text-brand-forest" id="heatingTotal">0 tonnes CO2-e</p>
                                 </div>
@@ -465,14 +470,14 @@
                     </p>
 
                     <!-- Sub-tabs for Scope 2 -->
-                    <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
-                        <button class="scope2-subtab active bg-teal-100 text-teal-700 px-4 py-2 rounded-lg font-medium" data-subtab="sitepower">
+                    <div class="flex flex-wrap gap-2 mb-6 border-b border-brand-border pb-4">
+                        <button class="scope2-subtab active bg-brand-primary text-brand-navy px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-forest hover:text-white" data-subtab="sitepower">
                             <i class="fas fa-plug mr-2"></i>Site Power
                         </button>
-                        <button class="scope2-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="facilities">
+                        <button class="scope2-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="facilities">
                             <i class="fas fa-building mr-2"></i>Site Facilities
                         </button>
-                        <button class="scope2-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="electricequip">
+                        <button class="scope2-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="electricequip">
                             <i class="fas fa-battery-full mr-2"></i>Electric Equipment
                         </button>
                     </div>
@@ -675,20 +680,20 @@
                     </p>
 
                     <!-- Sub-tabs for Scope 3 -->
-                    <div class="flex flex-wrap gap-2 mb-6 border-b pb-4">
-                        <button class="scope3-subtab active bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium" data-subtab="transport">
+                    <div class="flex flex-wrap gap-2 mb-6 border-b border-brand-border pb-4">
+                        <button class="scope3-subtab active bg-brand-sage text-white px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-forest" data-subtab="transport">
                             <i class="fas fa-truck mr-2"></i>Transport
                         </button>
-                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="waste">
+                        <button class="scope3-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="waste">
                             <i class="fas fa-trash mr-2"></i>Waste
                         </button>
-                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="water">
+                        <button class="scope3-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="water">
                             <i class="fas fa-tint mr-2"></i>Water
                         </button>
-                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="commuting">
+                        <button class="scope3-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="commuting">
                             <i class="fas fa-car mr-2"></i>Commuting
                         </button>
-                        <button class="scope3-subtab bg-brand-mint text-brand-steel px-4 py-2 rounded-lg font-medium" data-subtab="tempworks">
+                        <button class="scope3-subtab bg-brand-surface text-brand-steel px-4 py-2 rounded-lg font-medium transition-all hover:bg-brand-mint" data-subtab="tempworks">
                             <i class="fas fa-hammer mr-2"></i>Temp Works
                         </button>
                     </div>

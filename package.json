@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vercel dev",
     "lint": "eslint . --ext js --max-warnings 0",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:manual": "npx http-server -p 8000 -o /js/tests/manual-test-suite.html",
+    "start": "npx http-server -p 8000 -o"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
@@ -15,6 +20,19 @@
   "devDependencies": {
     "eslint": "^9.0.0",
     "vercel": "^48.6.7"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/*.test.js",
+      "**/*.spec.js"
+    ],
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "!js/tests/**",
+      "!js/vendor/**"
+    ]
   },
   "engines": {
     "node": ">=18.0.0"

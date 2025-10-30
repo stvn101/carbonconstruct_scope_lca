@@ -1049,7 +1049,7 @@ function showRestoreNotification(timestamp) {
                 <p class="font-semibold">Data Restored</p>
                 <p class="text-sm">Last saved: ${formattedDate}</p>
             </div>
-            <button onclick="this.parentElement.parentElement.remove()" class="ml-4">
+            <button class="ml-4 close-notification-btn">
                 <i class="fas fa-times"></i>
             </button>
         </div>

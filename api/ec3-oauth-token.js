@@ -113,8 +113,7 @@ export default async function handler(req, res) {
         console.error('OAuth token exchange error:', error);
         return res.status(500).json({
             error: 'Internal server error',
-            message: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            message: error.message
         });
     }
 }

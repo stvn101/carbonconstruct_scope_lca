@@ -1,9 +1,13 @@
 /**
  * OPERATIONAL CARBON TRACKING UI
- * 
+ *
  * Handles all user interactions for the operational carbon tracking page.
  * Integrates with the ComprehensiveScopesCalculator and displays results.
+ * Now includes auto-save and restore functionality.
  */
+
+// Storage key for localStorage
+const STORAGE_KEY = 'carbonconstruct_operational_carbon_data';
 
 // Tab management
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,7 +17,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeScope2();
     initializeScope3();
     initializeDashboard();
+
+    // Load saved data
+    loadSavedData();
+
     updateAllTotals();
+
+    // Set up auto-save (save every 30 seconds and on changes)
+    setInterval(saveData, 30000);
+
+    console.log('Operational Carbon Calculator initialized with persistence');
 });
 
 // ============================================================================
@@ -41,53 +54,53 @@ function initializeTabs() {
 }
 
 function initializeSubTabs() {
-    // Scope 1 sub-tabs
+    // Scope 1 sub-tabs - using brand colors
     const scope1Subtabs = document.querySelectorAll('.scope1-subtab');
     scope1Subtabs.forEach(button => {
         button.addEventListener('click', () => {
             scope1Subtabs.forEach(btn => {
-                btn.classList.remove('active', 'bg-orange-100', 'text-orange-700');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
+                btn.classList.remove('active', 'bg-brand-forest', 'text-white');
+                btn.classList.add('bg-brand-surface', 'text-brand-steel');
             });
-            button.classList.add('active', 'bg-orange-100', 'text-orange-700');
-            button.classList.remove('bg-gray-100', 'text-gray-700');
-            
+            button.classList.add('active', 'bg-brand-forest', 'text-white');
+            button.classList.remove('bg-brand-surface', 'text-brand-steel');
+
             // Show corresponding content
             document.querySelectorAll('.scope1-content').forEach(c => c.classList.add('section-hidden'));
             const contentId = 's1' + button.dataset.subtab.charAt(0).toUpperCase() + button.dataset.subtab.slice(1);
             document.getElementById(contentId).classList.remove('section-hidden');
         });
     });
-    
-    // Scope 2 sub-tabs
+
+    // Scope 2 sub-tabs - using brand colors
     const scope2Subtabs = document.querySelectorAll('.scope2-subtab');
     scope2Subtabs.forEach(button => {
         button.addEventListener('click', () => {
             scope2Subtabs.forEach(btn => {
-                btn.classList.remove('active', 'bg-teal-100', 'text-teal-700');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
+                btn.classList.remove('active', 'bg-brand-primary', 'text-brand-navy');
+                btn.classList.add('bg-brand-surface', 'text-brand-steel');
             });
-            button.classList.add('active', 'bg-teal-100', 'text-teal-700');
-            button.classList.remove('bg-gray-100', 'text-gray-700');
-            
+            button.classList.add('active', 'bg-brand-primary', 'text-brand-navy');
+            button.classList.remove('bg-brand-surface', 'text-brand-steel');
+
             // Show corresponding content
             document.querySelectorAll('.scope2-content').forEach(c => c.classList.add('section-hidden'));
             const contentId = 's2' + button.dataset.subtab.charAt(0).toUpperCase() + button.dataset.subtab.slice(1);
             document.getElementById(contentId).classList.remove('section-hidden');
         });
     });
-    
-    // Scope 3 sub-tabs
+
+    // Scope 3 sub-tabs - using brand colors
     const scope3Subtabs = document.querySelectorAll('.scope3-subtab');
     scope3Subtabs.forEach(button => {
         button.addEventListener('click', () => {
             scope3Subtabs.forEach(btn => {
-                btn.classList.remove('active', 'bg-indigo-100', 'text-indigo-700');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
+                btn.classList.remove('active', 'bg-brand-sage', 'text-white');
+                btn.classList.add('bg-brand-surface', 'text-brand-steel');
             });
-            button.classList.add('active', 'bg-indigo-100', 'text-indigo-700');
-            button.classList.remove('bg-gray-100', 'text-gray-700');
-            
+            button.classList.add('active', 'bg-brand-sage', 'text-white');
+            button.classList.remove('bg-brand-surface', 'text-brand-steel');
+
             // Show corresponding content
             document.querySelectorAll('.scope3-content').forEach(c => c.classList.add('section-hidden'));
             const contentId = 's3' + button.dataset.subtab.charAt(0).toUpperCase() + button.dataset.subtab.slice(1);
@@ -180,12 +193,13 @@ function addEquipment() {
     
     // Add to UI list
     addToList('equipmentList', result, 'equipment');
-    
+
     // Clear inputs
     document.getElementById('s1OperatingHours').value = '';
     document.getElementById('s1FuelUsed').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addVehicle() {
@@ -206,11 +220,12 @@ function addVehicle() {
     });
     
     addToList('vehicleList', result, 'vehicle');
-    
+
     document.getElementById('s1VehicleDistance').value = '';
     document.getElementById('s1VehicleFuel').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addGenerator() {
@@ -233,10 +248,11 @@ function addGenerator() {
     });
     
     addToList('generatorList', result, 'generator');
-    
+
     document.getElementById('s1GenHours').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addHeating() {
@@ -255,10 +271,11 @@ function addHeating() {
     });
     
     addToList('heatingList', result, 'heating');
-    
+
     document.getElementById('s1HeatingHours').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 // ============================================================================
@@ -290,12 +307,13 @@ function addPower() {
     });
     
     addToList('powerList', result, 'power');
-    
+
     document.getElementById('s2PowerDesc').value = '';
     document.getElementById('s2PowerKWh').value = '';
     document.getElementById('s2PowerDays').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addFacility() {
@@ -315,10 +333,11 @@ function addFacility() {
     });
     
     addToList('facilityList', result, 'facility');
-    
+
     document.getElementById('s2FacilityDays').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addElectricEquipment() {
@@ -339,10 +358,11 @@ function addElectricEquipment() {
     });
     
     addToList('elecEquipList', result, 'elecEquip');
-    
+
     document.getElementById('s2ElecHours').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 // ============================================================================
@@ -376,12 +396,13 @@ function addTransport() {
     });
     
     addToList('transportList', result, 'transport');
-    
+
     document.getElementById('s3TransMaterial').value = '';
     document.getElementById('s3TransWeight').value = '';
     document.getElementById('s3TransDistance').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addWaste() {
@@ -401,11 +422,12 @@ function addWaste() {
     });
     
     addToList('wasteList', result, 'waste');
-    
+
     document.getElementById('s3WasteMaterial').value = '';
     document.getElementById('s3WasteWeight').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addWater() {
@@ -423,10 +445,11 @@ function addWater() {
     });
     
     addToList('waterList', result, 'water');
-    
+
     document.getElementById('s3WaterVolume').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addCommute() {
@@ -448,12 +471,13 @@ function addCommute() {
     });
     
     addToList('commuteList', result, 'commute');
-    
+
     document.getElementById('s3CommuteEmployees').value = '';
     document.getElementById('s3CommuteDistance').value = '';
     document.getElementById('s3CommuteDays').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 function addTempWorks() {
@@ -473,10 +497,11 @@ function addTempWorks() {
     });
     
     addToList('tempWorksList', result, 'tempWorks');
-    
+
     document.getElementById('s3TempArea').value = '';
-    
+
     updateAllTotals();
+    saveData(); // Auto-save after adding
 }
 
 // ============================================================================
@@ -569,15 +594,18 @@ function removeItem(itemId, listId, type) {
     } else {
         scope = 3;
     }
-    
+
     // Remove from calculator
     scopesCalc.removeItem(scope, itemId);
-    
+
     // Update UI
     updateAllTotals();
-    
+
     // Reload list
     reloadList(listId, scope);
+
+    // Auto-save after removing
+    saveData();
 }
 
 function reloadList(listId, scope) {
@@ -829,15 +857,177 @@ function exportPDF() {
 function saveProject() {
     const projectName = prompt('Enter project name:');
     if (!projectName) return;
-    
+
     const data = scopesCalc.exportData();
     data.projectName = projectName;
-    
+    data.savedAt = new Date().toISOString();
+
     // Save to localStorage
     const projects = JSON.parse(localStorage.getItem('carbonProjects') || '[]');
     projects.push(data);
     localStorage.setItem('carbonProjects', JSON.stringify(projects));
-    
+
     alert('Project saved successfully!');
+}
+
+// ============================================================================
+// DATA PERSISTENCE FUNCTIONS
+// ============================================================================
+
+/**
+ * Save current calculator state to localStorage
+ */
+function saveData() {
+    try {
+        const data = {
+            scope1Items: scopesCalc.scope1Items,
+            scope2Items: scopesCalc.scope2Items,
+            scope3Items: scopesCalc.scope3Items,
+            timestamp: new Date().toISOString()
+        };
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        console.log('Data auto-saved at', data.timestamp);
+
+        // Show subtle save indicator
+        showSaveIndicator();
+    } catch (error) {
+        console.error('Error saving data:', error);
+    }
+}
+
+/**
+ * Load saved calculator state from localStorage
+ */
+function loadSavedData() {
+    try {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (!savedData) {
+            console.log('No saved data found');
+            return;
+        }
+
+        const data = JSON.parse(savedData);
+
+        // Restore items to calculator
+        scopesCalc.scope1Items = data.scope1Items || [];
+        scopesCalc.scope2Items = data.scope2Items || [];
+        scopesCalc.scope3Items = data.scope3Items || [];
+
+        // Rebuild UI lists
+        rebuildAllLists();
+
+        // Update totals
+        updateAllTotals();
+
+        console.log('Restored data from', data.timestamp);
+
+        // Show restore notification
+        if (data.scope1Items.length > 0 || data.scope2Items.length > 0 || data.scope3Items.length > 0) {
+            showRestoreNotification(data.timestamp);
+        }
+    } catch (error) {
+        console.error('Error loading saved data:', error);
+    }
+}
+
+/**
+ * Clear saved data
+ */
+function clearSavedData() {
+    if (confirm('Are you sure you want to clear all unsaved data? This cannot be undone.')) {
+        localStorage.removeItem(STORAGE_KEY);
+        scopesCalc.reset();
+        updateAllTotals();
+        rebuildAllLists();
+        alert('All data cleared successfully');
+    }
+}
+
+/**
+ * Rebuild all UI lists from calculator data
+ */
+function rebuildAllLists() {
+    // Rebuild Scope 1 lists
+    rebuildListFromData('equipmentList', scopesCalc.scope1Items.filter(i =>
+        ['cranes', 'excavators', 'loaders', 'forklifts', 'accessEquipment', 'concrete', 'compaction', 'compressors', 'pumps', 'piling', 'grading'].includes(i.category)
+    ), 'equipment');
+
+    rebuildListFromData('vehicleList', scopesCalc.scope1Items.filter(i => i.category === 'vehicles'), 'vehicle');
+    rebuildListFromData('generatorList', scopesCalc.scope1Items.filter(i => i.category === 'generators'), 'generator');
+    rebuildListFromData('heatingList', scopesCalc.scope1Items.filter(i => i.category === 'heating'), 'heating');
+
+    // Rebuild Scope 2 lists
+    rebuildListFromData('powerList', scopesCalc.scope2Items.filter(i => i.category === 'electricity'), 'power');
+    rebuildListFromData('facilityList', scopesCalc.scope2Items.filter(i => i.category === 'siteFacility'), 'facility');
+    rebuildListFromData('elecEquipList', scopesCalc.scope2Items.filter(i => i.category === 'electricEquipment'), 'elecEquip');
+
+    // Rebuild Scope 3 lists
+    rebuildListFromData('transportList', scopesCalc.scope3Items.filter(i => i.category === 'transport'), 'transport');
+    rebuildListFromData('wasteList', scopesCalc.scope3Items.filter(i => i.category === 'waste'), 'waste');
+    rebuildListFromData('waterList', scopesCalc.scope3Items.filter(i => i.category === 'water'), 'water');
+    rebuildListFromData('commuteList', scopesCalc.scope3Items.filter(i => i.category === 'commuting'), 'commute');
+    rebuildListFromData('tempWorksList', scopesCalc.scope3Items.filter(i => i.category === 'temporaryWorks'), 'tempWorks');
+}
+
+/**
+ * Rebuild a specific list from data
+ */
+function rebuildListFromData(listId, items, type) {
+    const list = document.getElementById(listId);
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    if (items.length === 0) {
+        list.innerHTML = '<p class="text-sm text-brand-sage-light text-center py-8">No items added yet</p>';
+        return;
+    }
+
+    items.forEach(item => {
+        addToList(listId, item, type);
+    });
+}
+
+/**
+ * Show save indicator
+ */
+function showSaveIndicator() {
+    const indicator = document.getElementById('saveIndicator');
+    if (indicator) {
+        indicator.classList.remove('hidden');
+        setTimeout(() => {
+            indicator.classList.add('hidden');
+        }, 2000);
+    }
+}
+
+/**
+ * Show restore notification
+ */
+function showRestoreNotification(timestamp) {
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleString();
+
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-20 right-4 bg-brand-primary text-brand-navy px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+    notification.innerHTML = `
+        <div class="flex items-center gap-3">
+            <i class="fas fa-check-circle text-brand-forest"></i>
+            <div>
+                <p class="font-semibold">Data Restored</p>
+                <p class="text-sm">Last saved: ${formattedDate}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
 }
  

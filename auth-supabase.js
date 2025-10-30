@@ -14,12 +14,10 @@ const env = window.ENV || {};
 const SUPABASE_URL =
     env.SUPABASE_URL ||
     env.NEXT_PUBLIC_SUPABASE_URL ||
-    window.SUPABASE_URL ||
     null;
 const SUPABASE_ANON_KEY =
     env.SUPABASE_ANON_KEY ||
     env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    window.SUPABASE_ANON_KEY ||
     null;
 
 // Initialize Supabase client

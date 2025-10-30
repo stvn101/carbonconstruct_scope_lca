@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "eslint": "^9.0.0",
-    "vercel": "^33.0.0"
+    "vercel": "^48.6.7"
   },
   "engines": {
     "node": ">=18.0.0"

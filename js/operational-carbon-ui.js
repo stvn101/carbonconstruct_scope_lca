@@ -893,7 +893,38 @@ function saveData() {
         showSaveIndicator();
     } catch (error) {
         console.error('Error saving data:', error);
+        showSaveErrorIndicator();
+        showSaveErrorIndicator();
     }
+}
+
+/**
+ * Show a visual indicator when auto-save fails
+ */
+function showSaveErrorIndicator() {
+    let indicator = document.getElementById('save-error-indicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'save-error-indicator';
+        indicator.style.position = 'fixed';
+        indicator.style.top = '16px';
+        indicator.style.right = '16px';
+        indicator.style.background = '#ff4d4f';
+        indicator.style.color = '#fff';
+        indicator.style.padding = '8px 16px';
+        indicator.style.borderRadius = '4px';
+        indicator.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+        indicator.style.zIndex = '10000';
+        indicator.style.fontWeight = 'bold';
+        indicator.textContent = 'Auto-save failed! Changes may not be saved.';
+        document.body.appendChild(indicator);
+    } else {
+        indicator.style.display = 'block';
+    }
+    // Hide after 5 seconds
+    setTimeout(() => {
+        if (indicator) indicator.style.display = 'none';
+    }, 5000);
 }
 
 /**

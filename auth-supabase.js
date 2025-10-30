@@ -30,7 +30,7 @@ function initSupabaseAuth() {
     }
 
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        console.error('Supabase credentials are missing. Check SUPABASE_URL and SUPABASE_ANON_KEY environment variables.');
+        console.error('Supabase credentials are missing. Check SUPABASE_URL, NEXT_PUBLIC_SUPABASE_URL, SUPABASE_ANON_KEY, and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.');
         return false;
     }
 

@@ -5,12 +5,23 @@
  * Tests all three scopes, calculations, and data management
  */
 
+const { ComprehensiveScopesCalculator, EMISSIONS_FACTORS } = require('../scopes-calculator-comprehensive');
+
 describe('ComprehensiveScopesCalculator', () => {
     let calculator;
 
     beforeEach(() => {
         // Create fresh calculator instance for each test
         calculator = new ComprehensiveScopesCalculator();
+    });
+
+    test('emissions factors should be available for calculations', () => {
+        expect(EMISSIONS_FACTORS).toBeDefined();
+        expect(EMISSIONS_FACTORS.fuels.diesel).toBeGreaterThan(0);
+    });
+
+    test('calculator instances share the emissions factors data', () => {
+        expect(calculator.factors).toBe(EMISSIONS_FACTORS);
     });
 
     // ============================================================================

@@ -8,11 +8,21 @@
  * Last Updated: 2024
  */
 
+let FACTORS = typeof EMISSIONS_FACTORS !== 'undefined' ? EMISSIONS_FACTORS : undefined;
+
+if (!FACTORS && typeof require === 'function') {
+    try {
+        FACTORS = require('./emissions-factors');
+    } catch (err) {
+        FACTORS = undefined;
+    }
+}
+
 class ComprehensiveScopesCalculator {
     constructor() {
         // Load emissions factors
-        this.factors = EMISSIONS_FACTORS;
-        
+        this.factors = FACTORS;
+
         // Storage for all tracked emissions
         this.scope1Items = [];
         this.scope2Items = [];
@@ -537,3 +547,15 @@ class ComprehensiveScopesCalculator {
 
 // Initialize global calculator
 const scopesCalc = new ComprehensiveScopesCalculator();
+
+if (typeof window !== 'undefined') {
+    window.scopesCalc = scopesCalc;
+    window.ComprehensiveScopesCalculator = ComprehensiveScopesCalculator;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        ComprehensiveScopesCalculator,
+        EMISSIONS_FACTORS: FACTORS
+    };
+}

@@ -18,6 +18,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - CarbonConstruct</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .settings-container {
             max-width: 1000px;
@@ -381,6 +383,16 @@
     </style>
 </head>
 <body>
+    <!-- Floating Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="index.html" class="nav-btn" title="Home">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="dashboard.html" class="nav-btn" title="Dashboard">
+            <i class="fas fa-chart-line"></i>
+        </a>
+    </div>
+
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Back to CarbonConstruct home">
@@ -603,22 +615,36 @@
 
         let currentUser = null;
 
-        // Initialize settings
+        // Initialize settings with timeout protection
         async function initSettings() {
+            // No loading spinner on settings page, but add timeout for safety
+            const loadingTimeout = setTimeout(() => {
+                console.error('Settings loading timeout');
+                alert('Loading timeout. Some settings may not be available. Please refresh.');
+            }, 10000); // 10 second timeout
+
             try {
                 currentUser = await getCurrentUser();
 
                 if (!currentUser) {
+                    clearTimeout(loadingTimeout);
                     window.location.href = 'signin-new.html';
                     return;
                 }
 
-                await loadProfile();
-                await loadConnectedAccounts();
-                await loadNotificationPreferences();
+                // Load settings data with individual error handling
+                await Promise.allSettled([
+                    loadProfile(),
+                    loadConnectedAccounts(),
+                    loadNotificationPreferences()
+                ]);
+
+                clearTimeout(loadingTimeout);
 
             } catch (error) {
+                clearTimeout(loadingTimeout);
                 console.error('Settings initialization error:', error);
+                alert('Failed to load some settings. Please refresh the page.');
             }
         }
 

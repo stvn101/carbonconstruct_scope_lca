@@ -18,6 +18,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CarbonConstruct</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .dashboard-container {
             max-width: 1400px;
@@ -355,6 +357,16 @@
     </style>
 </head>
 <body>
+    <!-- Floating Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="index.html" class="nav-btn" title="Home">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="calculator.html" class="nav-btn" title="Calculator">
+            <i class="fas fa-calculator"></i>
+        </a>
+    </div>
+
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Back to CarbonConstruct home">
@@ -455,13 +467,19 @@
 
         let currentUser = null;
 
-        // Initialize dashboard
+        // Initialize dashboard with timeout protection
         async function initDashboard() {
+            const loadingTimeout = setTimeout(() => {
+                console.error('Dashboard loading timeout');
+                showErrorState('Loading timeout. Please refresh the page.');
+            }, 10000); // 10 second timeout
+
             try {
                 // Get current user
                 currentUser = await getCurrentUser();
 
                 if (!currentUser) {
+                    clearTimeout(loadingTimeout);
                     window.location.href = 'signin-new.html';
                     return;
                 }
@@ -469,22 +487,37 @@
                 // Update UI with user info
                 document.getElementById('userName').textContent = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'User';
 
-                // Load all dashboard data
-                await Promise.all([
+                // Load all dashboard data with individual error handling
+                await Promise.allSettled([
                     loadSubscriptionInfo(),
                     loadProjects(),
                     loadStats(),
                     loadActivity()
                 ]);
 
-                // Show dashboard
+                // Show dashboard (even if some data failed to load)
+                clearTimeout(loadingTimeout);
                 document.getElementById('loadingState').style.display = 'none';
                 document.getElementById('dashboardContent').style.display = 'block';
 
             } catch (error) {
+                clearTimeout(loadingTimeout);
                 console.error('Dashboard initialization error:', error);
-                alert('Failed to load dashboard. Please try again.');
+                showErrorState('Failed to load dashboard. Please try refreshing the page.');
             }
+        }
+
+        // Show error state
+        function showErrorState(message) {
+            document.getElementById('loadingState').innerHTML = `
+                <div style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                    <h3 style="color: #ef4444; margin-bottom: 1rem;">Error Loading Dashboard</h3>
+                    <p style="color: #666; margin-bottom: 2rem;">${message}</p>
+                    <button class="btn btn-primary" onclick="location.reload()">Reload Page</button>
+                    <a href="index.html" class="btn btn-secondary" style="margin-left: 1rem;">Go Home</a>
+                </div>
+            `;
         }
 
         // Load subscription information

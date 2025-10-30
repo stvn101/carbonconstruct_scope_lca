@@ -6,11 +6,11 @@
  */
 
 // ============================================
-// CONFIGURATION (from Vercel env vars)
+// CONFIGURATION (from window.ENV or fallback)
 // ============================================
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const SUPABASE_URL = window.ENV?.NEXT_PUBLIC_SUPABASE_URL || 'https://jaqzoyouuzhchuyzafii.supabase.co';
+const SUPABASE_ANON_KEY = window.ENV?.NEXT_PUBLIC_SUPABASE_ANON_KEY || null;
 
 // Initialize Supabase client
 let supabase = null;
@@ -272,24 +272,30 @@ async function getUserProfile(userId) {
 }
 
 /**
- * Update user profile
+ * Update user profile (accepts profileData object, not userId)
  */
-async function updateUserProfile(userId, updates) {
+async function updateUserProfile(profileData) {
     try {
+        const user = await getCurrentUser();
+        if (!user) throw new Error('No user logged in');
+
         const { data, error } = await supabase
-            .from('profiles')
-            .update(updates)
-            .eq('id', userId)
+            .from('user_profiles')
+            .upsert({
+                user_id: user.id,
+                ...profileData,
+                updated_at: new Date().toISOString()
+            })
             .select()
             .single();
-        
+
         if (error) throw error;
-        
+
         console.log('✅ Profile updated');
         return { success: true, data };
     } catch (error) {
         console.error('Update profile error:', error);
-        return { success: false, error: error.message };
+        throw error;
     }
 }
 
@@ -414,3 +420,26 @@ if (document.readyState === 'loading') {
 console.log('🔐 Supabase Auth API loaded');
 console.log('🔑 OAuth providers: Google, GitHub');
 console.log('📧 Email/Password auth enabled');
+
+// ============================================
+// ES6 MODULE EXPORTS (for modern imports)
+// ============================================
+
+export {
+    supabase,
+    initSupabaseAuth,
+    signUpWithEmail,
+    signInWithEmail,
+    signInWithGoogle,
+    signInWithGitHub,
+    signOut,
+    getCurrentUser,
+    getSession,
+    updateUserMetadata,
+    resetPassword,
+    updatePassword,
+    getUserProfile,
+    updateUserProfile,
+    protectPage,
+    redirectIfAuthenticated
+};

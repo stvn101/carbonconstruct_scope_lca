@@ -31,9 +31,9 @@ export default async function handler(req, res) {
             });
         }
 
-        // Use environment variables or fall back to request body
-        const finalClientId = CLIENT_ID || client_id;
-        const finalRedirectUri = REDIRECT_URI || redirect_uri;
+        // Use environment variables only for security
+        const finalClientId = CLIENT_ID;
+        const finalRedirectUri = REDIRECT_URI;
 
         if (!finalClientId || !CLIENT_SECRET || !finalRedirectUri) {
             console.error('EC3 OAuth environment variables not fully configured:', {

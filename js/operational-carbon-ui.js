@@ -980,7 +980,7 @@ function rebuildListFromData(listId, items, type) {
     list.innerHTML = '';
 
     if (items.length === 0) {
-        list.innerHTML = '<p class="text-sm text-brand-sage-light text-center py-8">No items added yet</p>';
+        list.innerHTML = '<p class="text-sm text-gray-500 text-center py-8">No items added yet</p>';
         return;
     }
 

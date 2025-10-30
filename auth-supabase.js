@@ -9,8 +9,19 @@
 // CONFIGURATION (from window.ENV or fallback)
 // ============================================
 
-const SUPABASE_URL = window.ENV?.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = window.ENV?.NEXT_PUBLIC_SUPABASE_ANON_KEY || null;
+const envConfig = window?.ENV || {};
+
+const SUPABASE_URL =
+    envConfig.NEXT_PUBLIC_SUPABASE_URL ||
+    envConfig.SUPABASE_URL ||
+    window?.SUPABASE_URL ||
+    null;
+
+const SUPABASE_ANON_KEY =
+    envConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    envConfig.SUPABASE_ANON_KEY ||
+    window?.SUPABASE_ANON_KEY ||
+    null;
 
 // Initialize Supabase client
 let supabase = null;

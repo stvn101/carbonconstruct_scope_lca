@@ -934,7 +934,6 @@ function loadSavedData() {
     try {
         const savedData = localStorage.getItem(STORAGE_KEY);
         if (!savedData) {
-            console.log('No saved data found');
             return;
         }
 

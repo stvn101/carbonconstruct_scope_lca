@@ -7,9 +7,6 @@ class StorageManager {
     constructor() {
         this.tableName = 'carbon_projects';
         this.initialized = false;
-        this.client = null;
-        this.supabaseUrl = null;
-        this.supabaseAnonKey = null;
     }
 
     /**
@@ -17,48 +14,15 @@ class StorageManager {
      * This needs to be called once when the app first loads
      */
     async initialize() {
-        if (this.initialized && this.client) return;
-
-        const { url, key } = this.resolveCredentials();
-        if (!url || !key) {
-            console.warn('Supabase credentials not provided. Set SUPABASE_URL and SUPABASE_ANON_KEY to enable persistence.');
-            this.initialized = false;
-            return;
-        }
-
-        if (typeof window === 'undefined' || typeof window.supabase === 'undefined') {
-            console.error('Supabase client library not loaded. Include https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.');
-            this.initialized = false;
-            return;
-        }
-
-        this.client = window.supabase.createClient(url, key);
-        this.supabaseUrl = url;
-        this.supabaseAnonKey = key;
-        this.initialized = true;
-        console.log('Storage initialized successfully with Supabase client');
-    }
-
-    /**
-     * Resolve Supabase credentials from environment (browser safe)
-     */
-    resolveCredentials() {
-        const env = (typeof window !== 'undefined' && window.ENV) ? window.ENV : {};
-        const url = env.SUPABASE_URL || (typeof window !== 'undefined' ? window.SUPABASE_URL : '') ||
-            (typeof process !== 'undefined' ? (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '') : '');
-        const key = env.SUPABASE_ANON_KEY || (typeof window !== 'undefined' ? window.SUPABASE_ANON_KEY : '') ||
-            (typeof process !== 'undefined' ? (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '') : '');
-
-        return { url, key };
-    }
-
-    /**
-     * Ensure the Supabase client is ready before issuing queries
-     */
-    async ensureClient() {
-        await this.initialize();
-        if (!this.client) {
-            throw new Error('Supabase client not initialized. Check SUPABASE_URL and SUPABASE_ANON_KEY configuration.');
+        if (this.initialized) return;
+        
+        try {
+            // The table schema is already defined in the project
+            // We just need to verify we can access it
+            this.initialized = true;
+            console.log('Storage initialized successfully');
+        } catch (error) {
+            console.error('Failed to initialize storage:', error);
         }
     }
 
@@ -68,8 +32,8 @@ class StorageManager {
      */
     async saveProject(projectData) {
         try {
-            await this.ensureClient();
-
+            await this.initialize();
+            
             // Prepare project data for storage
             const dataToSave = {
                 projectName: projectData.projectName || 'Untitled Project',
@@ -78,9 +42,6 @@ class StorageManager {
                 designLife: projectData.designLife || 50,
                 materials: JSON.stringify(projectData.materials || []),
                 totalCarbon: projectData.totalCarbon || 0,
-                wholeLifeCarbon: projectData.wholeLifeCarbon || projectData.totalCarbon || 0,
-                embodiedCarbon: projectData.embodiedCarbon || projectData.totalCarbon || 0,
-                carbonScope: projectData.carbonScope || 'wholeLife',
                 carbonIntensity: projectData.carbonIntensity || 0,
                 lcaResults: JSON.stringify(projectData.lcaResults || {}),
                 scopesResults: JSON.stringify(projectData.scopesResults || {}),
@@ -90,32 +51,37 @@ class StorageManager {
 
             // If project has an ID, update it; otherwise create new
             if (projectData.id) {
-                const { data, error } = await this.client
-                    .from(this.tableName)
-                    .update(dataToSave)
-                    .eq('id', projectData.id)
-                    .select()
-                    .single();
+                const response = await fetch(`tables/${this.tableName}/${projectData.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToSave)
+                });
 
-                if (error) {
-                    throw error;
+                if (!response.ok) {
+                    throw new Error(`Failed to update project: ${response.statusText}`);
                 }
 
-                console.log('Project updated successfully:', data.id);
-                return data;
+                const result = await response.json();
+                console.log('Project updated successfully:', result.id);
+                return result;
             } else {
-                const { data, error } = await this.client
-                    .from(this.tableName)
-                    .insert(dataToSave)
-                    .select()
-                    .single();
+                const response = await fetch(`tables/${this.tableName}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToSave)
+                });
 
-                if (error) {
-                    throw error;
+                if (!response.ok) {
+                    throw new Error(`Failed to save project: ${response.statusText}`);
                 }
 
-                console.log('Project saved successfully:', data.id);
-                return data;
+                const result = await response.json();
+                console.log('Project saved successfully:', result.id);
+                return result;
             }
         } catch (error) {
             console.error('Error saving project:', error);
@@ -129,21 +95,18 @@ class StorageManager {
      */
     async loadAllProjects(page = 1, limit = 100) {
         try {
-            await this.ensureClient();
-
-            const from = (page - 1) * limit;
-            const to = from + limit - 1;
-            const { data, error } = await this.client
-                .from(this.tableName)
-                .select('*')
-                .order('lastModified', { ascending: false, nullsFirst: false })
-                .range(from, to);
-
-            if (error) {
-                throw error;
+            await this.initialize();
+            
+            const response = await fetch(`tables/${this.tableName}?page=${page}&limit=${limit}&sort=-updated_at`);
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load projects: ${response.statusText}`);
             }
 
-            const projects = (data || []).map(project => ({
+            const result = await response.json();
+            
+            // Parse JSON fields back to objects
+            const projects = result.data.map(project => ({
                 ...project,
                 materials: this.safeJsonParse(project.materials, []),
                 lcaResults: this.safeJsonParse(project.lcaResults, {}),
@@ -164,25 +127,23 @@ class StorageManager {
      */
     async loadProject(projectId) {
         try {
-            await this.ensureClient();
-
-            const { data, error } = await this.client
-                .from(this.tableName)
-                .select('*')
-                .eq('id', projectId)
-                .single();
-
-            if (error) {
-                throw error;
+            await this.initialize();
+            
+            const response = await fetch(`tables/${this.tableName}/${projectId}`);
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load project: ${response.statusText}`);
             }
 
+            const project = await response.json();
+            
             // Parse JSON fields
             return {
-                ...data,
-                materials: this.safeJsonParse(data.materials, []),
-                lcaResults: this.safeJsonParse(data.lcaResults, {}),
-                scopesResults: this.safeJsonParse(data.scopesResults, {}),
-                complianceResults: this.safeJsonParse(data.complianceResults, {})
+                ...project,
+                materials: this.safeJsonParse(project.materials, []),
+                lcaResults: this.safeJsonParse(project.lcaResults, {}),
+                scopesResults: this.safeJsonParse(project.scopesResults, {}),
+                complianceResults: this.safeJsonParse(project.complianceResults, {})
             };
         } catch (error) {
             console.error('Error loading project:', error);
@@ -195,15 +156,14 @@ class StorageManager {
      */
     async deleteProject(projectId) {
         try {
-            await this.ensureClient();
+            await this.initialize();
+            
+            const response = await fetch(`tables/${this.tableName}/${projectId}`, {
+                method: 'DELETE'
+            });
 
-            const { error } = await this.client
-                .from(this.tableName)
-                .delete()
-                .eq('id', projectId);
-
-            if (error) {
-                throw error;
+            if (!response.ok) {
+                throw new Error(`Failed to delete project: ${response.statusText}`);
             }
 
             console.log('Project deleted successfully:', projectId);
@@ -219,19 +179,17 @@ class StorageManager {
      */
     async searchProjects(searchTerm) {
         try {
-            await this.ensureClient();
-
-            const { data, error } = await this.client
-                .from(this.tableName)
-                .select('*')
-                .ilike('projectName', `%${searchTerm}%`)
-                .order('lastModified', { ascending: false, nullsFirst: false });
-
-            if (error) {
-                throw error;
+            await this.initialize();
+            
+            const response = await fetch(`tables/${this.tableName}?search=${encodeURIComponent(searchTerm)}`);
+            
+            if (!response.ok) {
+                throw new Error(`Failed to search projects: ${response.statusText}`);
             }
 
-            const projects = (data || []).map(project => ({
+            const result = await response.json();
+            
+            const projects = result.data.map(project => ({
                 ...project,
                 materials: this.safeJsonParse(project.materials, []),
                 lcaResults: this.safeJsonParse(project.lcaResults, {}),
@@ -287,14 +245,7 @@ class StorageManager {
         
         report += `SUMMARY\n`;
         report += `-------\n`;
-        const scope = projectData.carbonScope === 'wholeLife' ? 'Whole Life' : 'Embodied Only';
-        report += `${scope} Carbon: ${projectData.totalCarbon.toLocaleString()} kg CO2-e\n`;
-        if (projectData.wholeLifeCarbon !== undefined) {
-            report += `Whole Life Carbon (A1-A5 + B + C): ${projectData.wholeLifeCarbon.toLocaleString()} kg CO2-e\n`;
-        }
-        if (projectData.embodiedCarbon !== undefined) {
-            report += `Embodied Carbon (A1-A5): ${projectData.embodiedCarbon.toLocaleString()} kg CO2-e\n`;
-        }
+        report += `Total Embodied Carbon: ${projectData.totalCarbon.toLocaleString()} kg CO2-e\n`;
         report += `Carbon Intensity: ${projectData.carbonIntensity.toFixed(1)} kg CO2-e/m²\n\n`;
         
         if (projectData.lcaResults && projectData.lcaResults.totals) {
@@ -338,4 +289,3 @@ const storageManager = new StorageManager();
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { StorageManager, storageManager };
 }
- 

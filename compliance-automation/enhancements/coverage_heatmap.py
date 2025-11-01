@@ -542,7 +542,6 @@ def main():
 
     # Load project
     with open(args.project_json, 'r') as f:
-        from ..schemas.canonical_schema import ComplianceProject
         project_data = json.load(f)
         project = ComplianceProject(**project_data)
 

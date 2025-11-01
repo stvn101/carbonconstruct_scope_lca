@@ -17,6 +17,7 @@ from ..schemas.canonical_schema import (
     EPDDocument,
     LCAStages,
     IFCElement,
+    BIMModel,
     ERPInvoice,
     InvoiceLineItem,
     TransportLog,
@@ -170,8 +171,6 @@ class TestMaterialTraceability:
 
     def test_quantity_reconciliation_with_zero_invoice_quantity(self, rules_engine, minimal_project):
         """Invoice with zero quantity should fail with proper error message (not ZeroDivisionError)"""
-        from ..schemas.canonical_schema import BIMModel
-
         # Add BIM element
         bim_model = BIMModel(
             project_name="Test BIM",
@@ -229,8 +228,6 @@ class TestMaterialTraceability:
 
     def test_quantity_reconciliation_within_tolerance(self, rules_engine, minimal_project):
         """Quantities within ±10% tolerance should pass"""
-        from ..schemas.canonical_schema import BIMModel
-
         # Add BIM element
         bim_model = BIMModel(
             project_name="Test BIM",
@@ -281,8 +278,6 @@ class TestMaterialTraceability:
 
     def test_quantity_reconciliation_exceeds_tolerance(self, rules_engine, minimal_project):
         """Quantities exceeding ±10% tolerance should fail"""
-        from ..schemas.canonical_schema import BIMModel
-
         # Add BIM element
         bim_model = BIMModel(
             project_name="Test BIM",
@@ -545,7 +540,6 @@ class TestDoubleCountingPrevention:
         # Add BIM element
         bim_model = minimal_project.bim_models[0] if minimal_project.bim_models else None
         if not bim_model:
-            from ..schemas.canonical_schema import BIMModel
             bim_model = BIMModel(
                 project_name="Test BIM",
                 elements=[]
@@ -596,7 +590,6 @@ class TestDoubleCountingPrevention:
     def test_double_counting_detected(self, rules_engine, minimal_project):
         """Project with duplicate materials should fail"""
         # Add BIM element
-        from ..schemas.canonical_schema import BIMModel
         bim_model = BIMModel(
             project_name="Test BIM",
             elements=[]

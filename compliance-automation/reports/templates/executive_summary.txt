@@ -1,0 +1,91 @@
+EXECUTIVE SUMMARY - COMPLIANCE AUTOMATION REPORT
+{{ '=' * 80 }}
+
+Project: {{ project_name }}
+Type: {{ project_type|capitalize }}
+{% if location %}Location: {{ location.city }}, {{ location.state }}{% endif %}
+Report Generated: {{ generated_at|datetime('%d/%m/%Y %H:%M') }}
+
+OVERALL COMPLIANCE STATUS: {{ compliance_status }}
+{{ '-' * 80 }}
+
+Key Metrics:
+- Pass Rate: {{ pass_rate|round(1) }}% ({{ passed_checks }}/{{ total_checks }} checks passed)
+- Total Embodied Carbon: {{ total_embodied_carbon|round(0) }} kg CO2-e
+{% if carbon_intensity %}- Carbon Intensity: {{ carbon_intensity|round(1) }} kg CO2-e/m²{% endif %}
+
+Issues Identified:
+{% if critical_count > 0 %}- CRITICAL: {{ critical_count }} issue(s) requiring immediate action{% endif %}
+{% if high_count > 0 %}- HIGH: {{ high_count }} issue(s) to be addressed before final report{% endif %}
+{% if medium_count > 0 %}- MEDIUM: {{ medium_count }} issue(s) recommended for resolution{% endif %}
+{% if low_count > 0 %}- LOW: {{ low_count }} informational item(s){% endif %}
+
+{% if critical_count > 0 %}
+CRITICAL ACTIONS REQUIRED:
+{{ '-' * 80 }}
+{% for finding in critical_findings[:5] %}
+{{ loop.index }}. {{ finding.rule_name }}
+   Issue: {{ finding.description }}
+   Action: {{ finding.remediation.action }}
+   Responsible: {{ finding.remediation.responsible_party }}
+
+{% endfor %}
+{% if critical_findings|length > 5 %}
+   ... and {{ critical_findings|length - 5 }} more critical issue(s). See full report for details.
+{% endif %}
+{% endif %}
+
+{% if high_count > 0 %}
+HIGH PRIORITY RECOMMENDATIONS:
+{{ '-' * 80 }}
+{% for finding in high_findings[:3] %}
+{{ loop.index }}. {{ finding.rule_name }}
+   Issue: {{ finding.description }}
+   Action: {{ finding.remediation.action }}
+
+{% endfor %}
+{% if high_findings|length > 3 %}
+   ... and {{ high_findings|length - 3 }} more high-priority item(s). See full report.
+{% endif %}
+{% endif %}
+
+{% if compliant %}
+CONCLUSION:
+{{ '-' * 80 }}
+✓ The project meets all critical compliance requirements.
+✓ No high-severity issues detected.
+✓ This project is ready for certification subject to addressing any remaining
+  medium/low-priority recommendations.
+{% else %}
+CONCLUSION:
+{{ '-' * 80 %}
+✗ The project DOES NOT currently meet compliance requirements.
+✗ Action is required to resolve {{ critical_count + high_count }} critical/high-severity issue(s).
+✗ Review the full report and implement recommended remediations before proceeding
+  to certification.
+{% endif %}
+
+DATA SOURCES:
+{{ '-' * 80 }}
+This report analyzed:
+- {{ epd_count }} Environmental Product Declarations
+- {{ invoice_count }} Purchase Invoices
+- {{ bim_model_count }} BIM/IFC Models
+- {{ transport_log_count }} Transport Logs
+- {{ waste_stream_count }} Waste Streams
+- {{ meter_count }} Utility Meters
+
+COMPLIANCE FRAMEWORK:
+{{ '-' * 80 }}
+- NCC 2022 (National Construction Code)
+- GHG Protocol Corporate Standard
+- EN 15804 (EPD Core Rules)
+- ISO 14044 (Life Cycle Assessment)
+
+{{ '=' * 80 }}
+For full details, evidence linkages, and remediation guidance, refer to the
+complete HTML or PDF report.
+
+Report ID: {{ report_id }}
+Rules Version: {{ rules_version }}
+Carbon Construct Compliance Automation Service

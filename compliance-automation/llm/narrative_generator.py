@@ -60,7 +60,7 @@ IMPORTANT: All compliance decisions have already been made by the rules engine. 
 
 Project: {project.project_name}
 Type: {project.project_type}
-Overall Status: {report.compliance_status}
+Overall Status: {'COMPLIANT' if report.compliant else 'NON-COMPLIANT'}
 
 Findings Summary:
 - Total Checks: {report.total_checks}

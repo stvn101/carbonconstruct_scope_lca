@@ -331,10 +331,15 @@ class RulesEngine:
 
                     # Check quantity reconciliation (±10%)
                     if line_item.unit == element.unit:
-                        variance_pct = abs(float(element.quantity - line_item.quantity)) / float(line_item.quantity) * 100
-                        if variance_pct > 10:
+                        if line_item.quantity > 0:
+                            # Use Decimal throughout to maintain precision
+                            variance_pct = abs(element.quantity - line_item.quantity) / line_item.quantity * Decimal(100)
+                            if variance_pct > Decimal(10):
+                                passed = False
+                                issues.append(f"Quantity variance {float(variance_pct):.1f}% exceeds ±10% tolerance")
+                        else:
                             passed = False
-                            issues.append(f"Quantity variance {variance_pct:.1f}% exceeds ±10% tolerance")
+                            issues.append("Invoice line item has zero quantity - cannot reconcile")
 
                 description = f"BIM element '{element.name or element.ifc_type}' ({element.material_name})"
                 if not passed:

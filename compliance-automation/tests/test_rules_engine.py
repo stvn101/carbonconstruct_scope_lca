@@ -162,6 +162,179 @@ class TestEPDValidity:
 
 
 # ============================================================================
+# Test Check 2: Material Traceability and Documentation
+# ============================================================================
+
+class TestMaterialTraceability:
+    """Test material traceability from BIM to invoices to EPDs"""
+
+    def test_quantity_reconciliation_with_zero_invoice_quantity(self, rules_engine, minimal_project):
+        """Invoice with zero quantity should fail with proper error message (not ZeroDivisionError)"""
+        from ..schemas.canonical_schema import BIMModel
+
+        # Add BIM element
+        bim_model = BIMModel(
+            project_name="Test BIM",
+            elements=[]
+        )
+        minimal_project.bim_models.append(bim_model)
+
+        element = IFCElement(
+            ifc_guid="guid-001",
+            ifc_type="IfcWall",
+            quantity=Decimal("100"),
+            unit=Unit.M3,
+            material_name="Concrete 32MPa",
+            material_category=MaterialCategory.CONCRETE
+        )
+        bim_model.elements.append(element)
+
+        # Add invoice with ZERO quantity (edge case)
+        invoice = ERPInvoice(
+            invoice_number="INV-001",
+            supplier_name="Supplier A",
+            supplier_abn="12345678901",
+            buyer_name="Buyer B",
+            invoice_date=date(2024, 3, 1),
+            line_items=[
+                InvoiceLineItem(
+                    line_number=1,
+                    product_name="Concrete 32MPa",
+                    quantity=Decimal("0"),  # ZERO quantity
+                    unit=Unit.M3,
+                    unit_price=Decimal("150"),
+                    total_price=Decimal("0")
+                )
+            ],
+            subtotal=Decimal("0"),
+            tax=Decimal("0"),
+            total=Decimal("0")
+        )
+        minimal_project.invoices.append(invoice)
+
+        # This should NOT raise ZeroDivisionError
+        report = rules_engine.evaluate_project(minimal_project)
+
+        traceability_findings = [f for f in report.findings if f.rule_id == "material_traceability"]
+
+        # Should have finding for the element
+        assert len(traceability_findings) > 0
+
+        # Find the finding for our element
+        element_finding = [f for f in traceability_findings if f.entity_type == "ifc_element"][0]
+
+        # Should fail due to zero quantity
+        assert element_finding.passed is False
+        assert "zero quantity" in element_finding.description.lower()
+
+    def test_quantity_reconciliation_within_tolerance(self, rules_engine, minimal_project):
+        """Quantities within ±10% tolerance should pass"""
+        from ..schemas.canonical_schema import BIMModel
+
+        # Add BIM element
+        bim_model = BIMModel(
+            project_name="Test BIM",
+            elements=[]
+        )
+        minimal_project.bim_models.append(bim_model)
+
+        element = IFCElement(
+            ifc_guid="guid-002",
+            ifc_type="IfcSlab",
+            quantity=Decimal("105"),  # 5% variance
+            unit=Unit.M3,
+            material_name="Concrete 40MPa",
+            material_category=MaterialCategory.CONCRETE
+        )
+        bim_model.elements.append(element)
+
+        # Add invoice with similar quantity (within tolerance)
+        invoice = ERPInvoice(
+            invoice_number="INV-002",
+            supplier_name="Supplier B",
+            supplier_abn="12345678901",
+            buyer_name="Buyer B",
+            invoice_date=date(2024, 3, 1),
+            line_items=[
+                InvoiceLineItem(
+                    line_number=1,
+                    product_name="Concrete 40MPa",
+                    quantity=Decimal("100"),  # Base quantity
+                    unit=Unit.M3,
+                    unit_price=Decimal("150"),
+                    total_price=Decimal("15000")
+                )
+            ],
+            subtotal=Decimal("15000"),
+            tax=Decimal("1500"),
+            total=Decimal("16500")
+        )
+        minimal_project.invoices.append(invoice)
+
+        report = rules_engine.evaluate_project(minimal_project)
+
+        traceability_findings = [f for f in report.findings if f.rule_id == "material_traceability"]
+        element_finding = [f for f in traceability_findings if f.entity_type == "ifc_element"][0]
+
+        # Should pass - 5% variance is within ±10% tolerance
+        assert element_finding.passed is True
+
+    def test_quantity_reconciliation_exceeds_tolerance(self, rules_engine, minimal_project):
+        """Quantities exceeding ±10% tolerance should fail"""
+        from ..schemas.canonical_schema import BIMModel
+
+        # Add BIM element
+        bim_model = BIMModel(
+            project_name="Test BIM",
+            elements=[]
+        )
+        minimal_project.bim_models.append(bim_model)
+
+        element = IFCElement(
+            ifc_guid="guid-003",
+            ifc_type="IfcBeam",
+            quantity=Decimal("120"),  # 20% variance (exceeds tolerance)
+            unit=Unit.M3,
+            material_name="Steel Beams",
+            material_category=MaterialCategory.STEEL
+        )
+        bim_model.elements.append(element)
+
+        # Add invoice
+        invoice = ERPInvoice(
+            invoice_number="INV-003",
+            supplier_name="Supplier C",
+            supplier_abn="12345678901",
+            buyer_name="Buyer B",
+            invoice_date=date(2024, 3, 1),
+            line_items=[
+                InvoiceLineItem(
+                    line_number=1,
+                    product_name="Steel Beams",
+                    quantity=Decimal("100"),
+                    unit=Unit.M3,
+                    unit_price=Decimal("2000"),
+                    total_price=Decimal("200000")
+                )
+            ],
+            subtotal=Decimal("200000"),
+            tax=Decimal("20000"),
+            total=Decimal("220000")
+        )
+        minimal_project.invoices.append(invoice)
+
+        report = rules_engine.evaluate_project(minimal_project)
+
+        traceability_findings = [f for f in report.findings if f.rule_id == "material_traceability"]
+        element_finding = [f for f in traceability_findings if f.entity_type == "ifc_element"][0]
+
+        # Should fail - 20% variance exceeds ±10% tolerance
+        assert element_finding.passed is False
+        assert "variance" in element_finding.description.lower()
+        assert "20" in element_finding.description  # Should mention the 20% variance
+
+
+# ============================================================================
 # Test Check 3: NCC Embodied Carbon Compliance
 # ============================================================================
 

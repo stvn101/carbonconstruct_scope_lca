@@ -1,0 +1,596 @@
+# Compliance Automation Rules
+# YAML-based rule definitions that are interpreted by the Python rules engine
+
+version: "1.0.0"
+effective_date: "2025-11-01"
+schema_version: "canonical_v1"
+
+# ============================================================================
+# Rule 1: EPD Validity and Certification
+# ============================================================================
+
+- rule_id: epd_validity
+  name: "EPD Validity and Certification"
+  description: "Validates that all Environmental Product Declarations are current, verified, and properly certified"
+  category: "data_quality"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "epd.valid_from"
+        operator: "lte"
+        value: "${context.check_date}"
+        description: "EPD valid from date must be before or on check date"
+
+      - field: "epd.valid_until"
+        operator: "gte"
+        value: "${context.check_date}"
+        description: "EPD valid until date must be after or on check date"
+
+      - any:
+          - field: "epd.epd_type"
+            operator: "in"
+            value: ["industry-average", "generic"]
+          - all:
+              - field: "epd.epd_type"
+                operator: "eq"
+                value: "product-specific"
+              - field: "epd.is_verified"
+                operator: "eq"
+                value: true
+        description: "Product-specific EPDs must be verified"
+
+      - field: "epd.epd_number"
+        operator: "not_empty"
+        description: "EPD must have registration number"
+
+      - field: "epd.source"
+        operator: "in"
+        value:
+          - "EPD Australasia"
+          - "International EPD System"
+          - "IBU"
+          - "EPD Norway"
+          - "UL Environment"
+        description: "EPD must be from recognized program operator"
+
+  severity:
+    if:
+      field: "epd.epd_type"
+      operator: "eq"
+      value: "product-specific"
+    then: "CRITICAL"
+    else: "WARNING"
+
+  remediation:
+    action: "Obtain current, verified EPD from manufacturer or use industry-average EPD"
+    responsible_party: "Procurement team"
+    resources:
+      - "https://epd-australasia.com/search"
+      - "https://www.environdec.com/home"
+
+  evidence_required:
+    - "epd_document"
+    - "verification_statement"
+
+# ============================================================================
+# Rule 2: Material Traceability and Documentation
+# ============================================================================
+
+- rule_id: material_traceability
+  name: "Material Traceability and Documentation"
+  description: "Ensures complete traceability from BIM/IFC model through procurement to installation"
+  category: "traceability"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "ifc_element.material_name"
+        operator: "links_to"
+        target: "invoice.line_items[].product_name"
+        fuzzy_match: true
+        threshold: 0.8
+        description: "BIM element must link to invoice line item"
+
+      - any:
+          - field: "invoice.line_items[].epd_id"
+            operator: "not_null"
+          - field: "invoice.line_items[].metadata.emissions_factor"
+            operator: "not_null"
+        description: "Invoice must link to EPD or emissions factor"
+
+      - field: "invoice.supplier_abn"
+        operator: "not_empty"
+        description: "Supplier must be identified with ABN"
+
+      - field: "invoice.delivery_location"
+        operator: "near"
+        target: "project.location"
+        max_distance_km: 50
+        description: "Delivery location must be near project site"
+
+      - field: "ifc_element.quantity"
+        operator: "reconciles_with"
+        target: "invoice.line_items[].quantity"
+        tolerance_pct: 10
+        description: "Quantities must reconcile within ±10%"
+
+  severity: "HIGH"
+
+  remediation:
+    action: "Complete material tracking spreadsheet linking BIM IDs to invoice numbers and EPDs"
+    responsible_party: "Project engineer"
+    resources:
+      - "templates/material_traceability_matrix.xlsx"
+
+  evidence_required:
+    - "bim_export"
+    - "purchase_invoices"
+    - "delivery_receipts"
+    - "epd_or_certificate"
+
+# ============================================================================
+# Rule 3: Embodied Carbon Threshold Compliance (NCC 2022)
+# ============================================================================
+
+- rule_id: ncc_embodied_carbon
+  name: "NCC 2022 Embodied Carbon Compliance"
+  description: "Validates compliance with NCC 2022 Section J embodied carbon benchmarks"
+  category: "regulatory"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "project.carbon_intensity_per_m2"
+        operator: "lte"
+        value: "${context.ncc_threshold}"
+        description: "Carbon intensity must be below NCC threshold"
+
+      - field: "epd.lca_stages.a1_a3"
+        operator: "not_null"
+        description: "Must include A1-A3 stages (mandatory)"
+
+      - field: "epd.lca_stages.a4"
+        operator: "not_null"
+        description: "Must include A4 stage (mandatory)"
+
+      - field: "epd.lca_stages.a5"
+        operator: "not_null"
+        description: "Must include A5 stage (mandatory)"
+
+  thresholds:
+    residential: 800  # kg CO2-e/m²
+    commercial: 850
+    industrial: 900
+    infrastructure: 750
+
+  severity: "CRITICAL"
+
+  remediation:
+    action: "Reduce embodied carbon through material substitution or improved design"
+    responsible_party: "Design team"
+    resources:
+      - "https://ncc.abcb.gov.au/editions/2022/section-j"
+      - "tools/carbon_reduction_strategies.pdf"
+
+  evidence_required:
+    - "complete_lca_calculation"
+    - "epd_coverage_report"
+    - "methodology_documentation"
+
+# ============================================================================
+# Rule 4: Transport Distance and Emissions Verification
+# ============================================================================
+
+- rule_id: transport_verification
+  name: "Transport Distance and Emissions Verification"
+  description: "Validates transport emissions calculations and distance plausibility"
+  category: "emissions_quality"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "transport_leg.distance_km"
+        operator: "lte"
+        value:
+          if:
+            field: "transport_leg.origin.country"
+            operator: "neq"
+            value: "${transport_leg.destination.country}"
+          then: 20000  # International max
+          else: 5000   # Domestic max
+        description: "Distance must be plausible"
+
+      - field: "transport_leg.emissions_factor"
+        operator: "in_range"
+        min: 0.01
+        max: 2.0
+        unit: "kg CO2-e per tonne-km"
+        description: "Emissions factor must be realistic"
+
+      - field: "transport_leg.load_factor"
+        operator: "between"
+        min: 0.3
+        max: 1.0
+        description: "Load factor must be realistic (30-100%)"
+
+      - field: "transport_leg.transport_mode"
+        operator: "matches_vehicle_type"
+        description: "Mode must match vehicle type"
+
+  severity: "MEDIUM"
+
+  remediation:
+    action: "Verify transport distances with GPS data or logistics provider and confirm emissions factors"
+    responsible_party: "Sustainability consultant"
+    resources:
+      - "https://www.climateactive.org.au/buy-climate-active/carbon-neutral-products/emissions-factors"
+
+  evidence_required:
+    - "transport_invoices"
+    - "bills_of_lading"
+    - "carrier_emissions_certification"
+
+# ============================================================================
+# Rule 5: Waste Reporting and Circularity
+# ============================================================================
+
+- rule_id: waste_circularity
+  name: "Waste Reporting and Circularity"
+  description: "Validates waste data completeness and circularity metrics"
+  category: "circularity"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "waste_stream.waste_type"
+        operator: "not_empty"
+        description: "All waste must be classified"
+
+      - field: "waste_stream.quantity"
+        operator: "gt"
+        value: 0
+        description: "Waste must be quantified"
+
+      - field: "waste_stream.disposal_facility"
+        operator: "not_empty"
+        description: "Disposal facility must be identified"
+
+      - if:
+          field: "waste_stream.waste_type"
+          operator: "eq"
+          value: "hazardous"
+        then:
+          field: "waste_stream.evidence"
+          operator: "contains_type"
+          value: "waste_receipt"
+          description: "Hazardous waste needs special handling documentation"
+
+      - if:
+          field: "waste_stream.recycled_content_pct"
+          operator: "gt"
+          value: 0
+        then:
+          field: "waste_stream.evidence"
+          operator: "contains_type"
+          value: "certification"
+          description: "Recycled content claims must be substantiated"
+
+  metrics:
+    - name: "diversion_rate"
+      calculation: "(recycled + reused) / total * 100"
+      target: 70  # 70% diversion target
+      unit: "percent"
+
+  severity: "MEDIUM"
+
+  remediation:
+    action: "Complete waste tracking documentation and obtain facility certifications"
+    responsible_party: "Site manager"
+    resources:
+      - "templates/waste_tracking_log.xlsx"
+
+  evidence_required:
+    - "waste_dockets"
+    - "recycling_facility_certifications"
+    - "material_composition_declarations"
+
+# ============================================================================
+# Rule 6: Data Completeness and Quality
+# ============================================================================
+
+- rule_id: data_quality
+  name: "Data Completeness and Quality"
+  description: "Assesses completeness and quality of carbon accounting data"
+  category: "data_quality"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "project.primary_data_coverage_pct"
+        operator: "gte"
+        value: 80
+        description: "Primary data must cover ≥80% of materials by mass"
+
+      - field: "project.materials[].data_quality"
+        operator: "labeled"
+        values: ["primary", "secondary", "estimate"]
+        description: "All data sources must be labeled"
+
+      - field: "project.materials[].date"
+        operator: "within_range"
+        start: "${project.start_date}"
+        end: "${project.end_date}"
+        description: "Data must be within project timeline"
+
+      - field: "project.materials[].uncertainty"
+        operator: "documented"
+        description: "Uncertain data must be flagged"
+
+  metrics:
+    - name: "primary_data_coverage"
+      calculation: "sum(primary_mass) / total_mass * 100"
+      target: 80
+      unit: "percent"
+
+    - name: "quantity_reconciliation"
+      calculation: "abs(bim_quantity - invoice_quantity) / invoice_quantity * 100"
+      target: 10  # ≤10% variance
+      unit: "percent"
+
+  severity: "HIGH"
+
+  remediation:
+    action: "Increase primary data coverage through invoice collection and meter readings"
+    responsible_party: "Sustainability consultant"
+    resources:
+      - "guides/data_quality_improvement.pdf"
+
+  evidence_required:
+    - "data_quality_register"
+    - "assumptions_log"
+    - "reconciliation_spreadsheet"
+
+# ============================================================================
+# Rule 7: Temporal Validity (Timeline Alignment)
+# ============================================================================
+
+- rule_id: temporal_validity
+  name: "Temporal Validity (Timeline Alignment)"
+  description: "Ensures all data corresponds to the correct project phase and timeline"
+  category: "data_quality"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "invoice.invoice_date"
+        operator: "within_range"
+        start: "${project.start_date - 30 days}"
+        end: "${project.end_date + 30 days}"
+        description: "Invoices must be within construction period ±30 days"
+
+      - field: "epd.valid_until"
+        operator: "gte"
+        value: "${invoice.invoice_date}"
+        description: "EPD must be valid on procurement date"
+
+      - field: "transport_log.legs[].transport_date"
+        operator: "near"
+        target: "${invoice.delivery_date}"
+        tolerance_days: 7
+        description: "Transport dates must match invoice delivery ±7 days"
+
+      - field: "waste_stream.disposal_date"
+        operator: "within_range"
+        start: "${project.start_date}"
+        end: "${project.end_date}"
+        description: "Waste dates must be within construction period"
+
+      - field: "meter.readings[].timestamp"
+        operator: "after"
+        value: "${project.end_date}"
+        description: "Operational meters must be after construction"
+
+  severity: "MEDIUM"
+
+  remediation:
+    action: "Review and correct dates to align with project timeline documentation"
+    responsible_party: "Project coordinator"
+    resources:
+      - "documents/project_timeline.pdf"
+
+  evidence_required:
+    - "project_schedule"
+    - "dated_transactions"
+
+# ============================================================================
+# Rule 8: Scope Boundary Consistency (GHG Protocol)
+# ============================================================================
+
+- rule_id: scope_boundary
+  name: "Scope Boundary Consistency (GHG Protocol)"
+  description: "Validates that emissions are correctly categorized per GHG Protocol and ISO 14044"
+  category: "methodology"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "project.scope_3_cat1"
+        operator: "includes"
+        value: "epd"
+        description: "Embodied carbon in Scope 3 Category 1"
+
+      - field: "project.scope_3_cat4"
+        operator: "includes"
+        value: "transport"
+        description: "Transport in Scope 3 Category 4"
+
+      - field: "project.scope_1"
+        operator: "excludes"
+        value: "purchased_electricity"
+        description: "Purchased electricity in Scope 2, not Scope 1"
+
+      - field: "project.biogenic_carbon"
+        operator: "reported_separately"
+        description: "Biogenic carbon reported separately"
+
+      - field: "project.system_boundary"
+        operator: "documented"
+        description: "System boundary clearly documented"
+
+  checks:
+    - type: "no_overlap"
+      scopes: ["scope_1", "scope_2", "scope_3"]
+      description: "No emissions counted in multiple scopes"
+
+  severity: "HIGH"
+
+  remediation:
+    action: "Revise GHG inventory to align with GHG Protocol categories"
+    responsible_party: "Carbon accountant"
+    resources:
+      - "https://ghgprotocol.org/standards/corporate-standard"
+      - "templates/scope_boundary_diagram.pptx"
+
+  evidence_required:
+    - "scope_boundary_diagram"
+    - "ghg_inventory_report"
+    - "allocation_methodology"
+
+# ============================================================================
+# Rule 9: Double-Counting Prevention
+# ============================================================================
+
+- rule_id: double_counting
+  name: "Double-Counting Prevention"
+  description: "Detects and prevents double-counting of emissions across data sources"
+  category: "methodology"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "ifc_element"
+        operator: "unique_when_reconciled_with"
+        target: "invoice.line_items"
+        description: "Materials not counted in both BIM and invoices unless reconciled"
+
+      - field: "epd.lca_stages.a4"
+        operator: "not_double_counted_with"
+        target: "transport_log"
+        description: "Transport (A4) not added if already in EPD"
+
+      - field: "meter.meter_type"
+        operator: "excludes"
+        value: "equipment_fuel"
+        when:
+          field: "project.scope_1"
+          operator: "includes"
+          value: "equipment_fuel"
+        description: "Equipment fuel not in both meters and direct emissions"
+
+      - field: "waste_stream.total_emissions"
+        operator: "reconciles_with"
+        target: "epd.lca_stages.c1_c4"
+        description: "Waste emissions vs. end-of-life stage reconciled"
+
+  checks:
+    - type: "cross_reference"
+      sources: ["bim", "invoices", "transport", "waste"]
+      method: "unique_evidence_uris"
+      description: "Cross-reference all evidence URIs for duplicates"
+
+  severity: "CRITICAL"
+
+  remediation:
+    action: "Create cross-reference matrix identifying and resolving overlaps"
+    responsible_party: "Lead consultant"
+    resources:
+      - "tools/double_counting_checker.py"
+      - "templates/cross_reference_matrix.xlsx"
+
+  evidence_required:
+    - "unique_material_ids"
+    - "cross_reference_matrix"
+    - "reconciliation_notes"
+
+# ============================================================================
+# Rule 10: Citation and Evidence Linkage
+# ============================================================================
+
+- rule_id: evidence_linkage
+  name: "Citation and Evidence Linkage"
+  description: "Ensures every carbon claim is backed by verifiable evidence"
+  category: "verification"
+  enabled: true
+
+  conditions:
+    all:
+      - field: "epd.evidence"
+        operator: "not_empty"
+        description: "Every EPD must have document URI"
+
+      - field: "invoice.line_items[].epd_id"
+        operator: "resolves_to"
+        target: "epd.id"
+        description: "Invoice line items must link to EPD or material"
+
+      - field: "project.emissions_factors[].source"
+        operator: "not_empty"
+        description: "Every emissions factor must cite source"
+
+      - field: "project.evidence_documents[].uri"
+        operator: "accessible"
+        description: "All evidence documents must be accessible"
+
+      - field: "project.evidence_documents[].hash"
+        operator: "not_empty"
+        description: "Evidence must have integrity hash (SHA-256)"
+
+      - field: "project.evidence_documents[].uri"
+        operator: "no_broken_links"
+        description: "No broken links to evidence"
+
+  checks:
+    - type: "evidence_coverage"
+      threshold: 100
+      unit: "percent"
+      description: "100% of claims must have evidence"
+
+    - type: "hash_verification"
+      algorithm: "SHA-256"
+      description: "All files must have valid checksums"
+
+  severity: "CRITICAL"
+
+  remediation:
+    action: "Generate evidence manifest and upload missing documents"
+    responsible_party: "Documentation coordinator"
+    resources:
+      - "tools/evidence_manifest_generator.py"
+      - "templates/evidence_checklist.xlsx"
+
+  evidence_required:
+    - "evidence_manifest_zip"
+    - "sha256_checksums"
+    - "external_database_links"
+
+# ============================================================================
+# Global Configuration
+# ============================================================================
+
+global_settings:
+  date_format: "YYYY-MM-DD"
+  tolerance_defaults:
+    quantity_pct: 10
+    date_days: 7
+    distance_km: 50
+
+  evidence_requirements:
+    hash_algorithm: "SHA-256"
+    max_file_size_mb: 100
+    allowed_formats: ["pdf", "xlsx", "csv", "ifc", "jpg", "png"]
+
+  reporting:
+    default_language: "en"
+    date_format: "DD/MM/YYYY"  # Australian format
+    currency: "AUD"

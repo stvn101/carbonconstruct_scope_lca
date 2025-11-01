@@ -228,7 +228,7 @@ Type: {project.project_type}
 
 Compliance Status:
 - Overall: {'COMPLIANT' if report.compliant else 'NON-COMPLIANT'}
-- Pass Rate: {(report.passed_checks / report.total_checks * 100):.1f}%
+- Pass Rate: {((report.passed_checks / report.total_checks * 100) if report.total_checks > 0 else 0):.1f}%
 - Critical Issues: {report.critical_count}
 - High Issues: {report.high_count}
 

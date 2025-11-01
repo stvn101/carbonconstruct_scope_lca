@@ -13,6 +13,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from uuid import UUID
 import shutil
+import mimetypes
 
 from pydantic import BaseModel, Field
 
@@ -348,7 +349,6 @@ class EvidenceCollector:
 
     def _guess_mime_type(self, filename: str) -> str:
         """Guess MIME type from filename"""
-        import mimetypes
         mime_type, _ = mimetypes.guess_type(filename)
         return mime_type or "application/octet-stream"
 

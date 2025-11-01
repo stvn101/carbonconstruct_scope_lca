@@ -10,6 +10,7 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 import anthropic
 import os
+import re
 
 from ..engine.rules_engine import ComplianceReport, ComplianceFinding
 from ..schemas.canonical_schema import ComplianceProject
@@ -392,8 +393,6 @@ class LLMOutputValidator:
         Returns:
             Tuple of (is_valid, list_of_violations)
         """
-        import re
-
         violations = []
         text_lower = text.lower()
 
@@ -420,8 +419,6 @@ class LLMOutputValidator:
         Returns:
             Sanitized text
         """
-        import re
-
         # Replace decision-making language with neutral phrasing
         replacements = {
             r"I (determine|conclude|find) that": "The rules engine determined that",

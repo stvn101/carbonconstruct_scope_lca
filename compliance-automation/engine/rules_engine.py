@@ -15,6 +15,7 @@ from pathlib import Path
 import hashlib
 from urllib.parse import urlparse
 import re
+from difflib import SequenceMatcher
 
 from pydantic import BaseModel, Field
 
@@ -930,8 +931,6 @@ class RulesEngine:
         Returns:
             Best matching candidate or None
         """
-        from difflib import SequenceMatcher
-
         best_match = None
         best_ratio = 0.0
 

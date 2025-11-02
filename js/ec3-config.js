@@ -16,7 +16,10 @@
 
         // OAuth Client Configuration
         // These can be overridden by environment variables
-        clientId: window.ENV?.EC3_CLIENT_ID || 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX',
+        clientId: (function() {
+            // Return the environment variable if set, otherwise null
+            return window.ENV?.EC3_CLIENT_ID || null;
+        })(),
 
         // Redirect URI - automatically detects current domain
         redirectUri: (function() {

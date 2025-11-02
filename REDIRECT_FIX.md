@@ -46,7 +46,6 @@ SEO optimization and crawler management.
    ```
 
    > **Note:** If you are migrating from GitHub Pages and previously used a custom domain (with a `CNAME` file), you should also disable GitHub Pages in your repository settings (Settings → Pages → Set "Source" to "None"). This prevents conflicts and ensures your domain is only served by Vercel.
-   > **Note:** If you are migrating from GitHub Pages and previously used a custom domain (with a `CNAME` file), you should also disable GitHub Pages in your repository settings (Settings → Pages → Set "Source" to "None"). This prevents conflicts and ensures your domain is only served by Vercel.
 2. **Configure Domain in Vercel Dashboard**:
    - Go to Project Settings → Domains
    - Add: carbonconstruct.com.au

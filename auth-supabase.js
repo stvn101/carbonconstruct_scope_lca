@@ -9,16 +9,15 @@
 // CONFIGURATION (from window.ENV or fallback)
 // ============================================
 
-const envConfig = window?.ENV || {};
+const env = window.ENV || {};
 
 const SUPABASE_URL =
-    envConfig.NEXT_PUBLIC_SUPABASE_URL ||
-    envConfig.SUPABASE_URL ||
+    env.SUPABASE_URL ||
+    env.NEXT_PUBLIC_SUPABASE_URL ||
     null;
-
 const SUPABASE_ANON_KEY =
-    envConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    envConfig.SUPABASE_ANON_KEY ||
+    env.SUPABASE_ANON_KEY ||
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     null;
 
 // Initialize Supabase client
@@ -29,7 +28,12 @@ function initSupabaseAuth() {
         console.error('Supabase library not loaded');
         return false;
     }
-    
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        console.error('Supabase credentials are missing. Check SUPABASE_URL, NEXT_PUBLIC_SUPABASE_URL, SUPABASE_ANON_KEY, and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.');
+        return false;
+    }
+
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log('✅ Supabase Auth initialized');
     

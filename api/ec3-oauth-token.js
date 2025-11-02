@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { code, client_id, redirect_uri } = req.body;
+        const { code } = req.body;
 
         // Validate required parameters
         if (!code) {

@@ -63,6 +63,7 @@
         /* Custom styling to match professional construction software */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #E0F4ED !important; /* brand-mint */
         }
 
         /* Smooth scrolling for better UX */
@@ -76,6 +77,30 @@
             --dark-green: #1E4A40;
             --light-green: #E0F4ED;
         }
+
+        /* Force brand colors since Tailwind CDN config is unreliable */
+        .bg-brand-mint { background-color: #E0F4ED !important; }
+        .bg-brand-forest { background-color: #47876D !important; }
+        .bg-brand-primary { background-color: #3DD68C !important; }
+        .bg-brand-primary-dark { background-color: #1E4A40 !important; }
+        .bg-brand-midnight { background-color: #0E1621 !important; }
+
+        .text-brand-navy { color: #1E2A35 !important; }
+        .text-brand-forest { color: #47876D !important; }
+        .text-brand-sage { color: #7A9B8E !important; }
+        .text-brand-steel { color: #4A5A6A !important; }
+        .text-brand-primary { color: #3DD68C !important; }
+        .text-brand-primary-dark { color: #1E4A40 !important; }
+        .text-brand-mint { color: #E0F4ED !important; }
+
+        .hover\:text-brand-forest:hover { color: #47876D !important; }
+        .hover\:text-brand-primary-dark:hover { color: #1E4A40 !important; }
+        .hover\:bg-brand-primary-dark:hover { background-color: #1E4A40 !important; }
+        .hover\:bg-brand-mint:hover { background-color: #E0F4ED !important; }
+
+        .from-brand-forest { --tw-gradient-from: #47876D !important; }
+        .to-brand-midnight { --tw-gradient-to: #0E1621 !important; }
+        .text-white { color: white !important; }
 
         .carbon-card {
             transition: transform 0.2s, box-shadow 0.2s;

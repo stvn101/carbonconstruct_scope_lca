@@ -6,11 +6,11 @@
  */
 
 // ============================================
-// CONFIGURATION (from Vercel env vars)
+// CONFIGURATION (from window.ENV or fallback)
 // ============================================
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const SUPABASE_URL = window.SUPABASE_URL || window?.ENV?.SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || window?.ENV?.SUPABASE_ANON_KEY || '';
 
 // Initialize Supabase client
 let supabase = null;
@@ -150,7 +150,7 @@ async function signOut() {
         if (error) throw error;
         
         console.log('✅ Signed out successfully');
-        window.location.href = '/signin.html';
+        window.location.href = '/signin-new.html';
         return { success: true };
     } catch (error) {
         console.error('Sign out error:', error);
@@ -346,7 +346,7 @@ async function protectPage() {
     if (!session && isProtectedPage()) {
         console.log('⚠️ Unauthorized access, redirecting to signin');
         localStorage.setItem('redirectAfterLogin', window.location.pathname);
-        window.location.href = '/signin.html';
+        window.location.href = '/signin-new.html';
         return false;
     }
     
@@ -358,13 +358,13 @@ async function protectPage() {
  */
 async function redirectIfAuthenticated() {
     const session = await getSession();
-    
-    if (session && (window.location.pathname.includes('signin') || window.location.pathname.includes('signup'))) {
+
+    if (session && (window.location.pathname.includes('signin-new') || window.location.pathname.includes('signup-new'))) {
         console.log('✅ Already authenticated, redirecting to dashboard');
         window.location.href = '/dashboard.html';
         return true;
     }
-    
+
     return false;
 }
 

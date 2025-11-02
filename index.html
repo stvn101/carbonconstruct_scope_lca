@@ -59,39 +59,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* VIBRANT BRAND COLORS - Bright emerald greens */
+        /* BRAND COLORS - From BRAND_KIT.md */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ECFDF5 !important; /* Very light emerald */
+            background-color: #E0F4ED; /* Mint Green */
         }
 
         html {
             scroll-behavior: smooth;
         }
 
-        /* Vibrant emerald green palette */
-        .bg-brand-mint { background-color: #ECFDF5 !important; }
-        .bg-brand-forest { background-color: #10B981 !important; } /* Vibrant emerald */
-        .bg-brand-primary { background-color: #10B981 !important; }
-        .bg-brand-primary-dark { background-color: #059669 !important; } /* Dark emerald */
-        .bg-brand-midnight { background-color: #1F2937 !important; }
+        /* Explicit brand color overrides */
+        .bg-brand-mint { background-color: #E0F4ED; }
+        .bg-brand-forest { background-color: #47876D; } /* Forest Green */
+        .bg-brand-primary { background-color: #3DD68C; } /* Vibrant Green */
+        .bg-brand-primary-dark { background-color: #1E4A40; } /* Dark Emerald */
+        .bg-brand-midnight { background-color: #0E1621; } /* Midnight Blue */
 
-        .text-brand-navy { color: #111827 !important; } /* Almost black for contrast */
-        .text-brand-forest { color: #059669 !important; }
-        .text-brand-sage { color: #6B7280 !important; }
-        .text-brand-steel { color: #374151 !important; } /* Dark grey */
-        .text-brand-primary { color: #10B981 !important; }
-        .text-brand-primary-dark { color: #047857 !important; }
-        .text-brand-mint { color: #D1FAE5 !important; }
+        .text-brand-navy { color: #1E2A35; } /* Dark Navy */
+        .text-brand-forest { color: #47876D; } /* Forest Green */
+        .text-brand-sage { color: #7A9B8E; } /* Sage Green */
+        .text-brand-steel { color: #4A5A6A; } /* Steel Gray */
+        .text-brand-primary { color: #3DD68C; } /* Vibrant Green */
+        .text-brand-primary-dark { color: #1E4A40; } /* Dark Emerald */
+        .text-brand-mint { color: #E0F4ED; } /* Mint Green */
 
-        .hover\:text-brand-forest:hover { color: #059669 !important; }
-        .hover\:text-brand-primary-dark:hover { color: #047857 !important; }
-        .hover\:bg-brand-primary-dark:hover { background-color: #059669 !important; }
+        .hover\:text-brand-forest:hover { color: #47876D; }
+        .hover\:text-brand-primary-dark:hover { color: #1E4A40; }
+        .hover\:bg-brand-primary-dark:hover { background-color: #1E4A40; }
 
-        .from-brand-primary { --tw-gradient-from: #10B981 !important; }
-        .from-brand-forest { --tw-gradient-from: #059669 !important; }
-        .to-brand-midnight { --tw-gradient-to: #1F2937 !important; }
-        .to-brand-forest { --tw-gradient-to: #047857 !important; }
+        .from-brand-primary { --tw-gradient-from: #3DD68C; }
+        .from-brand-forest { --tw-gradient-from: #47876D; }
+        .to-brand-midnight { --tw-gradient-to: #0E1621; }
+        .to-brand-forest { --tw-gradient-to: #1E4A40; }
 
         .carbon-card {
             transition: transform 0.2s, box-shadow 0.2s;
@@ -370,9 +370,9 @@
                     <div>
                         <label class="block text-sm font-medium text-brand-steel mb-2">Unit</label>
                         <select id="materialUnit" title="Material Unit" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
-                            <option value="m3">m3│</option>
+                            <option value="m3">m³</option>
                             <option value="tonnes">tonnes</option>
-                            <option value="m2">m2</option>
+                            <option value="m2">m²</option>
                             <option value="kg">kg</option>
                             <option value="units">units</option>
                         </select>
@@ -484,9 +484,9 @@
                         </div>
                         <p class="text-sm text-brand-primary-dark mb-4">Direct emissions from owned or controlled sources</p>
                         <ul class="text-sm text-brand-primary-dark mb-4 space-y-1">
-                            <li>ΓÇó On-site fuel combustion</li>
-                            <li>ΓÇó Company vehicles</li>
-                            <li>ΓÇó Fugitive emissions</li>
+                            <li>• On-site fuel combustion</li>
+                            <li>• Company vehicles</li>
+                            <li>• Fugitive emissions</li>
                         </ul>
                         <p class="text-3xl font-bold text-brand-midnight" id="scope1Total">0</p>
                         <p class="text-sm text-brand-forest">kg CO2-e</p>
@@ -500,9 +500,9 @@
                         </div>
                         <p class="text-sm text-teal-700 mb-4">Indirect emissions from purchased energy</p>
                         <ul class="text-sm text-teal-700 mb-4 space-y-1">
-                            <li>ΓÇó Purchased electricity</li>
-                            <li>ΓÇó Purchased heating/cooling</li>
-                            <li>ΓÇó Purchased steam</li>
+                            <li>• Purchased electricity</li>
+                            <li>• Purchased heating/cooling</li>
+                            <li>• Purchased steam</li>
                         </ul>
                         <p class="text-3xl font-bold text-teal-900" id="scope2Total">0</p>
                         <p class="text-sm text-teal-600">kg CO2-e</p>
@@ -516,9 +516,9 @@
                         </div>
                         <p class="text-sm text-indigo-700 mb-4">All other indirect emissions in value chain</p>
                         <ul class="text-sm text-indigo-700 mb-4 space-y-1">
-                            <li>ΓÇó Material production</li>
-                            <li>ΓÇó Transportation</li>
-                            <li>ΓÇó Waste & end-of-life</li>
+                            <li>• Material production</li>
+                            <li>• Transportation</li>
+                            <li>• Waste & end-of-life</li>
                         </ul>
                 <!-- Scopes Chart -->
                 <div class="chart-container chart-container-400">
@@ -574,7 +574,7 @@
                     <div class="border-2 border-brand-border rounded-lg p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-semibold text-brand-midnight">NABERS</h3>
-                            <span id="nabersRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0Γÿà</span>
+                            <span id="nabersRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0★</span>
                         </div>
                         <p class="text-sm text-brand-sage mb-4">National Australian Built Environment Rating System</p>
                         <ul class="text-sm text-brand-steel space-y-2">
@@ -601,7 +601,7 @@
                     <div class="border-2 border-brand-border rounded-lg p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-semibold text-brand-midnight">GBCA Green Star</h3>
-                            <span id="greenStarRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0Γÿà</span>
+                            <span id="greenStarRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0★</span>
                         </div>
                         <p class="text-sm text-brand-sage mb-4">Green Building Council of Australia</p>
                         <ul class="text-sm text-brand-steel space-y-2">

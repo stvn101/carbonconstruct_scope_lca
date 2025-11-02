@@ -58,26 +58,40 @@
     <!-- Google Fonts - Professional and readable -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom.css">
-
     <style>
-        /* Custom styling to match professional construction software */
+        /* VIBRANT BRAND COLORS - Bright emerald greens */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #ECFDF5 !important; /* Very light emerald */
         }
 
-        /* Smooth scrolling for better UX */
         html {
             scroll-behavior: smooth;
         }
 
-        /* Custom color scheme - professional greens for sustainability */
-        :root {
-            --primary-green: #3DD68C;
-            --dark-green: #1E4A40;
-            --light-green: #E0F4ED;
-        }
+        /* Vibrant emerald green palette */
+        .bg-brand-mint { background-color: #ECFDF5 !important; }
+        .bg-brand-forest { background-color: #10B981 !important; } /* Vibrant emerald */
+        .bg-brand-primary { background-color: #10B981 !important; }
+        .bg-brand-primary-dark { background-color: #059669 !important; } /* Dark emerald */
+        .bg-brand-midnight { background-color: #1F2937 !important; }
+
+        .text-brand-navy { color: #111827 !important; } /* Almost black for contrast */
+        .text-brand-forest { color: #059669 !important; }
+        .text-brand-sage { color: #6B7280 !important; }
+        .text-brand-steel { color: #374151 !important; } /* Dark grey */
+        .text-brand-primary { color: #10B981 !important; }
+        .text-brand-primary-dark { color: #047857 !important; }
+        .text-brand-mint { color: #D1FAE5 !important; }
+
+        .hover\:text-brand-forest:hover { color: #059669 !important; }
+        .hover\:text-brand-primary-dark:hover { color: #047857 !important; }
+        .hover\:bg-brand-primary-dark:hover { background-color: #059669 !important; }
+
+        .from-brand-primary { --tw-gradient-from: #10B981 !important; }
+        .from-brand-forest { --tw-gradient-from: #059669 !important; }
+        .to-brand-midnight { --tw-gradient-to: #1F2937 !important; }
+        .to-brand-forest { --tw-gradient-to: #047857 !important; }
 
         .carbon-card {
             transition: transform 0.2s, box-shadow 0.2s;
@@ -552,7 +566,7 @@
                         </ul>
                         <div class="mt-4 pt-4 border-t border-brand-border">
                             <p class="text-xs text-brand-sage-light">Embodied Energy: <span id="nccEmbodiedEnergy" class="font-semibold">0 MJ/m3</span></p>
-                            <p class="text-xs text-brand-sage-light">Carbon Intensity: <span id="nccCarbonIntensity" class="font-semibold">0 kg CO2-e/m┬▓</span></p>
+                            <p class="text-xs text-brand-sage-light">Carbon Intensity: <span id="nccCarbonIntensity" class="font-semibold">0 kg CO₂e/m²</span></p>
                         </div>
                     </div>
 
@@ -681,7 +695,7 @@
                     <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-lg p-6">
                         <h3 class="text-sm font-medium mb-2 opacity-90">Carbon Intensity</h3>
                         <p class="text-4xl font-bold mb-1" id="carbonIntensity">0</p>
-                        <p class="text-sm opacity-90">kg CO2-e/m┬▓</p>
+                        <p class="text-sm opacity-90">kg CO₂e/m²</p>
                     </div>
                     <div class="bg-gradient-to-br from-purple-500 to-purple-700 text-white rounded-lg p-6">
                         <h3 class="text-sm font-medium mb-2 opacity-90">Equivalent Trees</h3>
@@ -710,17 +724,17 @@
                         <div class="text-center p-4 bg-red-50 rounded-lg">
                             <p class="text-sm text-brand-sage mb-2">Industry Average</p>
                             <p class="text-2xl font-bold text-red-700" id="benchmarkAvg">500</p>
-                            <p class="text-sm text-brand-sage">kg CO2-e/m┬▓</p>
+                            <p class="text-sm text-brand-sage">kg CO₂e/m²</p>
                         </div>
                         <div class="text-center p-4 bg-yellow-50 rounded-lg">
                             <p class="text-sm text-brand-sage mb-2">Best Practice</p>
                             <p class="text-2xl font-bold text-yellow-700" id="benchmarkBest">350</p>
-                            <p class="text-sm text-brand-sage">kg CO2-e/m┬▓</p>
+                            <p class="text-sm text-brand-sage">kg CO₂e/m²</p>
                         </div>
                         <div class="text-center p-4 bg-brand-mint rounded-lg">
                             <p class="text-sm text-brand-sage mb-2">Your Project</p>
                             <p class="text-2xl font-bold text-brand-primary-dark" id="benchmarkYour">0</p>
-                            <p class="text-sm text-brand-sage">kg CO2-e/m┬▓</p>
+                            <p class="text-sm text-brand-sage">kg CO₂e/m²</p>
                         </div>
                     </div>
                 </div>

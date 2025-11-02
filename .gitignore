@@ -1,0 +1,46 @@
+# Environment variables with sensitive data
+.env.local
+.env
+.env.*
+!.env.example
+js/config.local.js
+
+# Node modules (if using Node.js)
+node_modules/
+node_modules
+
+# Build outputs
+dist/
+build/
+.next
+
+# IDE files
+.vscode/
+!.vscode/mcp.json
+!.vscode/settings.json
+.idea/
+.claude/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup directories
+backup_old_calculator/
+
+# Migration data exports (too large for git)
+all_materials_export.json
+exported_materials_data.json
+failed_materials.json
+.vercel
+supabase/.temp
+nul

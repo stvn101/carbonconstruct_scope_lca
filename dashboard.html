@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CarbonConstruct</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .stat-change {
+            font-size: 0.9rem;
+            color: #10b981;
+        }
+
+        .stat-change.negative {
+            color: #ef4444;
+        }
+
+        .subscription-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .subscription-banner.trial {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .subscription-banner.expired {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .subscription-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subscription-info p {
+            opacity: 0.9;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-date {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .project-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-complete {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .project-stat {
+            flex: 1;
+        }
+
+        .project-stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-stat-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f4f6;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .subscription-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" aria-label="Back to CarbonConstruct home">
+                <img src="images/logo-light-bg.svg" alt="CarbonConstruct logo" class="logo-image" />
+                <span>CarbonConstruct</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="calculator.html">Calculator</a></li>
+                <li><a href="subscription.html">Subscription</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading your dashboard...</p>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div id="dashboardContent" style="display: none;">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div class="welcome-section">
+                    <h1>Welcome back, <span id="userName">User</span>! 👋</h1>
+                    <p>Here's what's happening with your projects today</p>
+                </div>
+                <div class="header-actions">
+                    <a href="calculator.html" class="btn btn-primary">New Project</a>
+                </div>
+            </div>
+
+            <!-- Subscription Banner -->
+            <div id="subscriptionBanner" class="subscription-banner" style="display: none;">
+                <div class="subscription-info">
+                    <h3 id="bannerTitle">Professional Plan Active</h3>
+                    <p id="bannerMessage">You have unlimited access to all features</p>
+                </div>
+                <div>
+                    <a href="subscription.html" class="btn btn-outline">Manage Subscription</a>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Projects</h3>
+                    <div class="stat-value" id="totalProjects">0</div>
+                    <div class="stat-change" id="projectsChange">+0 this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Materials Analyzed</h3>
+                    <div class="stat-value" id="totalMaterials">0</div>
+                    <div class="stat-change" id="materialsChange">+0 this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Carbon Saved</h3>
+                    <div class="stat-value" id="carbonSaved">0 kg</div>
+                    <div class="stat-change" id="carbonChange">+0% vs last month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Compliance Score</h3>
+                    <div class="stat-value" id="complianceScore">--%</div>
+                    <div class="stat-change" id="scoreChange">NCC Compliant</div>
+                </div>
+            </div>
+
+            <!-- Recent Projects -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Recent Projects</h2>
+                    <a href="calculator.html" class="btn btn-secondary">Create New</a>
+                </div>
+                <div id="projectsContainer">
+                    <div class="projects-grid" id="projectsGrid"></div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                </div>
+                <ul class="activity-list" id="activityList">
+                    <!-- Activity items will be inserted here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase, getCurrentUser, signOut } from './auth-supabase.js';
+
+        let currentUser = null;
+
+        // Initialize dashboard
+        async function initDashboard() {
+            try {
+                // Get current user
+                currentUser = await getCurrentUser();
+
+                if (!currentUser) {
+                    window.location.href = 'signin-new.html';
+                    return;
+                }
+
+                // Update UI with user info
+                document.getElementById('userName').textContent = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'User';
+
+                // Load all dashboard data
+                await Promise.all([
+                    loadSubscriptionInfo(),
+                    loadProjects(),
+                    loadStats(),
+                    loadActivity()
+                ]);
+
+                // Show dashboard
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+
+            } catch (error) {
+                console.error('Dashboard initialization error:', error);
+                alert('Failed to load dashboard. Please try again.');
+            }
+        }
+
+        // Load subscription information
+        async function loadSubscriptionInfo() {
+            try {
+                const { data, error } = await supabase
+                    .from('subscriptions')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') throw error;
+
+                const banner = document.getElementById('subscriptionBanner');
+                const title = document.getElementById('bannerTitle');
+                const message = document.getElementById('bannerMessage');
+
+                if (!data || data.status === 'canceled') {
+                    banner.className = 'subscription-banner expired';
+                    title.textContent = 'No Active Subscription';
+                    message.textContent = 'Subscribe to unlock all features and unlimited projects';
+                    banner.style.display = 'flex';
+                } else if (data.status === 'trialing') {
+                    banner.className = 'subscription-banner trial';
+                    const daysLeft = Math.ceil((new Date(data.trial_end) - new Date()) / (1000 * 60 * 60 * 24));
+                    title.textContent = `Free Trial - ${daysLeft} Days Left`;
+                    message.textContent = 'Subscribe now to continue using all features after trial';
+                    banner.style.display = 'flex';
+                } else if (data.status === 'active') {
+                    banner.className = 'subscription-banner';
+                    title.textContent = `${data.plan_name} Plan Active`;
+                    message.textContent = data.plan_id === 'professional'
+                        ? 'You have unlimited access to all features'
+                        : 'You have access to all essential features';
+                    banner.style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error loading subscription:', error);
+            }
+        }
+
+        // Load user projects
+        async function loadProjects() {
+            try {
+                const { data, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('updated_at', { ascending: false })
+                    .limit(6);
+
+                if (error) throw error;
+
+                const grid = document.getElementById('projectsGrid');
+
+                if (!data || data.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1/-1;">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>No projects yet</h3>
+                            <p>Create your first carbon calculation project</p>
+                            <a href="calculator.html" class="btn btn-primary" style="margin-top: 1rem;">Start Calculating</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = data.map(project => `
+                    <div class="project-card" onclick="window.location.href='calculator.html?id=${project.id}'">
+                        <div class="project-header">
+                            <div>
+                                <div class="project-title">${escapeHtml(project.name)}</div>
+                                <div class="project-date">${formatDate(project.updated_at)}</div>
+                            </div>
+                            <span class="project-status status-${project.status || 'draft'}">
+                                ${(project.status || 'draft').toUpperCase()}
+                            </span>
+                        </div>
+                        <div class="project-stats">
+                            <div class="project-stat">
+                                <div class="project-stat-label">Materials</div>
+                                <div class="project-stat-value">${project.material_count || 0}</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="project-stat-label">CO₂e (kg)</div>
+                                <div class="project-stat-value">${formatNumber(project.total_carbon || 0)}</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="project-stat-label">NCC</div>
+                                <div class="project-stat-value">${project.ncc_compliant ? '✓' : '⚠'}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading projects:', error);
+            }
+        }
+
+        // Load dashboard stats
+        async function loadStats() {
+            try {
+                // Get project stats
+                const { data: projects, error: projectError } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('user_id', currentUser.id);
+
+                if (projectError) throw projectError;
+
+                // Calculate stats
+                const totalProjects = projects?.length || 0;
+                const totalMaterials = projects?.reduce((sum, p) => sum + (p.material_count || 0), 0) || 0;
+                const totalCarbon = projects?.reduce((sum, p) => sum + (p.total_carbon || 0), 0) || 0;
+                const avgCompliance = projects?.length > 0
+                    ? Math.round((projects.filter(p => p.ncc_compliant).length / projects.length) * 100)
+                    : 0;
+
+                // Update UI
+                document.getElementById('totalProjects').textContent = totalProjects;
+                document.getElementById('totalMaterials').textContent = formatNumber(totalMaterials);
+                document.getElementById('carbonSaved').textContent = `${formatNumber(totalCarbon)} kg`;
+                document.getElementById('complianceScore').textContent = `${avgCompliance}%`;
+
+                // Get monthly changes (simplified - would need historical data for real changes)
+                document.getElementById('projectsChange').textContent = `+${totalProjects} total`;
+                document.getElementById('materialsChange').textContent = `+${formatNumber(totalMaterials)} total`;
+                document.getElementById('carbonChange').textContent = totalCarbon > 0 ? 'Calculated' : 'No data';
+                document.getElementById('scoreChange').textContent = avgCompliance >= 80 ? 'Excellent' : avgCompliance >= 60 ? 'Good' : 'Needs Work';
+
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load recent activity
+        async function loadActivity() {
+            try {
+                const { data, error } = await supabase
+                    .from('activity_log')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error && error.code !== 'PGRST116') throw error;
+
+                const list = document.getElementById('activityList');
+
+                if (!data || data.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No recent activity</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = data.map(activity => `
+                    <li class="activity-item">
+                        <div class="activity-icon">${getActivityIcon(activity.type)}</div>
+                        <div class="activity-content">
+                            <div class="activity-title">${escapeHtml(activity.title)}</div>
+                            <div class="activity-time">${formatRelativeTime(activity.created_at)}</div>
+                        </div>
+                    </li>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading activity:', error);
+                // Show empty state if table doesn't exist yet
+                document.getElementById('activityList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>Activity tracking coming soon</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Helper functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-AU', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+            if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+            if (days < 7) return `${days} day${days !== 1 ? 's' : ''} ago`;
+            return formatDate(dateString);
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function getActivityIcon(type) {
+            const icons = {
+                'project_created': '📊',
+                'project_updated': '✏️',
+                'calculation_run': '🔢',
+                'material_added': '🧱',
+                'export': '📥',
+                'subscription': '💳'
+            };
+            return icons[type] || '📋';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                await signOut();
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Initialize on page load
+        initDashboard();
+    </script>
+
+    <!-- Tawk.to Live Chat Widget -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/YOUR_TAWK_WIDGET_ID';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!-- End of Tawk.to Script -->
+</body>
+</html>

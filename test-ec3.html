@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC3 API Test - CarbonConstruct</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c5aa0;
+            margin: 0;
+        }
+        .header p {
+            color: #666;
+            margin: 10px 0 0 0;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #2c5aa0;
+        }
+        button {
+            background: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1e3f73;
+        }
+        .results {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .material-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: white;
+        }
+        .material-name {
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        .gwp-value {
+            font-size: 1.2em;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 EC3 API Integration Test</h1>
+            <p>Testing access to 50,000+ global EPDs from Building Transparency</p>
+        </div>
+
+        <div class="test-section">
+            <h3>🔑 API Connection Test</h3>
+            <button onclick="testConnection()">Test EC3 API Connection</button>
+            <div id="connection-results" class="results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔍 Material Search Test</h3>
+            <button onclick="searchMaterials('cement')">Search Cement Materials</button>
+            <button onclick="searchMaterials('steel')">Search Steel Materials</button>
+            <button onclick="searchMaterials('timber')">Search Timber Materials</button>
+            <div id="search-results" class="results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Category Analysis</h3>
+            <button onclick="analyzeMaterialCategories()">Analyze Material Categories</button>
+            <div id="category-results" class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const EC3_API_KEY = 'REPLACE_WITH_EC3_API_KEY';
+        const EC3_BASE_URL = 'https://api.buildingtransparency.org/api';
+
+        // Test EC3 API connection
+        async function testConnection() {
+            const resultsDiv = document.getElementById('connection-results');
+            resultsDiv.innerHTML = 'Testing connection...';
+
+            try {
+                const response = await fetch(`${EC3_BASE_URL}/materials?page_size=1`, {
+                    headers: {
+                        'Authorization': `Bearer ${EC3_API_KEY}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultsDiv.innerHTML = `
+<span class="success">✅ EC3 API Connection Successful!</span>
+
+Response Status: ${response.status} ${response.statusText}
+Total Materials Available: ${Array.isArray(data) ? '50,000+' : 'Unknown'}
+First Material: ${data[0]?.name || 'N/A'}
+Authentication: Bearer Token ✓
+                    `;
+                } else {
+                    resultsDiv.innerHTML = `
+<span class="error">❌ Connection Failed</span>
+
+Status: ${response.status} ${response.statusText}
+                    `;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+<span class="error">❌ Network Error</span>
+
+Error: ${error.message}
+                `;
+            }
+        }
+
+        // Search for materials
+        async function searchMaterials(searchTerm) {
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = `Searching for "${searchTerm}" materials...`;
+
+            try {
+                const response = await fetch(`${EC3_BASE_URL}/materials?page_size=50`, {
+                    headers: {
+                        'Authorization': `Bearer ${EC3_API_KEY}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const materials = await response.json();
+
+                    // Filter materials that contain the search term
+                    const filtered = materials.filter(material =>
+                        material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        material.category?.display_name?.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).slice(0, 5);
+
+                    if (filtered.length > 0) {
+                        let html = `<span class="success">✅ Found ${filtered.length} ${searchTerm} materials:</span>\n\n`;
+
+                        filtered.forEach(material => {
+                            html += `<div class="material-card">
+                                <div class="material-name">${material.name}</div>
+                                <div class="gwp-value">GWP: ${material.gwp}</div>
+                                <div>Category: ${material.category?.display_name || 'N/A'}</div>
+                                <div>Manufacturer: ${material.manufacturer_name || 'Generic'}</div>
+                            </div>`;
+                        });
+
+                        resultsDiv.innerHTML = html;
+                    } else {
+                        resultsDiv.innerHTML = `
+<span class="error">❌ No ${searchTerm} materials found</span>
+
+Try searching for different terms like:
+- cement, concrete, steel, timber, aluminum
+                        `;
+                    }
+                } else {
+                    resultsDiv.innerHTML = `
+<span class="error">❌ Search Failed</span>
+
+Status: ${response.status} ${response.statusText}
+                    `;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+<span class="error">❌ Search Error</span>
+
+Error: ${error.message}
+                `;
+            }
+        }
+
+        // Analyze material categories
+        async function analyzeMaterialCategories() {
+            const resultsDiv = document.getElementById('category-results');
+            resultsDiv.innerHTML = 'Analyzing material categories...';
+
+            try {
+                const response = await fetch(`${EC3_BASE_URL}/materials?page_size=100`, {
+                    headers: {
+                        'Authorization': `Bearer ${EC3_API_KEY}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const materials = await response.json();
+
+                    // Group by category
+                    const categoryStats = {};
+                    materials.forEach(material => {
+                        const category = material.category?.display_name || 'Unknown';
+                        if (!categoryStats[category]) {
+                            categoryStats[category] = {
+                                count: 0,
+                                avgGwp: 0,
+                                gwpValues: []
+                            };
+                        }
+                        categoryStats[category].count++;
+
+                        const gwp = parseFloat(material.gwp);
+                        if (!isNaN(gwp)) {
+                            categoryStats[category].gwpValues.push(gwp);
+                        }
+                    });
+
+                    // Calculate averages
+                    Object.keys(categoryStats).forEach(category => {
+                        const stats = categoryStats[category];
+                        if (stats.gwpValues.length > 0) {
+                            stats.avgGwp = (stats.gwpValues.reduce((a, b) => a + b, 0) / stats.gwpValues.length).toFixed(2);
+                        }
+                    });
+
+                    let html = `<span class="success">✅ Material Category Analysis:</span>\n\n`;
+
+                    Object.entries(categoryStats)
+                        .sort((a, b) => b[1].count - a[1].count)
+                        .forEach(([category, stats]) => {
+                            html += `${category}: ${stats.count} materials (Avg GWP: ${stats.avgGwp} kgCO2e)\n`;
+                        });
+
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `
+<span class="error">❌ Analysis Failed</span>
+
+Status: ${response.status} ${response.statusText}
+                    `;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+<span class="error">❌ Analysis Error</span>
+
+Error: ${error.message}
+                `;
+            }
+        }
+
+        // Auto-test connection on page load
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>

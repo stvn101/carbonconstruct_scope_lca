@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operational Carbon Calculator - Manual Test Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .test-pass { color: #10b981; }
+        .test-fail { color: #ef4444; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">
+            <i class="fas fa-flask mr-3 text-blue-600"></i>
+            Operational Carbon Calculator - Manual Test Suite
+        </h1>
+
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Test Results</h2>
+            <div id="testResults"></div>
+        </div>
+
+        <button onclick="runAllTests()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700">
+            <i class="fas fa-play mr-2"></i>Run All Tests
+        </button>
+    </div>
+
+    <!-- Load dependencies -->
+    <script src="../emissions-factors.js"></script>
+    <script src="../scopes-calculator-comprehensive.js"></script>
+
+    <script>
+        const results = [];
+
+        function assert(condition, message) {
+            if (!condition) {
+                throw new Error(message || 'Assertion failed');
+            }
+        }
+
+        function assertCloseTo(actual, expected, precision = 2) {
+            const diff = Math.abs(actual - expected);
+            const tolerance = Math.pow(10, -precision);
+            if (diff > tolerance) {
+                throw new Error(`Expected ${actual} to be close to ${expected} (precision: ${precision})`);
+            }
+        }
+
+        function test(name, fn) {
+            try {
+                fn();
+                results.push({ name, status: 'pass', error: null });
+                console.log(`✅ ${name}`);
+            } catch (error) {
+                results.push({ name, status: 'fail', error: error.message });
+                console.error(`❌ ${name}: ${error.message}`);
+            }
+        }
+
+        function runAllTests() {
+            results.length = 0;
+
+            // ============================================================================
+            // SCOPE 1 TESTS
+            // ============================================================================
+
+            test('Scope 1: Add excavator with fuel consumption', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope1Equipment({
+                    category: 'excavators',
+                    type: 'standard_13t',
+                    operatingHours: 100
+                });
+
+                assert(result.emissions > 0, 'Emissions should be greater than 0');
+                assert(result.fuelType === 'diesel', 'Fuel type should be diesel');
+                assert(result.fuelConsumed === 1200, 'Fuel consumed should be 1200L (12L/hr * 100hr)');
+            });
+
+            test('Scope 1: Calculate diesel heater emissions', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope1Equipment({
+                    category: 'heating',
+                    type: 'dieselHeater_small',
+                    operatingHours: 50
+                });
+
+                assertCloseTo(result.fuelConsumed, 100);
+                assertCloseTo(result.emissions, 0.268, 2);
+            });
+
+            test('Scope 1: Add vehicle with distance', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope1Vehicle({
+                    type: 'ute_diesel',
+                    distance: 1000,
+                    fuelType: 'diesel'
+                });
+
+                assertCloseTo(result.emissions, 0.2144, 3);
+            });
+
+            test('Scope 1: Calculate total emissions', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                calc.addScope1Equipment({
+                    category: 'excavators',
+                    type: 'mini_3t',
+                    operatingHours: 100
+                });
+
+                calc.addScope1Vehicle({
+                    type: 'ute_diesel',
+                    distance: 500,
+                    fuelType: 'diesel'
+                });
+
+                const total = calc.calculateScope1Total();
+                assert(total.total > 0, 'Total should be greater than 0');
+                assert(total.items.length === 2, 'Should have 2 items');
+            });
+
+            // ============================================================================
+            // SCOPE 2 TESTS
+            // ============================================================================
+
+            test('Scope 2: Add electricity with VIC factor', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope2Electricity({
+                    description: 'Site power',
+                    kWh: 10000,
+                    state: 'vic',
+                    days: 30
+                });
+
+                assertCloseTo(result.emissions, 10.2, 1);
+            });
+
+            test('Scope 2: ACT renewable factor (zero emissions)', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope2Electricity({
+                    description: 'ACT site',
+                    kWh: 5000,
+                    state: 'act',
+                    days: 30
+                });
+
+                assert(result.emissions === 0, 'ACT should have zero emissions');
+            });
+
+            test('Scope 2: Site facility calculation', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope2SiteFacility({
+                    type: 'siteOffice_large',
+                    days: 180,
+                    state: 'nsw'
+                });
+
+                assert(result.totalKWh === 14400, 'Total kWh should be 14400');
+                assertCloseTo(result.emissions, 11.664, 2);
+            });
+
+            // ============================================================================
+            // SCOPE 3 TESTS
+            // ============================================================================
+
+            test('Scope 3: Transport emissions', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope3Transport({
+                    material: 'Concrete',
+                    weight: 500,
+                    distance: 30,
+                    transportMode: 'rigidTruck'
+                });
+
+                assertCloseTo(result.emissions, 9.3, 1);
+            });
+
+            test('Scope 3: Waste landfill emissions', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope3Waste({
+                    material: 'General waste',
+                    weight: 10000,
+                    disposalMethod: 'landfill_general'
+                });
+
+                assertCloseTo(result.emissions, 9.4, 1);
+            });
+
+            test('Scope 3: Water emissions', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope3Water({
+                    type: 'potable',
+                    volume: 1000
+                });
+
+                assertCloseTo(result.emissions, 0.33, 2);
+            });
+
+            test('Scope 3: Commuting emissions', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope3Commuting({
+                    employees: 50,
+                    avgDistance: 20,
+                    days: 180,
+                    mode: 'car_solo'
+                });
+
+                assert(result.totalKm === 360000, 'Total km should be 360000');
+                assertCloseTo(result.emissions, 97.2, 0);
+            });
+
+            test('Scope 3: Temporary works with reuse', () => {
+                const calc = new ComprehensiveScopesCalculator();
+                const result = calc.addScope3TemporaryWorks({
+                    type: 'scaffolding',
+                    area: 1000,
+                    uses: 100
+                });
+
+                assertCloseTo(result.emissions, 0.025, 3);
+            });
+
+            // ============================================================================
+            // OVERALL TESTS
+            // ============================================================================
+
+            test('Overall: Calculate all scopes', () => {
+                const calc = new ComprehensiveScopesCalculator();
+
+                calc.addScope1Equipment({
+                    category: 'excavators',
+                    type: 'standard_13t',
+                    operatingHours: 100
+                });
+
+                calc.addScope2Electricity({
+                    description: 'Site power',
+                    kWh: 10000,
+                    state: 'nsw',
+                    days: 30
+                });
+
+                calc.addScope3Transport({
+                    material: 'Concrete',
+                    weight: 500,
+                    distance: 30,
+                    transportMode: 'rigidTruck'
+                });
+
+                const results = calc.calculateAllScopes();
+
+                assert(results.total > 0, 'Total should be greater than 0');
+
+                const totalPercentage = parseFloat(results.scope1.percentage) +
+                                      parseFloat(results.scope2.percentage) +
+                                      parseFloat(results.scope3.percentage);
+                assertCloseTo(totalPercentage, 100, 0);
+            });
+
+            test('Overall: Reset calculator', () => {
+                const calc = new ComprehensiveScopesCalculator();
+
+                calc.addScope1Equipment({
+                    category: 'excavators',
+                    type: 'mini_3t',
+                    operatingHours: 50
+                });
+
+                assert(calc.scope1Items.length === 1, 'Should have 1 item before reset');
+
+                calc.reset();
+
+                assert(calc.scope1Items.length === 0, 'Should have 0 items after reset');
+            });
+
+            // Display results
+            displayResults();
+        }
+
+        function displayResults() {
+            const container = document.getElementById('testResults');
+            const passed = results.filter(r => r.status === 'pass').length;
+            const failed = results.filter(r => r.status === 'fail').length;
+
+            let html = `
+                <div class="mb-6 p-4 rounded-lg ${failed === 0 ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
+                    <h3 class="font-bold text-lg mb-2">
+                        ${failed === 0 ? '✅ All Tests Passed!' : '⚠️ Some Tests Failed'}
+                    </h3>
+                    <p class="text-sm">
+                        <span class="test-pass font-semibold">${passed} passed</span>
+                        ${failed > 0 ? ` | <span class="test-fail font-semibold">${failed} failed</span>` : ''}
+                        | Total: ${results.length}
+                    </p>
+                </div>
+            `;
+
+            results.forEach(result => {
+                html += `
+                    <div class="test-section ${result.status === 'pass' ? 'bg-green-50' : 'bg-red-50'}">
+                        <div class="flex items-start">
+                            <i class="fas ${result.status === 'pass' ? 'fa-check-circle test-pass' : 'fa-times-circle test-fail'} mt-1 mr-3"></i>
+                            <div class="flex-1">
+                                <h4 class="font-semibold">${result.name}</h4>
+                                ${result.error ? `<p class="text-sm text-red-600 mt-2">Error: ${result.error}</p>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Auto-run tests on load
+        console.log('Manual test suite loaded. Click "Run All Tests" to begin.');
+    </script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - CarbonConstruct</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="checkout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="checkout-container">
+        <!-- Left Side - Order Summary -->
+        <div class="checkout-left">
+            <div class="checkout-brand">
+                <a href="index.html" aria-label="CarbonConstruct home">
+                    <img src="images/logo-light-bg.svg" alt="CarbonConstruct logo" class="checkout-logo-image" />
+                    <span>CarbonConstruct</span>
+                </a>
+            </div>
+
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+
+                <div class="plan-selected" id="planDetails">
+                    <div class="plan-header">
+                        <div>
+                            <h3>Professional Plan</h3>
+                            <p>Billed monthly</p>
+                        </div>
+                        <div class="plan-price">
+                            <span class="price-amount">$79</span>
+                            <span class="price-period">/mo</span>
+                        </div>
+                    </div>
+
+                    <ul class="plan-features">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            Unlimited projects
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            Complete LCA + Scope 1-3
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            AI material optimization
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            Up to 5 team members
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            Priority support
+                        </li>
+                    </ul>
+
+                    <button class="change-plan-btn" onclick="showPlanSelector()">Change plan</button>
+                </div>
+
+                <div class="promo-code">
+                    <input type="text" id="promoInput" placeholder="Enter promo code">
+                    <button onclick="applyPromo()">Apply</button>
+                </div>
+
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$79.00</span>
+                    </div>
+                    <div class="price-row discount-row" id="discountRow" style="display: none;">
+                        <span>Discount <span class="discount-label" id="discountLabel"></span></span>
+                        <span class="discount-amount" id="discountAmount">-$0.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>GST (10%)</span>
+                        <span id="gst">$7.90</span>
+                    </div>
+                    <div class="price-row total-row">
+                        <span>Total due today</span>
+                        <span id="total">$86.90</span>
+                    </div>
+                </div>
+
+                <div class="trial-notice">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="#10B981" stroke-width="2"/>
+                        <path d="M10 6V10L12 12" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div>
+                        <strong>14-day free trial</strong>
+                        <p>Your card will be charged after the trial period ends. Cancel anytime.</p>
+                    </div>
+                </div>
+
+                <div class="trust-signals">
+                    <div class="trust-signal">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 1L2 4V8C2 11.3 4.6 14.4 8 15C11.4 14.4 14 11.3 14 8V4L8 1Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Secure payment</span>
+                    </div>
+                    <div class="trust-signal">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M6 8L7.5 9.5L10 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Cancel anytime</span>
+                    </div>
+                    <div class="trust-signal">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 5L8 2L14 5V11L8 14L2 11V5Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Instant access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Payment Form -->
+        <div class="checkout-right">
+            <div class="checkout-form-container">
+                <div class="checkout-header">
+                    <h1>Complete your subscription</h1>
+                    <p>Start your 14-day free trial • No charge today</p>
+                </div>
+
+                <form id="payment-form">
+                    <!-- Account Information -->
+                    <section class="form-section">
+                        <h3>Account Information</h3>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                placeholder="you@company.com"
+                            >
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First name</label>
+                                <input type="text" id="firstName" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last name</label>
+                                <input type="text" id="lastName" required placeholder="Smith">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Payment Information -->
+                    <section class="form-section">
+                        <h3>Payment Information</h3>
+                        <div class="form-group">
+                            <label for="card-element">Card details</label>
+                            <div id="card-element" class="stripe-element">
+                                <!-- Stripe Card Element will be inserted here -->
+                            </div>
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                    </section>
+
+                    <!-- Billing Address -->
+                    <section class="form-section">
+                        <h3>Billing Address</h3>
+                        <div class="form-group">
+                            <label for="company">Company name (optional)</label>
+                            <input type="text" id="company" placeholder="Acme Construction">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Street address</label>
+                            <input type="text" id="address" required placeholder="123 Main Street">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" required placeholder="Sydney">
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <select id="state" required>
+                                    <option value="">Select</option>
+                                    <option value="NSW">NSW</option>
+                                    <option value="VIC">VIC</option>
+                                    <option value="QLD">QLD</option>
+                                    <option value="WA">WA</option>
+                                    <option value="SA">SA</option>
+                                    <option value="TAS">TAS</option>
+                                    <option value="ACT">ACT</option>
+                                    <option value="NT">NT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="postcode">Postcode</label>
+                                <input type="text" id="postcode" required placeholder="2000">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <input type="text" id="country" value="Australia" readonly>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Terms & Conditions -->
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" required>
+                            <span class="checkbox-custom"></span>
+                            <span>I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="submit-button" class="btn-primary-full btn-lg">
+                        <span id="button-text">Start 14-Day Free Trial</span>
+                        <div id="spinner" class="spinner" style="display: none;"></div>
+                    </button>
+
+                    <div class="payment-security">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 1L2 4V8C2 11.3 4.6 14.4 8 15C11.4 14.4 14 11.3 14 8V4L8 1Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Payments secured by Stripe • Your data is encrypted</span>
+                    </div>
+
+                    <div class="money-back">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="#10B981" stroke-width="2"/>
+                            <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div>
+                            <strong>30-day money-back guarantee</strong>
+                            <p>Not satisfied? Get a full refund within 30 days.</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Stripe - get key from environment or build process
+        const STRIPE_PUBLIC_KEY = window.ENV?.STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+        if (!STRIPE_PUBLIC_KEY) {
+            console.error('Stripe publishable key not configured');
+            alert('Payment system not configured. Please contact support.');
+        }
+        const stripe = Stripe(STRIPE_PUBLIC_KEY);
+        const elements = stripe.elements();
+
+        // Custom styling for Stripe Elements
+        const style = {
+            base: {
+                color: '#111827',
+                fontFamily: 'Inter, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '15px',
+                '::placeholder': {
+                    color: '#9CA3AF'
+                }
+            },
+            invalid: {
+                color: '#EF4444',
+                iconColor: '#EF4444'
+            }
+        };
+
+        // Create card element
+        const cardElement = elements.create('card', { style: style });
+        cardElement.mount('#card-element');
+
+        // Handle real-time validation errors
+        cardElement.on('change', function(event) {
+            const displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+                displayError.style.display = 'block';
+            } else {
+                displayError.textContent = '';
+                displayError.style.display = 'none';
+            }
+        });
+
+        // Handle form submission
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const submitButton = document.getElementById('submit-button');
+            const buttonText = document.getElementById('button-text');
+            const spinner = document.getElementById('spinner');
+
+            // Disable button and show loading
+            submitButton.disabled = true;
+            buttonText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+
+            // Get form data
+            const billingDetails = {
+                name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+                email: document.getElementById('email').value,
+                address: {
+                    line1: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    postal_code: document.getElementById('postcode').value,
+                    country: 'AU'
+                }
+            };
+
+            // Create payment method
+            const {error, paymentMethod} = await stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+                billing_details: billingDetails
+            });
+
+            if (error) {
+                // Show error
+                const errorElement = document.getElementById('card-errors');
+                errorElement.textContent = error.message;
+                errorElement.style.display = 'block';
+
+                // Re-enable button
+                submitButton.disabled = false;
+                buttonText.style.display = 'inline';
+                spinner.style.display = 'none';
+            } else {
+                // Send to your server
+                console.log('PaymentMethod created:', paymentMethod);
+
+                // In production, send this to your server:
+                // const response = await fetch('/create-subscription', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({
+                //         paymentMethodId: paymentMethod.id,
+                //         email: billingDetails.email,
+                //         plan: 'professional'
+                //     })
+                // });
+
+                // For demo purposes, show success
+                alert('Payment successful! (This is a demo - no actual charge)');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Promo code functionality
+        function applyPromo() {
+            const promoInput = document.getElementById('promoInput');
+            const code = promoInput.value.toUpperCase();
+
+            const validCodes = {
+                'LAUNCH50': { discount: 50, type: 'percent' },
+                'EARLYBIRD': { discount: 20, type: 'percent' },
+                'SAVE10': { discount: 10, type: 'dollars' }
+            };
+
+            if (validCodes[code]) {
+                const promo = validCodes[code];
+                const subtotal = 79.00;
+                let discount = 0;
+
+                if (promo.type === 'percent') {
+                    discount = subtotal * (promo.discount / 100);
+                } else {
+                    discount = promo.discount;
+                }
+
+                const newSubtotal = subtotal - discount;
+                const gst = newSubtotal * 0.10;
+                const total = newSubtotal + gst;
+
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountLabel').textContent = `(${code})`;
+                document.getElementById('discountAmount').textContent = `-$${discount.toFixed(2)}`;
+                document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('gst').textContent = `$${gst.toFixed(2)}`;
+                document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+
+                promoInput.style.borderColor = '#10B981';
+                alert('Promo code applied successfully!');
+            } else {
+                promoInput.style.borderColor = '#EF4444';
+                alert('Invalid promo code');
+            }
+        }
+
+        // Plan selector (simplified for demo)
+        function showPlanSelector() {
+            alert('Plan selection modal would open here');
+        }
+    </script>
+
+    <!-- Tawk.to Live Chat Widget -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/YOUR_TAWK_WIDGET_ID';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!-- End of Tawk.to Script -->
+</body>
+</html>

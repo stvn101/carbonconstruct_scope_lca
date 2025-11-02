@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - CarbonConstruct</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .settings-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .settings-nav {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .settings-nav-item {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .settings-nav-item:hover {
+            color: var(--primary-color);
+        }
+
+        .settings-nav-item.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .settings-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 0.25rem;
+            color: #6b7280;
+        }
+
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-actions {
+            flex: 1;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-info h4 {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-info p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d1d5db;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .connected-accounts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .account-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .account-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-connected {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-disconnected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .danger-zone {
+            background: #fef2f2;
+            border: 2px solid #fee2e2;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .danger-zone h3 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f3f4f6;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .avatar-upload {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" aria-label="Back to CarbonConstruct home">
+                <img src="images/logo-light-bg.svg" alt="CarbonConstruct logo" class="logo-image" />
+                <span>CarbonConstruct</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="calculator.html">Calculator</a></li>
+                <li><a href="subscription.html">Subscription</a></li>
+                <li><a href="settings.html" class="active">Settings</a></li>
+                <li><a href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </nav>
+
+    <div class="settings-container">
+        <div class="page-header">
+            <h1>Settings</h1>
+            <p>Manage your account preferences and settings</p>
+        </div>
+
+        <!-- Settings Navigation -->
+        <div class="settings-nav">
+            <button class="settings-nav-item active" data-section="profile">Profile</button>
+            <button class="settings-nav-item" data-section="account">Account</button>
+            <button class="settings-nav-item" data-section="notifications">Notifications</button>
+            <button class="settings-nav-item" data-section="security">Security</button>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile" class="settings-section active">
+            <h2 class="section-title">Profile Information</h2>
+
+            <div class="success-message" id="profileSuccess">Profile updated successfully!</div>
+            <div class="error-message" id="profileError"></div>
+
+            <form id="profileForm">
+                <div class="form-group">
+                    <label>Profile Picture</label>
+                    <div class="avatar-upload">
+                        <div class="avatar-preview" id="avatarPreview">
+                            <span id="avatarInitials">U</span>
+                        </div>
+                        <div class="avatar-actions">
+                            <div class="file-input-wrapper">
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('avatarInput').click()">
+                                    Upload Photo
+                                </button>
+                                <input type="file" id="avatarInput" accept="image/*">
+                            </div>
+                            <small>JPG, PNG or GIF. Max 2MB.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="John Smith">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="john@example.com" disabled>
+                    <small>Contact support to change your email address</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" placeholder="Construction Co.">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+61 4XX XXX XXX">
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" placeholder="Tell us about yourself..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadProfile()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Account Section -->
+        <div id="account" class="settings-section">
+            <h2 class="section-title">Connected Accounts</h2>
+
+            <div class="connected-accounts">
+                <div class="account-item">
+                    <div class="account-info">
+                        <div class="account-icon" style="background: #4285f4; color: white;">G</div>
+                        <div>
+                            <h4>Google</h4>
+                            <p id="googleEmail">Not connected</p>
+                        </div>
+                    </div>
+                    <span class="account-status status-disconnected" id="googleStatus">Disconnected</span>
+                </div>
+
+                <div class="account-item">
+                    <div class="account-info">
+                        <div class="account-icon" style="background: #333; color: white;">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p id="githubEmail">Not connected</p>
+                        </div>
+                    </div>
+                    <span class="account-status status-disconnected" id="githubStatus">Disconnected</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notifications" class="settings-section">
+            <h2 class="section-title">Notification Preferences</h2>
+
+            <div class="success-message" id="notificationsSuccess">Preferences updated!</div>
+
+            <div class="notification-item">
+                <div class="notification-info">
+                    <h4>Email Notifications</h4>
+                    <p>Receive email updates about your projects and calculations</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="emailNotifications" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-info">
+                    <h4>Project Updates</h4>
+                    <p>Get notified when a project calculation is complete</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="projectUpdates" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-info">
+                    <h4>Subscription Reminders</h4>
+                    <p>Alerts about subscription renewals and billing</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="subscriptionReminders" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-info">
+                    <h4>Marketing Emails</h4>
+                    <p>Receive updates about new features and promotions</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="marketingEmails">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" onclick="saveNotificationPreferences()">Save Preferences</button>
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div id="security" class="settings-section">
+            <h2 class="section-title">Security Settings</h2>
+
+            <div class="success-message" id="passwordSuccess">Password changed successfully!</div>
+            <div class="error-message" id="passwordError"></div>
+
+            <form id="passwordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password">
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password">
+                    <small>Minimum 8 characters with uppercase, lowercase, and numbers</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+            </form>
+
+            <div class="danger-zone">
+                <h3>⚠️ Danger Zone</h3>
+                <p style="margin-bottom: 1rem; color: #6b7280;">
+                    Once you delete your account, there is no going back. All your data will be permanently removed.
+                </p>
+                <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase, getCurrentUser, signOut, updateUserProfile, updatePassword } from './auth-supabase.js';
+
+        let currentUser = null;
+
+        // Initialize settings
+        async function initSettings() {
+            try {
+                currentUser = await getCurrentUser();
+
+                if (!currentUser) {
+                    window.location.href = 'signin-new.html';
+                    return;
+                }
+
+                await loadProfile();
+                await loadConnectedAccounts();
+                await loadNotificationPreferences();
+
+            } catch (error) {
+                console.error('Settings initialization error:', error);
+            }
+        }
+
+        // Load user profile
+        window.loadProfile = async function() {
+            try {
+                const { data, error } = await supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') throw error;
+
+                // Populate form
+                document.getElementById('fullName').value = data?.full_name || currentUser.user_metadata?.full_name || '';
+                document.getElementById('email').value = currentUser.email || '';
+                document.getElementById('company').value = data?.company || '';
+                document.getElementById('phone').value = data?.phone || '';
+                document.getElementById('bio').value = data?.bio || '';
+
+                // Update avatar
+                updateAvatarPreview(data?.full_name || currentUser.email);
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        };
+
+        // Update avatar preview
+        function updateAvatarPreview(name) {
+            const initials = name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'U';
+            document.getElementById('avatarInitials').textContent = initials;
+        }
+
+        // Save profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const successEl = document.getElementById('profileSuccess');
+            const errorEl = document.getElementById('profileError');
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+
+            try {
+                const profileData = {
+                    full_name: document.getElementById('fullName').value,
+                    company: document.getElementById('company').value,
+                    phone: document.getElementById('phone').value,
+                    bio: document.getElementById('bio').value
+                };
+
+                await updateUserProfile(profileData);
+
+                successEl.style.display = 'block';
+                setTimeout(() => successEl.style.display = 'none', 3000);
+
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                errorEl.textContent = error.message;
+                errorEl.style.display = 'block';
+            }
+        });
+
+        // Load connected accounts
+        async function loadConnectedAccounts() {
+            // Check if user has Google or GitHub connected
+            const identities = currentUser.identities || [];
+
+            const googleIdentity = identities.find(i => i.provider === 'google');
+            const githubIdentity = identities.find(i => i.provider === 'github');
+
+            if (googleIdentity) {
+                document.getElementById('googleEmail').textContent = googleIdentity.identity_data?.email || 'Connected';
+                document.getElementById('googleStatus').textContent = 'Connected';
+                document.getElementById('googleStatus').className = 'account-status status-connected';
+            }
+
+            if (githubIdentity) {
+                document.getElementById('githubEmail').textContent = githubIdentity.identity_data?.email || 'Connected';
+                document.getElementById('githubStatus').textContent = 'Connected';
+                document.getElementById('githubStatus').className = 'account-status status-connected';
+            }
+        }
+
+        // Load notification preferences
+        async function loadNotificationPreferences() {
+            try {
+                const { data, error } = await supabase
+                    .from('user_preferences')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') return;
+
+                if (data) {
+                    document.getElementById('emailNotifications').checked = data.email_notifications ?? true;
+                    document.getElementById('projectUpdates').checked = data.project_updates ?? true;
+                    document.getElementById('subscriptionReminders').checked = data.subscription_reminders ?? true;
+                    document.getElementById('marketingEmails').checked = data.marketing_emails ?? false;
+                }
+            } catch (error) {
+                console.error('Error loading preferences:', error);
+            }
+        }
+
+        // Save notification preferences
+        window.saveNotificationPreferences = async function() {
+            try {
+                const preferences = {
+                    user_id: currentUser.id,
+                    email_notifications: document.getElementById('emailNotifications').checked,
+                    project_updates: document.getElementById('projectUpdates').checked,
+                    subscription_reminders: document.getElementById('subscriptionReminders').checked,
+                    marketing_emails: document.getElementById('marketingEmails').checked,
+                    updated_at: new Date().toISOString()
+                };
+
+                const { error } = await supabase
+                    .from('user_preferences')
+                    .upsert(preferences);
+
+                if (error) throw error;
+
+                const successEl = document.getElementById('notificationsSuccess');
+                successEl.style.display = 'block';
+                setTimeout(() => successEl.style.display = 'none', 3000);
+
+            } catch (error) {
+                console.error('Error saving preferences:', error);
+                alert('Failed to save preferences. Please try again.');
+            }
+        };
+
+        // Change password
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const successEl = document.getElementById('passwordSuccess');
+            const errorEl = document.getElementById('passwordError');
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                errorEl.textContent = 'Passwords do not match';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                await updatePassword(newPassword);
+
+                successEl.style.display = 'block';
+                document.getElementById('passwordForm').reset();
+                setTimeout(() => successEl.style.display = 'none', 3000);
+
+            } catch (error) {
+                console.error('Error changing password:', error);
+                errorEl.textContent = error.message;
+                errorEl.style.display = 'block';
+            }
+        });
+
+        // Delete account
+        window.deleteAccount = async function() {
+            if (!confirm('Are you absolutely sure you want to delete your account?\n\nThis action cannot be undone and all your data will be permanently deleted.')) {
+                return;
+            }
+
+            if (!confirm('Last chance! Are you really sure?')) {
+                return;
+            }
+
+            try {
+                // Delete user data
+                await supabase.from('projects').delete().eq('user_id', currentUser.id);
+                await supabase.from('user_profiles').delete().eq('user_id', currentUser.id);
+
+                // Sign out
+                await signOut();
+                alert('Account deleted successfully');
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                alert('Failed to delete account. Please contact support.');
+            }
+        };
+
+        // Settings navigation
+        document.querySelectorAll('.settings-nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all
+                document.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+
+                // Add active class to clicked
+                this.classList.add('active');
+                const section = this.dataset.section;
+                document.getElementById(section).classList.add('active');
+            });
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                await signOut();
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Mobile menu
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Initialize
+        initSettings();
+    </script>
+
+    <!-- Tawk.to Live Chat Widget -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/YOUR_TAWK_WIDGET_ID';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!-- End of Tawk.to Script -->
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase Auth Test – CarbonConstruct</title>
+  <style>
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f9fafb;
+    }
+    .test-container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    h1 { color: #111827; margin-bottom: 10px; }
+    .status {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 15px 0;
+      font-weight: 500;
+    }
+    .status.success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+    .status.error { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+    .status.info { background: #dbeafe; color: #1e40af; border: 1px solid #3b82f6; }
+    button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover { background: #059669; }
+    pre {
+      background: #f3f4f6;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+    }
+    .test-section h3 {
+      margin-top: 0;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>🧪 Supabase Auth Integration Test</h1>
+    <p>This page verifies Supabase authentication for the CarbonConstruct app.</p>
+
+    <div id="statusMessages"></div>
+
+    <div class="test-section">
+      <h3>1. Supabase Client Initialization</h3>
+      <button onclick="testSupabaseClient()">Test Supabase Client</button>
+      <pre id="clientResult">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+      <h3>2. Get Current Session</h3>
+      <button onclick="testGetSession()">Get Session</button>
+      <pre id="sessionResult">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+      <h3>3. Get Current User</h3>
+      <button onclick="testGetUser()">Get User</button>
+      <pre id="userResult">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+      <h3>4. Environment Variables Check</h3>
+      <button onclick="testEnvVars()">Check Env Vars</button>
+      <pre id="envResult">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+      <h3>5. Sign In Test (Email / Password)</h3>
+      <input type="email" id="testEmail" placeholder="email@example.com" style="padding:8px; margin:5px; width:250px;">
+      <input type="password" id="testPassword" placeholder="password" style="padding:8px; margin:5px; width:250px;">
+      <br>
+      <button onclick="testSignIn()">Test Sign In</button>
+      <button onclick="testSignOut()">Sign Out</button>
+      <pre id="signInResult">Enter credentials and click Test Sign In...</pre>
+    </div>
+
+    <div class="test-section">
+      <h3>6. OAuth Providers Test</h3>
+      <button onclick="testGoogleOAuth()">Test Google OAuth</button>
+      <button onclick="testGithubOAuth()">Test GitHub OAuth</button>
+      <pre id="oauthResult">Click button to test OAuth...</pre>
+    </div>
+  </div>
+
+  <!-- Load config and Supabase -->
+  <script src="js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    let supabase = null;
+
+    function showStatus(message, type = 'info') {
+      const div = document.getElementById('statusMessages');
+      const el = document.createElement('div');
+      el.className = `status ${type}`;
+      el.textContent = message;
+      div.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded, initializing Supabase...');
+      const url = window.SUPABASE_URL;
+      const key = window.SUPABASE_ANON_KEY;
+
+      if (!url || !key) {
+        showStatus('❌ Supabase credentials missing in config.js', 'error');
+        document.getElementById('clientResult').textContent =
+          'Supabase URL or Key missing in js/config.js';
+        return;
+      }
+
+      try {
+        supabase = window.supabase.createClient(url, key);
+        showStatus('✅ Supabase client initialized successfully', 'success');
+        console.log('✅ Supabase client:', supabase);
+      } catch (err) {
+        showStatus('❌ Initialization failed: ' + err.message, 'error');
+        console.error(err);
+      }
+    });
+
+    // 1. Supabase Client
+    function testSupabaseClient() {
+      const r = document.getElementById('clientResult');
+      if (!supabase) {
+        r.textContent = '❌ Supabase client not initialized';
+        showStatus('Supabase not initialized', 'error');
+        return;
+      }
+      r.textContent = JSON.stringify({
+        hasAuth: !!supabase.auth,
+        hasFrom: !!supabase.from,
+        url: window.SUPABASE_URL,
+        keyPresent: !!window.SUPABASE_ANON_KEY
+      }, null, 2);
+      showStatus('✅ Supabase client operational', 'success');
+    }
+
+    // 2. Get Session
+    async function testGetSession() {
+      const r = document.getElementById('sessionResult');
+      if (!supabase) return (r.textContent = '❌ Supabase not initialized');
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        r.textContent = '❌ ' + error.message;
+        showStatus(error.message, 'error');
+      } else if (data.session) {
+        r.textContent = JSON.stringify(data.session, null, 2);
+        showStatus('✅ Active session found', 'success');
+      } else {
+        r.textContent = '⚠️ No active session';
+        showStatus('No active session', 'info');
+      }
+    }
+
+    // 3. Get User
+    async function testGetUser() {
+      const r = document.getElementById('userResult');
+      if (!supabase) return (r.textContent = '❌ Supabase not initialized');
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        r.textContent = '❌ ' + error.message;
+        showStatus(error.message, 'error');
+      } else if (data.user) {
+        r.textContent = JSON.stringify(data.user, null, 2);
+        showStatus('✅ User authenticated', 'success');
+      } else {
+        r.textContent = '⚠️ No user logged in';
+        showStatus('No user logged in', 'info');
+      }
+    }
+
+    // 4. Env Vars
+    function testEnvVars() {
+      const r = document.getElementById('envResult');
+      r.textContent = JSON.stringify({
+        SUPABASE_URL: window.SUPABASE_URL || 'Not set',
+        SUPABASE_ANON_KEY_length: window.SUPABASE_ANON_KEY?.length || 0,
+        APP_URL: window.APP_URL
+      }, null, 2);
+      if (window.SUPABASE_URL && window.SUPABASE_ANON_KEY)
+        showStatus('✅ Environment variables loaded', 'success');
+      else
+        showStatus('⚠️ Missing variables', 'error');
+    }
+
+    // 5. Sign In / Out
+    async function testSignIn() {
+      const email = document.getElementById('testEmail').value;
+      const password = document.getElementById('testPassword').value;
+      const r = document.getElementById('signInResult');
+      if (!supabase) return (r.textContent = '❌ Supabase not initialized');
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        r.textContent = '❌ ' + error.message;
+        showStatus(error.message, 'error');
+      } else {
+        r.textContent = JSON.stringify(data, null, 2);
+        showStatus('✅ Sign-in success', 'success');
+      }
+    }
+
+    async function testSignOut() {
+      const r = document.getElementById('signInResult');
+      if (!supabase) return (r.textContent = '❌ Supabase not initialized');
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        r.textContent = '❌ ' + error.message;
+        showStatus(error.message, 'error');
+      } else {
+        r.textContent = '✅ Signed out';
+        showStatus('✅ Signed out', 'success');
+      }
+    }
+
+    // 6. OAuth
+    async function testGoogleOAuth() {
+      if (!supabase) return showStatus('Supabase not initialized', 'error');
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + '/callback.html' }
+      });
+    }
+    async function testGithubOAuth() {
+      if (!supabase) return showStatus('Supabase not initialized', 'error');
+      await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: { redirectTo: window.location.origin + '/callback.html' }
+      });
+    }
+
+    console.log('%c🧪 Supabase Auth Test Page Loaded', 'font-size:16px; font-weight:bold; color:#10b981;');
+  </script>
+</body>
+</html>

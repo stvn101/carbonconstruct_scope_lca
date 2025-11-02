@@ -1,0 +1,69 @@
+{
+  "name": "carbonconstruct",
+  "version": "1.0.0",
+  "description": "NCC-compliant embodied carbon calculator for Australian construction",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "lint": "eslint . --ext js --max-warnings 0",
+    "deploy": "vercel --prod",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:manual": "npx http-server -p 8000 -o /js/tests/manual-test-suite.html",
+    "test:claude": "node test-claude-integration.js",
+    "start": "npx http-server -p 8000 -o"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@supabase/supabase-js": "^2.39.0",
+    "stripe": "^14.10.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "eslint": "^9.0.0",
+    "vercel": "^48.6.7"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/*.test.js",
+      "**/*.spec.js"
+    ],
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "!js/tests/**",
+      "!js/vendor/**"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "carbon",
+    "construction",
+    "ncc",
+    "sustainability",
+    "embodied-carbon"
+  ],
+  "author": "CarbonConstruct",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stvn101/carbonconstruct_scope_lca.git"
+  },
+  "pnpm": {
+    "overrides": {
+      "debug@>=4.0.0 <4.3.1": ">=4.3.1",
+      "undici@<5.28.4": ">=5.28.4",
+      "undici@<=5.28.2": ">=5.28.3",
+      "tar@<6.2.1": ">=6.2.1",
+      "semver@>=7.0.0 <7.5.2": ">=7.5.2",
+      "undici@>=4.5.0 <5.28.5": ">=5.28.5",
+      "path-to-regexp@>=4.0.0 <6.3.0": ">=6.3.0",
+      "esbuild@<=0.24.2": ">=0.25.0",
+      "undici@<5.29.0": ">=5.29.0"
+    }
+  }
+}

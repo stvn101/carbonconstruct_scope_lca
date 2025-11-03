@@ -3,43 +3,25 @@
    Modern, Professional Design for Carbon Calculator
    ============================================ */
 
-/* CSS Reset & Variables - UPDATED BRAND COLORS */
+/* CSS Reset & Variables */
 :root {
-    /* Brand Colors from BRAND_KIT.md */
-    --primary-green: #3DD68C;           /* Vibrant Green - PRIMARY */
-    --primary-green-dark: #1E4A40;      /* Dark Emerald */
-    --primary-green-light: #E0F4ED;     /* Mint Green */
-    --accent-lime: #47876D;             /* Forest Green */
-    --brand-sage: #7A9B8E;              /* Sage Green */
-    --brand-navy: #1E2A35;              /* Dark Navy */
-    --brand-midnight: #0E1621;          /* Midnight Blue */
-    --brand-steel: #4A5A6A;             /* Steel Gray */
-
-    /* Text Colors */
-    --text-primary: #1E2A35;            /* Dark Navy */
-    --text-secondary: #4A5A6A;          /* Steel Gray */
-    --text-light: #7A9B8E;              /* Sage Green */
-
-    /* Backgrounds */
+    --primary-green: #10B981;
+    --primary-green-dark: #059669;
+    --primary-green-light: #D1FAE5;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-light: #9CA3AF;
     --background: #FFFFFF;
-    --background-gray: #F3F8F6;
-    --background-dark: #0E1621;         /* Midnight Blue */
-    --border-color: #C9DAD3;
-
-    /* Shadows */
+    --background-gray: #F9FAFB;
+    --background-dark: #1F2937;
+    --border-color: #E5E7EB;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-
-    /* Border Radius */
     --radius: 12px;
     --radius-lg: 16px;
-
-    /* Transitions */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    /* Fonts */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -60,11 +42,6 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
 }
 
 /* Container */
@@ -113,12 +90,6 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
 }
 
-.logo-image {
-    height: 40px;
-    width: auto;
-    display: block;
-}
-
 .nav-links {
     display: flex;
     align-items: center;
@@ -138,7 +109,6 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-green);
 }
 
-/* underline animation */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -250,7 +220,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-secondary-full:hover,
 .btn-secondary-large:hover {
     background: var(--background-gray);
-    border-color: var(--accent-lime);
+    border-color: var(--primary-green);
     transform: translateY(-2px);
 }
 
@@ -315,7 +285,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -465,7 +435,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(-50%);
     width: 1000px;
     height: 1000px;
-    background: radial-gradient(circle, rgba(27, 94, 32, 0.12) 0%, rgba(27, 94, 32, 0) 70%);
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0) 70%);
     pointer-events: none;
     z-index: -1;
 }
@@ -608,7 +578,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .feature-card:hover {
-    border-color: var(--accent-lime);
+    border-color: var(--primary-green);
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
 }
@@ -811,13 +781,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pricing-card:hover {
-    border-color: var(--accent-lime);
+    border-color: var(--primary-green);
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
 }
 
 .pricing-card.featured {
-    border-color: var(--accent-lime);
+    border-color: var(--primary-green);
     box-shadow: var(--shadow-lg);
 }
 
@@ -906,7 +876,7 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 .cta-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
     color: white;
 }
 
@@ -960,7 +930,7 @@ h1, h2, h3, h4, h5, h6 {
 .footer {
     padding: 80px 0 32px;
     background: var(--background-dark);
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--text-light);
 }
 
 .footer-content {
@@ -980,14 +950,8 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 16px;
 }
 
-.footer-logo-image {
-    height: 48px;
-    width: auto;
-    display: block;
-}
-
 .footer-column p {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-light);
     margin-bottom: 24px;
     line-height: 1.6;
 }
@@ -1006,14 +970,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer-column ul a {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-light);
     text-decoration: none;
     font-size: 14px;
     transition: var(--transition);
 }
 
 .footer-column ul a:hover {
-    color: var(--accent-lime);
+    color: var(--primary-green);
 }
 
 .social-links {
@@ -1029,12 +993,12 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-light);
     transition: var(--transition);
 }
 
 .social-links a:hover {
-    background: var(--accent-lime);
+    background: var(--primary-green);
     color: white;
 }
 
@@ -1044,7 +1008,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     padding-top: 32px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-light);
     font-size: 14px;
 }
 
@@ -1056,42 +1020,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer-partnerships {
     text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
 }
 
-.footer-partnerships-label {
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
+.footer-partnerships img {
+    transition: all 0.3s ease;
 }
 
-.footer-partner-logos {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.footer-partner-logos img {
-    max-height: 48px;
-    width: auto;
-    filter: brightness(1.05);
-    transition: var(--transition);
-}
-
-.footer-partnerships-note {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.footer-partner-logos a:hover img {
+.footer-partnerships a:hover img {
+    filter: brightness(1.2) !important;
     transform: translateY(-2px);
-    filter: brightness(1.15);
 }
 
 /* ============================================
@@ -1201,11 +1138,6 @@ h1, h2, h3, h4, h5, h6 {
     
     .footer-partnerships {
         text-align: center;
-        align-items: center;
-    }
-
-    .footer-partner-logos {
-        justify-content: center;
     }
     
     .about-stats-card {

@@ -16,726 +16,362 @@
     <!--End of Tawk.to Script-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CarbonConstruct - Embodied Carbon Calculator</title>
-
-    <!-- Tailwind CSS for rapid, professional styling -->
-    <script>
-        window.tailwind = window.tailwind || {};
-        window.tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            primary: '#3DD68C',
-                            'primary-dark': '#1E4A40',
-                            forest: '#47876D',
-                            sage: '#7A9B8E',
-                            'sage-light': '#AFC2B9',
-                            mint: '#E0F4ED',
-                            navy: '#1E2A35',
-                            midnight: '#0E1621',
-                            steel: '#4A5A6A',
-                            surface: '#F3F8F6',
-                            border: '#C9DAD3',
-                            contrast: '#FFFFFF'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Chart.js for data visualization - construction pros need to SEE the data -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Font Awesome for professional icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-
-    <!-- Google Fonts - Professional and readable -->
+    <title>CarbonConstruct - NCC-Compliant Carbon Calculator for Australian Construction</title>
+    <meta name="description" content="Calculate your construction project's embodied carbon in minutes. NCC-compliant, NABERS-ready reports for Australian builders.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        /* VIBRANT HIGH-CONTRAST COLORS */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FFFFFF; /* White background for maximum contrast */
-            color: #1E2A35; /* Dark navy text */
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* VIBRANT brand colors with high contrast */
-        .bg-brand-mint { background-color: #F0FDF4; } /* Very light mint for sections */
-        .bg-brand-forest { background-color: #059669; } /* BRIGHT forest green */
-        .bg-brand-primary { background-color: #10B981; } /* BRIGHT emerald */
-        .bg-brand-primary-dark { background-color: #047857; } /* Deep emerald */
-        .bg-brand-midnight { background-color: #0F172A; } /* Dark navy */
-
-        .text-brand-navy { color: #0F172A; } /* Almost black for max readability */
-        .text-brand-forest { color: #047857; } /* Deep green */
-        .text-brand-sage { color: #6B7280; } /* Medium gray */
-        .text-brand-steel { color: #374151; } /* Dark gray */
-        .text-brand-primary { color: #059669; } /* Bright green */
-        .text-brand-primary-dark { color: #065F46; } /* Dark green */
-        .text-brand-mint { color: #ECFDF5; } /* Light mint for dark backgrounds */
-
-        .hover\:text-brand-forest:hover { color: #059669; }
-        .hover\:text-brand-primary-dark:hover { color: #047857; }
-        .hover\:bg-brand-primary-dark:hover { background-color: #047857; }
-        .hover\:bg-brand-forest:hover { background-color: #059669; }
-
-        .from-brand-primary { --tw-gradient-from: #10B981; }
-        .from-brand-forest { --tw-gradient-from: #059669; }
-        .to-brand-midnight { --tw-gradient-to: #0F172A; }
-        .to-brand-forest { --tw-gradient-to: #047857; }
-
-        .carbon-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .carbon-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Chart container with fixed height - critical for Chart.js */
-        .chart-container {
-            height: 400px;
-            position: relative;
-        }
-
-        /* Specific chart container heights */
-        .chart-container-400 {
-            height: 400px;
-        }
-    </style>
 </head>
-<body class="bg-white">
-
-    <!-- Navigation Header -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <i class="fas fa-leaf text-brand-forest text-2xl mr-3"></i>
-                    <span class="text-xl font-bold text-brand-navy">CarbonConstruct</span>
-                    <span class="ml-3 text-sm text-brand-sage">Embodied Carbon Calculator</span>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L4 9V23L16 30L28 23V9L16 2Z" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M16 16L4 9M16 16L28 9M16 16V30" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>CarbonConstruct</span>
                 </div>
-                <div class="hidden md:flex space-x-6">
-                    <a href="#features" class="text-brand-steel hover:text-brand-forest font-medium">Features</a>
-                    <a href="#pricing" class="text-brand-steel hover:text-brand-forest font-medium">Pricing</a>
-                    <a href="#about" class="text-brand-steel hover:text-brand-forest font-medium">About</a>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <a href="signin-new.html" class="text-brand-forest hover:text-brand-primary-dark font-medium px-4 py-2">
-                        Sign In
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="ec3-oauth.html" class="nav-ec3" title="Connect to EC3 Database">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 2L2 6V14L8 18L14 14V6L8 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M8 8L2 6M8 8L14 6M8 8V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        EC3 Database
                     </a>
-                    <a href="signup-new.html" class="bg-brand-primary hover:bg-brand-forest text-white px-4 py-2 rounded-lg font-medium">
-                        <i class="fas fa-rocket mr-2"></i>Start Free Trial
-                    </a>
+                    <a href="signin.html" class="nav-signin">Sign In</a>
+                    <a href="#calculator" class="btn-primary-small">Start Free Trial</a>
                 </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-brand-primary to-brand-forest text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-4xl font-bold mb-4">Embodied Carbon Calculator</h1>
-            <p class="text-xl text-brand-mint mb-6">
-                Complete Life Cycle Assessment (LCA) for Australian Construction Projects
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                    <i class="fas fa-check-circle text-2xl mb-2"></i>
-                    <h3 class="font-semibold">NCC Compliant</h3>
-                    <p class="text-sm text-brand-mint">National Construction Code</p>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">🇦🇺</span>
+                    <span>Australia's Most Trusted Carbon Calculator</span>
                 </div>
-                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                    <i class="fas fa-star text-2xl mb-2"></i>
-                    <h3 class="font-semibold">NABERS Ready</h3>
-                    <p class="text-sm text-brand-mint">Energy & Carbon Rating</p>
+                <h1 class="hero-title">
+                    Calculate Your Project's <span class="gradient-text">Carbon Footprint</span> in Under 10 Minutes
+                </h1>
+                <p class="hero-subtitle">
+                    Build Greener, Measure Smarter. Generate NCC-compliant reports, identify cost-saving material swaps, and track Scope 1-3 emissions for TCFD compliance. Trusted by Australian construction.
+                </p>
+                <div class="hero-cta">
+                    <a href="#calculator" class="btn-primary">
+                        <span>Start Free 14 day trial.</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#demo" class="btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 7L13 10L8 13V7Z" fill="currentColor"/>
+                        </svg>
+                        <span>Watch Demo (2 min)</span>
+                    </a>
                 </div>
-                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                    <i class="fas fa-building text-2xl mb-2"></i>
-                    <h3 class="font-semibold">GBCA Standards</h3>
-                    <p class="text-sm text-brand-mint">Green Star the Gold Standard</p>
-                </div>
-                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                    <i class="fas fa-chart-line text-2xl mb-2"></i>
-                    <h3 class="font-semibold">Full LCA</h3>
-                    <p class="text-sm text-brand-mint">Cradle to Grave Analysis</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW: Operational Carbon Tracking Banner -->
-    <section class="bg-gradient-to-r from-brand-primary to-brand-forest text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="mb-4 md:mb-0">
-                    <h2 class="text-2xl font-bold mb-2">
-                        <i class="fas fa-fire mr-2"></i>
-                        NEW: Track Scope 1 & 2 Emissions
-                    </h2>
-                    <p class="text-brand-mint">
-                        Complete operational carbon tracking for site equipment, electricity, transport, waste & more.
-                        <strong>Required for TCFD compliance!</strong>
-                    </p>
-                </div>
-                <a href="operational-carbon.html" class="bg-white text-brand-forest hover:bg-brand-mint px-6 py-3 rounded-lg font-bold text-lg whitespace-nowrap">
-                    Track Operational Carbon Emissions
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Calculator Section -->
-    <section id="calculator" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-brand-navy mb-6">
-                <i class="fas fa-calculator text-brand-forest mr-2"></i>
-                Project Details
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-sm font-medium text-brand-steel mb-2">Project Name</label>
-                    <input type="text" id="projectName" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent" placeholder="e.g., Melbourne Office Tower">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-brand-steel mb-2">Project Type</label>
-                    <select id="projectType" title="Select project type" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
-                        <option value="">Select Type</option>
-                        <option value="residential">Residential</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="industrial">Industrial</option>
-                        <option value="infrastructure">Infrastructure</option>
-                        <option value="mixed-use">Mixed Use</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-brand-steel mb-2">Gross Floor Area (m2)</label>
-                    <input type="number" id="gfa" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent" placeholder="e.g., 5000">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-brand-steel mb-2">Design Life (years)</label>
-                    <input type="number" id="designLife" value="50" placeholder="e.g., 50" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
-                </div>
-            </div>
-        </div>
-
-        <!-- AI-Enhanced Calculation Mode Section (v2) -->
-        <div class="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl shadow-lg p-8 mb-8">
-            <div class="flex items-start justify-between mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-brand-navy mb-2">
-                        <i class="fas fa-robot text-purple-600 mr-2"></i>
-                        AI-Enhanced Calculation
-                        <span class="ml-2 inline-block bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded-full">BETA</span>
-                        <span class="ml-2 inline-block bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">PRO</span>
-                    </h2>
-                    <p class="text-brand-sage">
-                        Enable AI-powered analysis for advanced insights, hotspot detection, and automated compliance reporting.
-                    </p>
-                </div>
-                <div class="flex-shrink-0">
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="aiEnhancedMode" class="sr-only peer" value="">
-                        <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-purple-600"></div>
-                        <span class="ml-3 text-sm font-medium text-gray-900">AI Mode</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- AI Features Grid -->
-            <div id="aiFeatures" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" style="display:none;">
-                <div class="bg-white rounded-lg p-4 border border-purple-200">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-brain text-purple-600 text-xl mr-2"></i>
-                        <h3 class="font-semibold text-gray-800">Smart Material Matching</h3>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">Australian Made</div>
+                        <div class="stat-label">Australian Proud</div>
                     </div>
-                    <p class="text-sm text-gray-600">Natural language material search with AI recommendations</p>
-                </div>
-                <div class="bg-white rounded-lg p-4 border border-purple-200">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-fire text-red-600 text-xl mr-2"></i>
-                        <h3 class="font-semibold text-gray-800">Hotspot Analysis</h3>
+                    <div class="stat">
+                        <div class="stat-number">10 min</div>
+                        <div class="stat-label">Average Completion</div>
                     </div>
-                    <p class="text-sm text-gray-600">Identify top carbon contributors with optimization suggestions</p>
-                </div>
-                <div class="bg-white rounded-lg p-4 border border-purple-200">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-file-alt text-blue-600 text-xl mr-2"></i>
-                        <h3 class="font-semibold text-gray-800">Auto Reports</h3>
+                    <div class="stat">
+                        <div class="stat-number">20-30%</div>
+                        <div class="stat-label">Cost Savings</div>
                     </div>
-                    <p class="text-sm text-gray-600">Generate compliance reports with actionable recommendations</p>
                 </div>
             </div>
-
-            <!-- BIM File Upload -->
-            <div id="bimUploadSection" class="bg-white rounded-lg p-6 border-2 border-dashed border-purple-300" style="display:none;">
-                <div class="text-center">
-                    <i class="fas fa-file-upload text-purple-600 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Upload BIM Schedule or CSV</h3>
-                    <p class="text-sm text-gray-600 mb-4">
-                        AI will automatically parse your material quantities and match to the database
-                    </p>
-                    <div class="flex items-center justify-center space-x-4">
-                        <label class="cursor-pointer bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium inline-flex items-center">
-                            <i class="fas fa-cloud-upload-alt mr-2"></i>
-                            Choose File
-                            <input type="file" id="bimFileInput" class="hidden" accept=".csv,.xlsx,.ifc,.rvt">
-                        </label>
-                        <span id="bimFileName" class="text-sm text-gray-500">No file selected</span>
+            <div class="hero-visual">
+                <div class="dashboard-preview">
+                    <div class="dashboard-header">
+                        <div class="dashboard-dot"></div>
+                        <div class="dashboard-dot"></div>
+                        <div class="dashboard-dot"></div>
                     </div>
-                    <div id="bimParseStatus" class="mt-4 hidden">
-                        <div class="flex items-center justify-center text-green-600">
-                            <i class="fas fa-check-circle mr-2"></i>
-                            <span id="bimParseMessage"></span>
+                    <div class="dashboard-content">
+                        <div class="chart-placeholder">
+                            <svg viewBox="0 0 400 250" class="animated-chart">
+                                <defs>
+                                    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.5" />
+                                        <stop offset="100%" style="stop-color:#10B981;stop-opacity:0" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 0 200 L 50 180 L 100 150 L 150 170 L 200 120 L 250 140 L 300 80 L 350 100 L 400 60"
+                                      stroke="#10B981" stroke-width="3" fill="none"/>
+                                <path d="M 0 200 L 50 180 L 100 150 L 150 170 L 200 120 L 250 140 L 300 80 L 350 100 L 400 60 L 400 250 L 0 250 Z"
+                                      fill="url(#chartGradient)"/>
+                            </svg>
+                        </div>
+                        <div class="metric-cards">
+                            <div class="metric-card">
+                                <div class="metric-value">245.8 t</div>
+                                <div class="metric-label">CO₂-e Saved</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">4.2★</div>
+                                <div class="metric-label">NABERS Rating</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="floating-badge badge-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>NCC Compliant</span>
+                </div>
+                <div class="floating-badge badge-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 13L9 17L19 7" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>NABERS Ready</span>
+                </div>
             </div>
+        </div>
+        <div class="hero-gradient"></div>
+    </section>
 
-            <!-- AI Usage Stats -->
-            <div id="aiUsageStats" class="mt-4 p-4 bg-purple-100 rounded-lg" style="display:none;">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <i class="fas fa-chart-bar text-purple-600 mr-2"></i>
-                        <span class="text-sm font-medium text-gray-700">AI Usage This Month:</span>
+    <!-- Trust Badges -->
+    <section class="trust-section">
+        <div class="container">
+            <p class="trust-intro">Available to all Australian construction companies</p>
+            <div class="trust-logos">
+                <div class="trust-logo">Sole traders</div>
+                <div class="trust-logo">Family businesses</div>
+                <div class="trust-logo">Mum and Dad Builders</div>
+                <div class="trust-logo">Goal 2030 only works</div>
+                <div class="trust-logo">When we are all involved</div>
+            </div>
+            <div class="compliance-badges">
+                <div class="compliance-badge">
+                    <div class="badge-icon-lg">✓</div>
+                    <div class="badge-content">
+                        <h4>NCC Compliant</h4>
+                        <p>Meets Volume 1 & 2 requirements</p>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <span id="aiUsageCount" class="text-lg font-bold text-purple-600">0 / 50</span>
-                        <a href="subscription.html" class="text-xs text-purple-600 hover:underline">Upgrade Plan</a>
+                </div>
+                <div class="compliance-badge">
+                    <div class="badge-icon-lg">★</div>
+                    <div class="badge-content">
+                        <h4>NABERS Ready</h4>
+                        <p>Export directly to portal</p>
+                    </div>
+                </div>
+                <div class="compliance-badge">
+                    <div class="badge-icon-lg">🏆</div>
+                    <div class="badge-content">
+                        <h4>GBCA Standards</h4>
+                        <p>Cleaning up Construction</p>
+                    </div>
+                </div>
+                <div class="compliance-badge">
+                    <div class="badge-icon-lg">📊</div>
+                    <div class="badge-content">
+                        <h4>ISO 14040/14044</h4>
+                        <p>Full LCA pre-certified</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Subscription Required Message -->
-            <div id="subscriptionRequired" class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg" style="display:none;">
-                <div class="flex items-center">
-                    <i class="fas fa-lock text-yellow-600 text-2xl mr-4"></i>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-gray-800 mb-1">Pro Subscription Required</h4>
-                        <p class="text-sm text-gray-600 mb-2">
-                            AI-Enhanced features require a Pro subscription. Upgrade to unlock advanced analysis, automation, and insights.
-                        </p>
-                        <a href="subscription.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                            <i class="fas fa-star mr-1"></i>Upgrade to Pro
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2>Everything You Need for Carbon Compliance</h2>
+                <p>Comprehensive tools to measure, track, and report your project's environmental impact</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M4 16H28M4 8H28M4 24H28" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Complete LCA Analysis</h3>
+                    <p>Full cradle-to-grave assessment following ISO 14040/14044 and EN 15978 standards for construction products.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z" stroke="#10B981" stroke-width="2"/>
+                            <path d="M16 10V16L20 18" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Tracking</h3>
+                    <p>Track Scope 1, 2, and 3 emissions throughout your project lifecycle with live dashboard updates.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M28 4H4V28H28V4Z" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M12 12L16 8L20 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 8V24" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Instant Reports</h3>
+                    <p>Generate PDF reports for NCC reporting compliance,</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 4L4 10V18C4 24 16 28 16 28C16 28 28 24 28 18V10L16 4Z" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M12 16L15 19L21 13" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Material Database</h3>
+                    <p>Access Australian database of verified EPDs and carbon factors for accurate calculations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z" stroke="#10B981" stroke-width="2"/>
+                            <path d="M16 12L20 16L16 20M12 16H20" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Material Optimization</h3>
+                    <p>Swap materials and reduce carbon footprint by 20-30% while maintaining budget.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M4 8H28M4 16H28M4 24H28" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="8" cy="8" r="2" fill="#10B981"/>
+                            <circle cx="8" cy="16" r="2" fill="#10B981"/>
+                            <circle cx="8" cy="24" r="2" fill="#10B981"/>
+                        </svg>
+                    </div>
+                    <h3>Team Collaboration</h3>
+                    <p>Invite team members, share projects, and collaborate on carbon reduction strategies in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <span class="section-badge">About CarbonConstruct</span>
+                    <h2>Built by Construction Professionals, for Construction Professionals</h2>
+                    <p class="about-intro">
+                        CarbonConstruct was born from frustration with complex, expensive carbon calculators that weren't designed for Australian construction realities. The purpose of CarbonConstruct is to make embodied carbon measurement accessible and practical for SME's and construction professionalsin the construction industry.
+                    </p>
+                    <p>
+                        Founded in 2025 by Steven Jenkins, with 17 years of tier 1 experience working on the biggest commercial jobs in Brisbane, I have a unique understanding of what needs to be done and I know how to fix it. With EC3 integration SME's now have available to them a powerful tool to measure and reduce embodied carbon in their projects.
+                    </p>
+                    <p>
+                        I understand the pressure you're under: tight deadlines, budget constraints, and increasing regulatory requirements. That's why we built a tool that's fast, accurate, and actually useful for real-world construction projects. CarbonConstruct isnt just another piece of software-it's a game changer for how we approach sustainability in construction.
+                    </p>
+                    <div class="about-features">
+                        <div class="about-feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <h4>Australian Standards</h4>
+                                <p>Built specifically for NCC, NABERS, and GBCA requirements, we want all construction professionals to have access to the tools they need to succeed</p>
+                            </div>
+                        </div>
+                        <div class="about-feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <h4>Lightning Fast</h4>
+                                <p>What takes 6 months with consultants takes 10 minutes with us, cutting out the middleman means money saved.</p>
+                            </div>
+                        </div>
+                        <div class="about-feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div>
+                                <h4>Verified Accuracy</h4>
+                                <p>All carbon factors verified against Australian EPD database</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-cta">
+                        <a href="#pricing" class="btn-primary">Start Your Free Trial today.</a>
+                        <a href="#contact" class="link-arrow">
+                            Contact Us
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Material Input Section -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-brand-navy mb-6">
-                <i class="fas fa-cubes text-brand-forest mr-2"></i>
-                Materials & Quantities
-            </h2>
-
-            <div class="mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-brand-steel mb-2">Material Category</label>
-                        <select id="materialCategory" title="Material Category" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
-                            <option value="">Select Category</option>
-                            <option value="concrete">Concrete</option>
-                            <option value="steel">Steel</option>
-                            <option value="timber">Timber</option>
-                            <option value="masonry">Masonry</option>
-                            <option value="insulation">Insulation</option>
-                            <option value="glazing">Glazing</option>
-                            <option value="finishes">Finishes</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-brand-steel mb-2">Specific Material</label>
-                        <select id="materialType" title="Specific Material" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
-                            <option value="">Select Material</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-brand-steel mb-2">Quantity</label>
-                        <input type="number" id="materialQuantity" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent" placeholder="0">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-brand-steel mb-2">Unit</label>
-                        <select id="materialUnit" title="Material Unit" class="w-full px-4 py-2 border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-forest focus:border-transparent">
-                            <option value="m3">m³</option>
-                            <option value="tonnes">tonnes</option>
-                            <option value="m2">m²</option>
-                            <option value="kg">kg</option>
-                            <option value="units">units</option>
-                        </select>
-                    </div>
-                </div>
-                <button id="addMaterialBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-6 py-2 rounded-lg font-medium">
-                    <i class="fas fa-plus mr-2"></i>Add Material
-                </button>
-            </div>
-
-            <!-- Materials List -->
-            <div id="materialsList" class="border-t border-brand-border pt-4">
-                <h3 class="text-lg font-semibold text-brand-navy mb-4">Added Materials</h3>
-                <div id="materialsTable" class="overflow-x-auto">
-                    <!-- Materials will be added here dynamically -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LCA Section -->
-    <section id="lca" class="bg-brand-mint py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-brand-navy mb-6">
-                    <i class="fas fa-recycle text-brand-forest mr-2"></i>
-                    Life Cycle Assessment (LCA)
-                </h2>
-
-                <p class="text-brand-sage mb-6">
-                    Complete cradle-to-grave analysis following ISO 14040/14044 standards and EN 15978 for construction products.
-                </p>
-
-                <!-- LCA Stages Breakdown -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <!-- Product Stage (A1-A3) -->
-                    <div class="carbon-card bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-blue-900">Product Stage</h3>
-                            <i class="fas fa-industry text-blue-600"></i>
-                        </div>
-                        <p class="text-sm text-blue-700 mb-2">A1-A3: Manufacturing</p>
-                        <p class="text-2xl font-bold text-blue-900" id="lcaA1A3">0</p>
-                        <p class="text-sm text-blue-600">kg CO2-e</p>
-                    </div>
-
-                    <!-- Construction Stage (A4-A5) -->
-                    <div class="carbon-card bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-yellow-900">Construction</h3>
-                            <i class="fas fa-truck text-yellow-600"></i>
-                        </div>
-                        <p class="text-sm text-yellow-700 mb-2">A4-A5: Transport & Build</p>
-                        <p class="text-2xl font-bold text-yellow-900" id="lcaA4A5">0</p>
-                        <p class="text-sm text-yellow-600">kg CO2-e</p>
-                    </div>
-
-                    <!-- Use Stage (B1-B7) -->
-                    <div class="carbon-card bg-purple-50 border-2 border-purple-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-purple-900">Use Stage</h3>
-                            <i class="fas fa-home text-purple-600"></i>
-                        </div>
-                        <p class="text-sm text-purple-700 mb-2">B1-B7: Operations & Maint.</p>
-                        <p class="text-2xl font-bold text-purple-900" id="lcaB1B7">0</p>
-                        <p class="text-sm text-purple-600">kg CO2-e</p>
-                    </div>
-
-                    <!-- End of Life (C1-C4) -->
-                    <div class="carbon-card bg-red-50 border-2 border-red-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-red-900">End of Life</h3>
-                            <i class="fas fa-trash-alt text-red-600"></i>
-                        </div>
-                        <p class="text-sm text-red-700 mb-2">C1-C4: Demolition & Disposal</p>
-                <!-- LCA Chart -->
-                <div class="chart-container chart-container-400">
-                    <canvas id="lcaChart"></canvas>
-                </div>
-
-                <!-- LCA Chart -->
-                <div class="chart-container" style="height: 400px;">
-                    <canvas id="lcaChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Scopes Section -->
-    <section id="scopes" class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-brand-navy mb-6">
-                    <i class="fas fa-layer-group text-brand-forest mr-2"></i>
-                    GHG Protocol Scopes (1, 2, 3)
-                </h2>
-
-                <p class="text-brand-sage mb-6">
-                    Greenhouse Gas emissions categorized following the GHG Protocol Corporate Standard for comprehensive reporting.
-                </p>
-
-                <!-- Scopes Breakdown -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <!-- Scope 1: Direct Emissions -->
-                    <div class="carbon-card bg-brand-mint border-2 border-brand-border rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-brand-midnight">Scope 1</h3>
-                            <i class="fas fa-fire text-brand-forest text-2xl"></i>
-                        </div>
-                        <p class="text-sm text-brand-primary-dark mb-4">Direct emissions from owned or controlled sources</p>
-                        <ul class="text-sm text-brand-primary-dark mb-4 space-y-1">
-                            <li>• On-site fuel combustion</li>
-                            <li>• Company vehicles</li>
-                            <li>• Fugitive emissions</li>
-                        </ul>
-                        <p class="text-3xl font-bold text-brand-midnight" id="scope1Total">0</p>
-                        <p class="text-sm text-brand-forest">kg CO2-e</p>
-                    </div>
-
-                    <!-- Scope 2: Indirect Energy Emissions -->
-                    <div class="carbon-card bg-teal-50 border-2 border-teal-200 rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-teal-900">Scope 2</h3>
-                            <i class="fas fa-bolt text-teal-600 text-2xl"></i>
-                        </div>
-                        <p class="text-sm text-teal-700 mb-4">Indirect emissions from purchased energy</p>
-                        <ul class="text-sm text-teal-700 mb-4 space-y-1">
-                            <li>• Purchased electricity</li>
-                            <li>• Purchased heating/cooling</li>
-                            <li>• Purchased steam</li>
-                        </ul>
-                        <p class="text-3xl font-bold text-teal-900" id="scope2Total">0</p>
-                        <p class="text-sm text-teal-600">kg CO2-e</p>
-                    </div>
-
-                    <!-- Scope 3: Value Chain Emissions -->
-                    <div class="carbon-card bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-indigo-900">Scope 3</h3>
-                            <i class="fas fa-globe text-indigo-600 text-2xl"></i>
-                        </div>
-                        <p class="text-sm text-indigo-700 mb-4">All other indirect emissions in value chain</p>
-                        <ul class="text-sm text-indigo-700 mb-4 space-y-1">
-                            <li>• Material production</li>
-                            <li>• Transportation</li>
-                            <li>• Waste & end-of-life</li>
-                        </ul>
-                <!-- Scopes Chart -->
-                <div class="chart-container chart-container-400">
-                    <canvas id="scopesChart"></canvas>
-                </div>
-
-                <!-- Scopes Chart -->
-                <div class="chart-container" style="height: 400px;">
-                    <canvas id="scopesChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Compliance Section -->
-    <section id="compliance" class="bg-brand-mint py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-brand-navy mb-6">
-                    <i class="fas fa-clipboard-check text-brand-forest mr-2"></i>
-                    Australian Compliance Standards
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- NCC Compliance -->
-                    <div class="border-2 border-brand-border rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-brand-midnight">NCC 2022</h3>
-                            <span id="nccStatus" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">Pending</span>
-                        </div>
-                        <p class="text-sm text-brand-sage mb-4">National Construction Code Volume One & Two</p>
-                        <ul class="text-sm text-brand-steel space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Section J - Energy Efficiency</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>JV3 - Greenhouse & Energy Min Standards</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>DTS & Performance Solutions</span>
-                            </li>
-                        </ul>
-                        <div class="mt-4 pt-4 border-t border-brand-border">
-                            <p class="text-xs text-brand-sage-light">Embodied Energy: <span id="nccEmbodiedEnergy" class="font-semibold">0 MJ/m3</span></p>
-                            <p class="text-xs text-brand-sage-light">Carbon Intensity: <span id="nccCarbonIntensity" class="font-semibold">0 kg CO₂e/m²</span></p>
-                        </div>
-                    </div>
-
-                    <!-- NABERS Compliance -->
-                    <div class="border-2 border-brand-border rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-brand-midnight">NABERS</h3>
-                            <span id="nabersRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0★</span>
-                        </div>
-                        <p class="text-sm text-brand-sage mb-4">National Australian Built Environment Rating System</p>
-                        <ul class="text-sm text-brand-steel space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Energy Rating</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Carbon Neutral Certification</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Whole Building Assessment</span>
-                            </li>
-                        </ul>
-                        <div class="mt-4 pt-4 border-t border-brand-border">
-                            <p class="text-xs text-brand-sage-light">Target Rating: <span class="font-semibold">5.0+ Stars</span></p>
-                            <p class="text-xs text-brand-sage-light">Benchmark: <span id="nabersBenchmark" class="font-semibold">Loading...</span></p>
-                        </div>
-                    </div>
-
-                    <!-- GBCA Green Star -->
-                    <div class="border-2 border-brand-border rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-brand-midnight">GBCA Green Star</h3>
-                            <span id="greenStarRating" class="px-3 py-1 bg-brand-surface text-brand-steel rounded-full text-sm font-medium">0★</span>
-                        </div>
-                        <p class="text-sm text-brand-sage mb-4">Green Building Council of Australia</p>
-                        <ul class="text-sm text-brand-steel space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Materials Category</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Life Cycle Impacts</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-brand-forest mt-1 mr-2"></i>
-                                <span>Responsible Materials Sourcing</span>
-                            </li>
-                        </ul>
-                        <div class="mt-4 pt-4 border-brand-border">
-                            <p class="text-xs text-brand-sage-light">Target: <span class="font-semibold">4+ Stars (Best Practice)</span></p>
-                            <p class="text-xs text-brand-sage-light">Points: <span id="greenStarPoints" class="font-semibold">0/100</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Additional Compliance Requirements -->
-                <div class="mt-8 pt-8 border-t border-brand-border">
-                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Additional Reporting Requirements</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-file-alt text-blue-600 mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-brand-navy">Climate-Related Financial Disclosures (TCFD)</h4>
-                                <p class="text-sm text-brand-sage">Required for entities from January 2025</p>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <div class="avatar">SJ</div>
+                                <div class="member-info">
+                                    <div class="member-name">Steven Jenkins</div>
+                                    <div class="member-role">Carpenter and Crane Operator</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-chart-bar text-blue-600 mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-brand-navy">NGER Act Reporting</h4>
-                                <p class="text-sm text-brand-sage">National Greenhouse and Energy Reporting</p>
+                            <div class="team-member">
+                                <div class="avatar">SK</div>
+                                <div class="member-info">
+                                    <div class="member-name">Sarah Kim</div>
+                                    <div class="member-role">Sustainability Lead</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-certificate text-blue-600 mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-brand-navy">EPDs (Environmental Product Declarations)</h4>
-                                <p class="text-sm text-brand-sage">Third-party verified environmental data</p>
+                            <div class="team-member">
+                                <div class="avatar">MP</div>
+                                <div class="member-info">
+                                    <div class="member-name">Mike Peters</div>
+                                    <div class="member-role">Carbon Analyst</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-leaf text-blue-600 mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-brand-navy">Australian Embodied Carbon Database</h4>
-                                <p class="text-sm text-brand-sage">Aligned with national standards</p>
+                            <div class="team-member">
+                                <div class="avatar">LC</div>
+                                <div class="member-info">
+                                    <div class="member-name">Lisa Chen</div>
+                                    <div class="member-role">Product Lead</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Reports & Summary Section -->
-    <section id="reports" class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-brand-navy">
-                        <i class="fas fa-file-contract text-brand-forest mr-2"></i>
-                        Project Summary & Reports
-                    </h2>
-                    <div class="space-x-3">
-                        <button id="calculateBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-6 py-2 rounded-lg font-medium">
-                            <i class="fas fa-calculator mr-2"></i>Calculate All
-                        </button>
-                        <button id="saveProjectBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium">
-                            <i class="fas fa-save mr-2"></i>Save Project
-                        </button>
-                        <button id="exportReportBtn" class="bg-brand-midnight hover:bg-brand-forest text-white px-6 py-2 rounded-lg font-medium">
-                            <i class="fas fa-download mr-2"></i>Export Report
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Total Emissions Summary -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-gradient-to-br from-brand-primary to-brand-forest text-white rounded-lg p-6">
-                        <h3 class="text-sm font-medium mb-2 opacity-90">Total Embodied Carbon</h3>
-                        <p class="text-4xl font-bold mb-1" id="totalCarbon">0</p>
-                        <p class="text-sm opacity-90">kg CO2-e</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-lg p-6">
-                        <h3 class="text-sm font-medium mb-2 opacity-90">Carbon Intensity</h3>
-                        <p class="text-4xl font-bold mb-1" id="carbonIntensity">0</p>
-                        <p class="text-sm opacity-90">kg CO₂e/m²</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-purple-500 to-purple-700 text-white rounded-lg p-6">
-                        <h3 class="text-sm font-medium mb-2 opacity-90">Equivalent Trees</h3>
-                        <p class="text-4xl font-bold mb-1" id="treesEquivalent">0</p>
-                        <p class="text-sm opacity-90">trees needed for 10 years</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-brand-primary to-brand-forest text-white rounded-lg p-6">
-                        <h3 class="text-sm font-medium mb-2 opacity-90">Car Equivalent</h3>
-                <!-- Materials Breakdown Chart -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Carbon by Material Category</h3>
-                    <div class="chart-container chart-container-400">
-                        <canvas id="materialsChart"></canvas>
-                    </div>
-                </div>
-                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Carbon by Material Category</h3>
-                    <div class="chart-container" style="height: 400px;">
-                        <canvas id="materialsChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Benchmarking -->
-                <div class="border-t border-brand-border pt-8">
-                    <h3 class="text-lg font-semibold text-brand-navy mb-4">Industry Benchmarking</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="text-center p-4 bg-red-50 rounded-lg">
-                            <p class="text-sm text-brand-sage mb-2">Industry Average</p>
-                            <p class="text-2xl font-bold text-red-700" id="benchmarkAvg">500</p>
-                            <p class="text-sm text-brand-sage">kg CO₂e/m²</p>
+                    <div class="about-stats-card">
+                        <div class="stat-row">
+                            <span class="stat-label">Projects Analyzed</span>
+                            <span class="stat-value">We all have a opportunity to make a difference</span>
                         </div>
-                        <div class="text-center p-4 bg-yellow-50 rounded-lg">
-                            <p class="text-sm text-brand-sage mb-2">Best Practice</p>
-                            <p class="text-2xl font-bold text-yellow-700" id="benchmarkBest">350</p>
-                            <p class="text-sm text-brand-sage">kg CO₂e/m²</p>
+                        <div class="stat-row">
+                            <span class="stat-label">Potential Carbon Saved</span>
+                            <span class="stat-value">every year12,400t CO₂-e</span>
                         </div>
-                        <div class="text-center p-4 bg-brand-mint rounded-lg">
-                            <p class="text-sm text-brand-sage mb-2">Your Project</p>
-                            <p class="text-2xl font-bold text-brand-primary-dark" id="benchmarkYour">0</p>
-                            <p class="text-sm text-brand-sage">kg CO₂e/m²</p>
+                        <div class="stat-row">
+                            <span class="stat-label">join the beta program</span>
+                            <span class="stat-value">testing phase will not last long ⭐</span>
                         </div>
                     </div>
                 </div>
@@ -743,307 +379,331 @@
         </div>
     </section>
 
-    <!-- Saved Projects Section -->
-    <section id="saved" class="bg-brand-mint py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-brand-navy mb-6">
-                    <i class="fas fa-folder-open text-brand-forest mr-2"></i>
-                    Saved Projects
-                </h2>
-                <div id="savedProjectsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Saved projects will be loaded here -->
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Pricing</span>
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Start free, scale as you grow. No hidden fees, cancel anytime.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="price">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">99</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="price-description">$1,099/year (save $89) • 1 user account</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>1 user sign-in only</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Unlimited projects</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Basic LCA calculations</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>PDF report generation</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Email support</span>
+                        </li>
+                        <li class="disabled">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 7L13 13M7 13L13 7" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/>
+                            </svg>
+                            <span>No EC3 database access</span>
+                        </li>
+                        <li class="disabled">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 7L13 13M7 13L13 7" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/>
+                            </svg>
+                            <span>Material optimization</span>
+                        </li>
+                    </ul>
+                    <a href="checkout.html?plan=starter" class="btn-secondary-full">Start 14-Day Trial</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="price">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">199</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="price-description">$2,199/year (save $189) • Up to 3 users</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span><strong>3 user accounts</strong></span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span><strong>EC3 Database Access</strong> (50,000+ EPDs)</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span><strong>EPD/EDR Generator In the future making affordable to any size company</strong> (ISO compliant)</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Unlimited projects</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Complete LCA + Scope 1-3</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Advanced reports (NCC/NABERS)</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>AI material optimization with CarbonConstruct LCA PRO Agent</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Priority support</span>
+                        </li>
+                    </ul>
+                    <a href="checkout.html?plan=professional" class="btn-primary-full">Start 14-Day Trial</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">
+                            <span class="price-amount">Contact Us</span>
+                        </div>
+                        <p class="price-description">For large organizations</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Everything in Professional</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span><strong>Unlimited user seats</strong></span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span><strong>White-labeling available</strong></span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Custom integrations & API access</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Dedicated account manager</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>Custom training & onboarding</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="10" cy="10" r="8" stroke="#10B981" stroke-width="2"/>
+                            </svg>
+                            <span>SLA guarantee</span>
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn-secondary-full">Contact Sales</a>
+                </div>
+            </div>
+            <p class="pricing-note">
+                💡 All plans include 14-day free trial. No credit card required. Cancel anytime. Weeekly training webinars after launch.
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Calculate Your Carbon Impact?</h2>
+                <p>Join Australian construction projects ready to reduce their carbon footprint</p>
+                <div class="cta-buttons">
+                    <a href="signup.html" class="btn-primary-large">Start Free Trial</a>
+                    <a href="#demo" class="btn-secondary-large">Book a Demo, join us on social media</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-brand-midnight text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-lg font-semibold mb-2">CarbonConstruct - Embodied Carbon Calculator</p>
-                <p class="text-brand-sage-light text-sm mb-4">
-                    Compliant with NCC 2022, NABERS, GBCA Green Star, and TCFD requirements
-                </p>
-                <p class="text-brand-sage-light text-xs">
-                    Built for Australian construction professionals | ISO 14040/14044 | EN 15978 | GHG Protocol
-                </p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 2L4 9V23L16 30L28 23V9L16 2Z" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M16 16L4 9M16 16L28 9M16 16V30" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>CarbonConstruct</span>
+                    </div>
+                    <p>Australia's trust will be earned for the chance to use the our embodied carbon calculator for theirconstruction projects.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M18 0H2C0.9 0 0 0.9 0 2V18C0 19.1 0.9 20 2 20H18C19.1 20 20 19.1 20 18V2C20 0.9 19.1 0 18 0ZM6 17H3V8H6V17ZM4.5 6.7C3.5 6.7 2.7 5.9 2.7 4.9C2.7 3.9 3.5 3.1 4.5 3.1C5.5 3.1 6.3 3.9 6.3 4.9C6.3 5.9 5.5 6.7 4.5 6.7ZM17 17H14V12.7C14 11.5 14 9.9 12.3 9.9C10.6 9.9 10.3 11.3 10.3 12.6V17H7.3V8H10.2V9.4H10.2C10.6 8.6 11.7 7.8 13.3 7.8C16.3 7.8 17 9.7 17 12.2V17Z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M20 3.8C19.3 4.1 18.5 4.3 17.7 4.4C18.5 3.9 19.1 3.1 19.4 2.2C18.6 2.7 17.7 3 16.7 3.2C16 2.4 15 1.9 13.8 1.9C11.6 1.9 9.8 3.7 9.8 5.9C9.8 6.2 9.8 6.5 9.9 6.7C6.5 6.6 3.5 4.9 1.4 2.5C1.1 3.1 0.9 3.9 0.9 4.7C0.9 6.2 1.7 7.5 2.8 8.3C2.1 8.3 1.5 8.1 0.9 7.8V7.8C0.9 9.7 2.3 11.3 4.1 11.7C3.8 11.8 3.5 11.8 3.1 11.8C2.9 11.8 2.6 11.8 2.4 11.7C2.9 13.3 4.4 14.4 6.2 14.4C4.8 15.5 3.1 16.1 1.2 16.1C0.9 16.1 0.6 16.1 0.3 16C2.1 17.2 4.2 17.9 6.5 17.9C13.8 17.9 17.8 11.9 17.8 6.4V5.8C18.6 5.3 19.3 4.6 20 3.8Z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#calculator">Calculator</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#docs">Documentation</a></li>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-left">
+                    <p>&copy; 2025 CarbonConstruct. All rights reserved.</p>
+                    <p>Proudly Australian made for the construction industry🇦🇺</p>
+                </div>
+                <div class="footer-partnerships">
+                    <p style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">Proud Member:</p>
+                    <a href="https://www.gbca.org.au/" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+                        <img src="https://www.gbca.org.au/themes/custom/gbca/logo.svg" alt="Green Building Council of Australia Member 2025-2026" style="height: 50px; filter: brightness(0.9);" />
+                    </a>
+                    <p style="font-size: 0.75rem; color: #6B7280; margin-top: 0.25rem;">GBCA Member 2025-2026</p>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <!-- Configuration (load first) -->
-    <script src="js/config.js"></script>
-
-    <!-- External libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- API Clients -->
-    <script src="js/supabase-client.js"></script>
-    <script src="js/ec3-client.js"></script>
-
-    <!-- Application Scripts -->
-    <script src="js/materials-database.js"></script>
-    <script src="js/lca-calculator.js"></script>
-    <script src="js/scopes-calculator.js"></script>
-    <script src="js/compliance.js"></script>
-    <script src="js/charts.js"></script>
-    <script src="js/storage.js"></script>
-    <script src="js/main.js"></script>
-
-    <!-- Agent Integration -->
-    <script src="js/agent-orchestrator.js"></script>
-
-    <!-- AI-Enhanced UI Controls -->
+    <!-- Environment Variables Configuration -->
     <script>
-        // AI-Enhanced Mode Toggle Handler
-        document.addEventListener('DOMContentLoaded', function() {
-            const aiToggle = document.getElementById('aiEnhancedMode');
-            const aiFeatures = document.getElementById('aiFeatures');
-            const bimUploadSection = document.getElementById('bimUploadSection');
-            const aiUsageStats = document.getElementById('aiUsageStats');
-            const subscriptionRequired = document.getElementById('subscriptionRequired');
-            const bimFileInput = document.getElementById('bimFileInput');
-            const bimFileName = document.getElementById('bimFileName');
-            const bimParseStatus = document.getElementById('bimParseStatus');
-            const bimParseMessage = document.getElementById('bimParseMessage');
+        // Global environment variables for the application
+        window.ENV = {
+            // EC3 API Configuration (Building Transparency - 50,000+ EPDs)
+            EC3_API_KEY: 'YOUR_EC3_API_KEY_HERE',
+            EC3_BEARER_TOKEN: null,
 
-            // Check user subscription on page load
-            checkUserSubscription();
+            // Supabase Configuration (4,343+ Australian Materials)
+            SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || 'your-supabase-url-here',
+            SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'your-supabase-anon-key-here'
+        };
 
-            // Toggle AI features visibility
-            aiToggle.addEventListener('change', async function() {
-                const isEnabled = this.checked;
+        console.log('🌍 Environment loaded:', window.ENV.EC3_API_KEY ? '✅ EC3 API Key configured' : '❌ EC3 API Key missing');
+    </script>    <script src="script.js"></script>
 
-                if (isEnabled) {
-                    // Check if user has Pro subscription
-                    const hasProAccess = await checkProAccess();
-
-                    if (hasProAccess) {
-                        aiFeatures.style.display = 'grid';
-                        bimUploadSection.style.display = 'block';
-                        aiUsageStats.style.display = 'block';
-                        subscriptionRequired.style.display = 'none';
-
-                        // Load usage stats
-                        loadAIUsageStats();
-
-                        console.log('[AI Mode] Enabled');
-                    } else {
-                        // Show upgrade message
-                        subscriptionRequired.style.display = 'block';
-                        aiFeatures.style.display = 'none';
-                        bimUploadSection.style.display = 'none';
-                        aiUsageStats.style.display = 'none';
-
-                        // Disable toggle
-                        setTimeout(() => {
-                            this.checked = false;
-                        }, 100);
-
-                        console.warn('[AI Mode] Pro subscription required');
-                    }
-                } else {
-                    aiFeatures.style.display = 'none';
-                    bimUploadSection.style.display = 'none';
-                    aiUsageStats.style.display = 'none';
-                    subscriptionRequired.style.display = 'none';
-
-                    console.log('[AI Mode] Disabled');
-                }
-            });
-
-            // BIM File Upload Handler
-            bimFileInput.addEventListener('change', async function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                bimFileName.textContent = file.name;
-                bimParseStatus.classList.remove('hidden');
-                bimParseMessage.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Parsing file with AI...';
-
-                try {
-                    const materials = await window.agentOrchestrator.parseBIMFile(file);
-
-                    bimParseMessage.innerHTML = `<i class="fas fa-check-circle mr-2"></i>Successfully parsed ${materials.length} materials`;
-
-                    // Add materials to the calculator
-                    materials.forEach(material => {
-                        // TODO: Add material to materials list in calculator
-                        console.log('[BIM Parser] Material:', material);
-                    });
-
-                    // Refresh usage stats
-                    loadAIUsageStats();
-
-                } catch (error) {
-                    console.error('[BIM Parser] Error:', error);
-                    bimParseMessage.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>Failed to parse file: ${error.message}`;
-                    bimParseStatus.classList.add('text-red-600');
-                    bimParseStatus.classList.remove('text-green-600');
-                }
-            });
-
-            // Check user subscription status
-            async function checkUserSubscription() {
-                // TODO: Implement Supabase subscription check
-                console.log('[AI Mode] Checking subscription status...');
-            }
-
-            // Check if user has Pro access
-            async function checkProAccess() {
-                try {
-                    // Check if Supabase is initialized
-                    if (typeof supabase === 'undefined') {
-                        console.warn('[AI Mode] Supabase not initialized');
-                        return false;
-                    }
-
-                    // Get current user
-                    const { data: { user } } = await supabase.auth.getUser();
-                    if (!user) {
-                        console.log('[AI Mode] User not authenticated');
-                        return false;
-                    }
-
-                    // Query subscriptions table
-                    const { data, error } = await supabase
-                        .from('subscriptions')
-                        .select('tier, status, features')
-                        .eq('user_id', user.id)
-                        .eq('status', 'active')
-                        .single();
-
-                    if (error) {
-                        console.error('[AI Mode] Subscription check error:', error);
-                        return false;
-                    }
-
-                    // Check if features include ai_agents
-                    const hasPro = data && (data.tier === 'pro' || data.tier === 'enterprise');
-                    const hasFeature = data && data.features?.includes('ai_agents');
-
-                    return hasPro || hasFeature;
-
-                } catch (error) {
-                    console.error('[AI Mode] Pro access check failed:', error);
-                    return false;
-                }
-            }
-
-            // Load AI usage statistics
-            async function loadAIUsageStats() {
-                try {
-                    // Get usage count from Supabase
-                    if (typeof supabase === 'undefined') return;
-
-                    const { data: { user } } = await supabase.auth.getUser();
-                    if (!user) return;
-
-                    // Get this month's usage
-                    const startOfMonth = new Date();
-                    startOfMonth.setDate(1);
-                    startOfMonth.setHours(0, 0, 0, 0);
-
-                    const { count, error } = await supabase
-                        .from('agent_usage_log')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('user_id', user.id)
-                        .gte('timestamp', startOfMonth.toISOString())
-                        .eq('success', true);
-
-                    if (error) {
-                        console.error('[AI Mode] Usage stats error:', error);
-                        return;
-                    }
-
-                    // Update UI
-                    const usageCount = count || 0;
-                    const limit = 50; // TODO: Get limit from subscription tier
-                    document.getElementById('aiUsageCount').textContent = `${usageCount} / ${limit}`;
-
-                    console.log(`[AI Mode] Usage: ${usageCount}/${limit}`);
-
-                } catch (error) {
-                    console.error('[AI Mode] Failed to load usage stats:', error);
-                }
-            }
-        });
+    <!-- Tawk.to Live Chat Widget -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68f6680f559a7e194c8016cf/1j818cvpp';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
     </script>
-
-    <!-- Initialize Database Connections -->
-    <script>
-        // Initialize Supabase and EC3 when page loads
-        document.addEventListener('DOMContentLoaded', async function() {
-            console.log('≡ƒÜÇ Initializing CarbonConstruct...');
-
-            try {
-                const env = window.ENV || {};
-                const supabaseUrl = env.SUPABASE_URL || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : '');
-                const supabaseKey = env.SUPABASE_ANON_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : '');
-                const enableSupabase = typeof env.ENABLE_SUPABASE === 'boolean' ? env.ENABLE_SUPABASE : Boolean(supabaseUrl && supabaseKey);
-
-                const ec3ApiKey = env.EC3_API_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_EC3_API_KEY : '');
-                const ec3BearerToken = env.EC3_BEARER_TOKEN || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_EC3_BEARER_TOKEN : '');
-                const enableEC3 = typeof env.ENABLE_EC3 === 'boolean' ? env.ENABLE_EC3 : Boolean(ec3ApiKey || ec3BearerToken);
-
-                // Initialize Supabase
-                if (enableSupabase && typeof supabaseClient !== 'undefined') {
-                    const supabaseReady = await supabaseClient.initialize({
-                        url: supabaseUrl,
-                        key: supabaseKey
-                    });
-
-                    if (supabaseReady) {
-                        console.log('Γ£à Supabase: Connected to 4,343 materials database');
-
-                        // Test connection
-                        const testResult = await supabaseClient.testConnection();
-                        if (testResult.connected) {
-                            console.log('Γ£à Supabase: Connection verified');
-                        }
-
-                        // Get stats
-                        try {
-                            const stats = await supabaseClient.getMaterialStats();
-                            if (stats) {
-                                console.log(`≡ƒôè Supabase: ${stats.total} total materials available`);
-                            }
-                        } catch (e) {
-                            console.warn('Could not fetch stats:', e.message);
-                        }
-                    } else {
-                        console.warn('ΓÜá∩╕Å  Supabase: Failed to connect, using fallback database');
-                    }
-                } else {
-                    console.log('Γä╣∩╕Å  Supabase: Disabled in configuration');
-                }
-
-                // Initialize EC3
-                if (enableEC3 && typeof ec3Client !== 'undefined') {
-                    const ec3Ready = await ec3Client.initialize({
-                        apiKey: ec3ApiKey,
-                        bearerToken: ec3BearerToken
-                    });
-
-                    if (ec3Ready) {
-                        console.log('Γ£à EC3: Connected to 50,000+ global EPDs');
-                    } else {
-                        console.warn('ΓÜá∩╕Å  EC3: Failed to connect, EC3 features disabled');
-                    }
-                } else {
-                    console.log('Γä╣∩╕Å  EC3: Disabled in configuration');
-                }
-
-                console.log('Γ£à CarbonConstruct initialized successfully!');
-
-            } catch (error) {
-                console.error('Γ¥î Initialization error:', error);
-            }
-        });
-    </script>
-
+    <!-- End of Tawk.to Script -->
 </body>
 </html>

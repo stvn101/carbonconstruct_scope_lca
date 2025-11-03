@@ -2,9 +2,6 @@
   "buildCommand": null,
   "outputDirectory": ".",
   "installCommand": null,
-  "rewrites": [
-    { "source": "/", "destination": "/calculator.html" }
-  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -151,13 +151,18 @@
         </div>
     </div>
 
+    <!-- Configuration (must load BEFORE auth) -->
+    <script src="js/config.js"></script>
+
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth-supabase.js"></script>
 
     <script>
-        // Redirect if already authenticated
-        window.auth.redirectIfAuthenticated();
+        // Redirect if already authenticated (wait for auth to initialize)
+        if (window.auth) {
+            window.auth.redirectIfAuthenticated();
+        }
 
         function togglePassword() {
             const passwordInput = document.getElementById('password');

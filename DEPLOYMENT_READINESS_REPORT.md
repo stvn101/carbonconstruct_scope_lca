@@ -15,7 +15,7 @@
 #### Required Variables for Vercel:
 ```bash
 # Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://hkgryypdqiyigoztvran.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://jaqzoyouuzhchuyzafii.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY_HERE
 SUPABASE_SERVICE_ROLE_KEY=[Add in Vercel - for admin operations]
 

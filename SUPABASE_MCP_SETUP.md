@@ -27,8 +27,8 @@ YOUR_SUPABASE_ANON_KEY_HERE
 
 ## Project Configuration
 
-- **Project Reference**: `hkgryypdqiyigoztvran`
-- **Project URL**: `https://hkgryypdqiyigoztvran.supabase.co`
+- **Project Reference**: `jaqzoyouuzhchuyzafii`
+- **Project URL**: `https://jaqzoyouuzhchuyzafii.supabase.co`
 - **MCP Server URL**: `https://mcp.supabase.com/mcp`
 
 ## Available Tools

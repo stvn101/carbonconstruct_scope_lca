@@ -3,8 +3,8 @@
 
 ### Overview
 This guide will help you migrate the unified_materials table with all 4346 materials from:
-- **Source**: https://hkgryypdqiyigoztvran.supabase.co
-- **Target**: https://hkgryypdqiyigoztvran.supabase.co
+- **Source**: https://jaqzoyouuzhchuyzafii.supabase.co
+- **Target**: https://jaqzoyouuzhchuyzafii.supabase.co
 
 ### What's Been Prepared
 ✅ All 4346 materials exported from source database
@@ -17,7 +17,7 @@ This guide will help you migrate the unified_materials table with all 4346 mater
 
 1. Open the Supabase SQL Editor for your target project:
    ```
-   https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/sql/new
+   https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/sql/new
    ```
 
 2. Copy the SQL from the file: **`schema_to_run.sql`**
@@ -55,7 +55,7 @@ After migration completes, verify:
 1. Check the console output for success count
 2. Visit your Supabase Table Editor:
    ```
-   https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/editor
+   https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/editor
    ```
 3. Click on `unified_materials` table
 4. Verify you have 4346 rows

@@ -110,7 +110,7 @@ async function migrate() {
     }
 
     console.log('🔗 View your data:');
-    console.log('   https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/editor\n');
+    console.log('   https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/editor\n');
 }
 
 migrate().catch(console.error);

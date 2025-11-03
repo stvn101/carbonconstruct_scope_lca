@@ -2,7 +2,7 @@
  * Check what schema exists in target database
  */
 
-const TARGET_URL = 'https://hkgryypdqiyigoztvran.supabase.co';
+const TARGET_URL = 'https://jaqzoyouuzhchuyzafii.supabase.co';
 // WARNING: This is a test file with hardcoded credentials removed for security
 // Configure environment variables before running
 const TARGET_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'service-role-key-not-configured';

@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Source Supabase (hkgryypdqiyigoztvran)
+// Source Supabase (jaqzoyouuzhchuyzafii)
 const SOURCE_URL = process.env.SUPABASE_SOURCE_URL;
 const SOURCE_KEY = process.env.SUPABASE_SOURCE_SERVICE_ROLE_KEY;
 

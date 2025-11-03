@@ -167,7 +167,7 @@
         // OAuth Configuration
         const EC3_OAUTH_CONFIG = {
             clientId: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX',
-            redirectUri: 'https://carbonconstruct.com.au/ec3-callback.html',
+            redirectUri: window.location.origin + '/ec3-callback.html', // Dynamic redirect URI
             tokenUrl: 'https://buildingtransparency.org/api/oauth/token/',
             apiBaseUrl: 'https://api.buildingtransparency.org/api'
         };

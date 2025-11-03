@@ -3,26 +3,43 @@
    Modern, Professional Design for Carbon Calculator
    ============================================ */
 
-/* CSS Reset & Variables */
+/* CSS Reset & Variables - UPDATED BRAND COLORS */
 :root {
-    --primary-green: #1B5E20;
-    --primary-green-dark: #124319;
-    --primary-green-light: #E6F3E8;
-    --accent-lime: #8BC34A;
-    --text-primary: #212121;
-    --text-secondary: #424242;
-    --text-light: #616161;
+    /* Brand Colors from BRAND_KIT.md */
+    --primary-green: #3DD68C;           /* Vibrant Green - PRIMARY */
+    --primary-green-dark: #1E4A40;      /* Dark Emerald */
+    --primary-green-light: #E0F4ED;     /* Mint Green */
+    --accent-lime: #47876D;             /* Forest Green */
+    --brand-sage: #7A9B8E;              /* Sage Green */
+    --brand-navy: #1E2A35;              /* Dark Navy */
+    --brand-midnight: #0E1621;          /* Midnight Blue */
+    --brand-steel: #4A5A6A;             /* Steel Gray */
+
+    /* Text Colors */
+    --text-primary: #1E2A35;            /* Dark Navy */
+    --text-secondary: #4A5A6A;          /* Steel Gray */
+    --text-light: #7A9B8E;              /* Sage Green */
+
+    /* Backgrounds */
     --background: #FFFFFF;
-    --background-gray: #F3F6F1;
-    --background-dark: #162219;
-    --border-color: #D1E0D2;
+    --background-gray: #F3F8F6;
+    --background-dark: #0E1621;         /* Midnight Blue */
+    --border-color: #C9DAD3;
+
+    /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Border Radius */
     --radius: 12px;
     --radius-lg: 16px;
+
+    /* Transitions */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Fonts */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 

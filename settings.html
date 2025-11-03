@@ -72,7 +72,7 @@
 
         .page-header h1 {
             font-size: 2.5rem;
-            color: #3DD68C;
+            color: #059669;
             margin-bottom: 0.5rem;
         }
 
@@ -102,12 +102,12 @@
         }
 
         .settings-nav-item:hover {
-            color: #3DD68C;
+            color: #059669;
         }
 
         .settings-nav-item.active {
-            color: #3DD68C;
-            border-bottom-color: #3DD68C;
+            color: #059669;
+            border-bottom-color: #059669;
         }
 
         .settings-section {
@@ -361,12 +361,12 @@
 
         .btn-secondary {
             background: white;
-            color: #3DD68C;
-            border: 2px solid #3DD68C;
+            color: #059669;
+            border: 2px solid #059669;
         }
 
         .btn-secondary:hover {
-            background: #3DD68C;
+            background: #059669;
             color: white;
         }
 
@@ -456,7 +456,7 @@
 
         .navbar .nav-links a:hover,
         .navbar .nav-links a.active {
-            color: #3DD68C;
+            color: #059669;
         }
 
         .mobile-menu-toggle {
@@ -500,8 +500,8 @@ console.log('✅ Environment variables loaded from build');
 <body>
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo" aria-label="Back to CarbonConstruct home">
-                <img src="images/logo-light-bg.svg" alt="CarbonConstruct logo" class="logo-image" />
+            <a href="index.html" class="logo" aria-label="CarbonConstruct - Back to home">
+                <img src="images/logo-light-bg.svg" alt="" class="logo-image" />
                 <span>CarbonConstruct</span>
             </a>
             <ul class="nav-links">
@@ -515,6 +515,8 @@ console.log('✅ Environment variables loaded from build');
         </div>
     </nav>
 
+    <!-- Main Content -->
+    <main id="main-content" role="main">
     <div class="settings-container">
         <div class="page-header">
             <h1>Settings</h1>
@@ -714,16 +716,22 @@ console.log('✅ Environment variables loaded from build');
             </div>
         </div>
     </div>
+    </main>
 
-    <script type="module">
-        import { supabase, getCurrentUser, signOut, updateUserProfile, updatePassword } from './auth-supabase.js';
+    <!-- Load dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth-supabase.js"></script>
 
+    <script>
         let currentUser = null;
+        let supabase = null;
 
         // Initialize settings
         async function initSettings() {
             try {
-                currentUser = await getCurrentUser();
+                // Get Supabase client from auth
+                supabase = window.auth.getClient();
+                currentUser = await window.auth.getCurrentUser();
 
                 if (!currentUser) {
                     window.location.href = 'signin-new.html';
@@ -788,7 +796,7 @@ console.log('✅ Environment variables loaded from build');
                     bio: document.getElementById('bio').value
                 };
 
-                await updateUserProfile(profileData);
+                await window.auth.updateUserProfile(currentUser.id, profileData);
 
                 successEl.style.display = 'block';
                 setTimeout(() => successEl.style.display = 'none', 3000);
@@ -890,7 +898,7 @@ console.log('✅ Environment variables loaded from build');
             }
 
             try {
-                await updatePassword(newPassword);
+                await window.auth.updatePassword(newPassword);
 
                 successEl.style.display = 'block';
                 document.getElementById('passwordForm').reset();
@@ -919,7 +927,7 @@ console.log('✅ Environment variables loaded from build');
                 await supabase.from('user_profiles').delete().eq('user_id', currentUser.id);
 
                 // Sign out
-                await signOut();
+                await window.auth.signOut();
                 alert('Account deleted successfully');
                 window.location.href = 'index.html';
 
@@ -947,7 +955,7 @@ console.log('✅ Environment variables loaded from build');
         document.getElementById('logoutBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             if (confirm('Are you sure you want to logout?')) {
-                await signOut();
+                await window.auth.signOut();
                 window.location.href = 'index.html';
             }
         });

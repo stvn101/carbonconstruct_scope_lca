@@ -90,7 +90,7 @@ async function main() {
 
         console.log('🗑️  Step 2: Dropping old table and creating new one...');
         console.log('   Please run this SQL manually in Supabase SQL Editor:');
-        console.log('   https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/sql/new\n');
+        console.log('   https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/sql/new\n');
         console.log('=' .repeat(80));
         console.log(schemaSQL);
         console.log('=' .repeat(80));

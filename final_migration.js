@@ -79,7 +79,7 @@ async function main() {
         } catch (error) {
             console.log('❌ Schema not found!');
             console.log('\n⚠️  IMPORTANT: Please create the schema first!');
-            console.log('1. Go to: https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/sql/new');
+            console.log('1. Go to: https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/sql/new');
             console.log('2. Copy and paste the SQL from: unified_materials_actual_schema.sql');
             console.log('3. Run the SQL');
             console.log('4. Then run this script again\n');
@@ -216,7 +216,7 @@ async function main() {
 
             console.log('\n✅ Migration successful!\n');
             console.log('🔗 View your data:');
-            console.log('   https://supabase.com/dashboard/project/hkgryypdqiyigoztvran/editor/29332/unified_materials');
+            console.log('   https://supabase.com/dashboard/project/jaqzoyouuzhchuyzafii/editor/29332/unified_materials');
 
         } catch (error) {
             console.log('⚠️ Could not verify - please check manually\n');

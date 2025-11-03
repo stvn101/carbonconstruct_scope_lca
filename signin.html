@@ -20,6 +20,19 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+// Environment variables injected at build time from Vercel
+// NO HARDCODED KEYS - All from environment variables
+window.ENV = {
+    NEXT_PUBLIC_EC3_API_KEY: '',
+    NEXT_PUBLIC_SUPABASE_URL: '',
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
+    APP_URL: '' || window.location.origin,
+    EC3_CLIENT_ID: ''
+};
+console.log('✅ Environment variables loaded from build');
+</script>
 </head>
 <body>
     <div class="auth-container">
@@ -138,7 +151,7 @@
                 </form>
 
                 <div class="auth-footer">
-                    <p>Don't have an account? <a href="signup.html">Sign up for free</a></p>
+                    <p>Don't have an account? <a href="/signup">Sign up for free</a></p>
                 </div>
 
                 <div class="auth-help">
@@ -168,7 +181,7 @@
 
             // For demo, redirect to dashboard
             alert('Sign in successful! (This is a demo)');
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
         });
 
         // Social login handlers

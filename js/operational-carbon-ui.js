@@ -85,8 +85,19 @@ function initializeSubTabs() {
 
             // Show corresponding content
             document.querySelectorAll('.scope2-content').forEach(c => c.classList.add('section-hidden'));
-            const contentId = 's2' + button.dataset.subtab.charAt(0).toUpperCase() + button.dataset.subtab.slice(1);
-            document.getElementById(contentId).classList.remove('section-hidden');
+            // Fixed: Map data-subtab values to exact element IDs
+            const subtabMap = {
+                'sitepower': 's2SitePower',
+                'facilities': 's2Facilities',
+                'electricequip': 's2ElectricEquip'
+            };
+            const contentId = subtabMap[button.dataset.subtab];
+            const element = document.getElementById(contentId);
+            if (element) {
+                element.classList.remove('section-hidden');
+            } else {
+                console.error('Scope 2 tab element not found:', contentId, 'for subtab:', button.dataset.subtab);
+            }
         });
     });
 
@@ -103,8 +114,21 @@ function initializeSubTabs() {
 
             // Show corresponding content
             document.querySelectorAll('.scope3-content').forEach(c => c.classList.add('section-hidden'));
-            const contentId = 's3' + button.dataset.subtab.charAt(0).toUpperCase() + button.dataset.subtab.slice(1);
-            document.getElementById(contentId).classList.remove('section-hidden');
+            // Fixed: Map data-subtab values to exact element IDs
+            const subtabMap = {
+                'transport': 's3Transport',
+                'waste': 's3Waste',
+                'water': 's3Water',
+                'commuting': 's3Commuting',
+                'tempworks': 's3TempWorks'
+            };
+            const contentId = subtabMap[button.dataset.subtab];
+            const element = document.getElementById(contentId);
+            if (element) {
+                element.classList.remove('section-hidden');
+            } else {
+                console.error('Scope 3 tab element not found:', contentId, 'for subtab:', button.dataset.subtab);
+            }
         });
     });
 }

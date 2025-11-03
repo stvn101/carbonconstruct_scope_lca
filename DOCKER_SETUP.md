@@ -57,7 +57,7 @@ Create a `.env` file (copy from `.env.example`):
 
 ```env
 # Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://hkgryypdqiyigoztvran.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://jaqzoyouuzhchuyzafii.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 
 # EC3 API Configuration

@@ -4,11 +4,13 @@
  */
 
 :root {
-    --brand-primary: #3DD68C;
-    --brand-primary-dark: #1E4A40;
-    --brand-forest: #47876D;
+    /* Updated brand colors for better consistency */
+    --brand-primary: #10B981;
+    --brand-primary-dark: #047857;
+    --brand-forest: #059669;
     --brand-mint: #E0F4ED;
     --brand-sage: #7A9B8E;
+    --brand-sage-light: #AFC2B9;
     --brand-navy: #1E2A35;
     --brand-midnight: #0E1621;
     --brand-steel: #4A5A6A;
@@ -28,6 +30,31 @@
     --status-danger-border: var(--brand-midnight);
     --status-danger-text: var(--brand-midnight);
 }
+
+/* Brand color utilities for consistent use across the app */
+.bg-brand-primary { background-color: var(--brand-primary) !important; }
+.bg-brand-primary-dark { background-color: var(--brand-primary-dark) !important; }
+.bg-brand-forest { background-color: var(--brand-forest) !important; }
+.bg-brand-mint { background-color: var(--brand-mint) !important; }
+.bg-brand-sage { background-color: var(--brand-sage) !important; }
+.bg-brand-navy { background-color: var(--brand-navy) !important; }
+.bg-brand-midnight { background-color: var(--brand-midnight) !important; }
+.bg-brand-steel { background-color: var(--brand-steel) !important; }
+
+.text-brand-primary { color: var(--brand-primary) !important; }
+.text-brand-primary-dark { color: var(--brand-primary-dark) !important; }
+.text-brand-forest { color: var(--brand-forest) !important; }
+.text-brand-sage { color: var(--brand-sage) !important; }
+.text-brand-navy { color: var(--brand-navy) !important; }
+.text-brand-midnight { color: var(--brand-midnight) !important; }
+.text-brand-steel { color: var(--brand-steel) !important; }
+
+.border-brand-border { border-color: var(--border-subtle) !important; }
+
+.hover\:bg-brand-forest:hover { background-color: var(--brand-forest) !important; }
+.hover\:bg-brand-primary-dark:hover { background-color: var(--brand-primary-dark) !important; }
+.hover\:text-brand-forest:hover { color: var(--brand-forest) !important; }
+.hover\:text-brand-primary-dark:hover { color: var(--brand-primary-dark) !important; }
 
 .logo {
     display: flex;

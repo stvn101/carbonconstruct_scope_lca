@@ -21,6 +21,11 @@ function initSupabaseAuth() {
         return false;
     }
     
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        console.warn('⚠️ Supabase credentials not configured. Auth features will be disabled.');
+        return false;
+    }
+    
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log('✅ Supabase Auth initialized');
     
@@ -178,6 +183,10 @@ async function getCurrentUser() {
  * Get current session
  */
 async function getSession() {
+    if (!supabase) {
+        console.warn('⚠️ Supabase not initialized');
+        return null;
+    }
     try {
         const { data: { session }, error } = await supabase.auth.getSession();
         

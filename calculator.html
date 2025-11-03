@@ -99,6 +99,17 @@
             height: 400px;
         }
     </style>
+
+<script>
+// Environment variables injected at build time from Vercel
+// NO HARDCODED KEYS - All from environment variables
+window.ENV = {
+    NEXT_PUBLIC_SUPABASE_URL: '',
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
+    APP_URL: ('' ? '' : window.location.origin),
+};
+console.log('✅ Environment variables loaded from build');
+</script>
 </head>
 <body class="bg-brand-mint">
 
@@ -112,22 +123,40 @@
                     <span class="ml-3 text-sm text-brand-sage">Embodied Carbon Calculator</span>
                 </div>
                 <div class="hidden md:flex space-x-6">
+                    <a href="dashboard.html" class="text-brand-steel hover:text-brand-forest font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Dashboard
+                    </a>
                     <a href="#calculator" class="text-brand-steel hover:text-brand-forest font-medium">Calculator</a>
                     <a href="#lca" class="text-brand-steel hover:text-brand-forest font-medium">LCA</a>
                     <a href="operational-carbon.html" class="text-brand-primary hover:text-brand-primary-dark font-semibold">
-                        <i class="fas fa-industry mr-1"></i>Operational Carbon
+                        <i class="fas fa-industry mr-1"></i>Operational
                     </a>
                     <a href="#compliance" class="text-brand-steel hover:text-brand-forest font-medium">Compliance</a>
-                    <a href="#reports" class="text-brand-steel hover:text-brand-forest font-medium">Reports</a>
-                    <a href="#saved" class="text-brand-steel hover:text-brand-forest font-medium">Saved Projects</a>
+                    <a href="#saved" class="text-brand-steel hover:text-brand-forest font-medium">Projects</a>
                 </div>
-                <button id="newProjectBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
-                    <i class="fas fa-plus mr-2"></i>New Project
-                </button>
+                <div class="flex items-center space-x-3">
+                    <button id="newProjectBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
+                        <i class="fas fa-plus mr-2"></i>New Project
+                    </button>
+                    <div id="userMenu" class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2 text-brand-steel hover:text-brand-forest">
+                            <i class="fas fa-user-circle text-2xl"></i>
+                        </button>
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                            <a href="dashboard.html" class="block px-4 py-2 text-brand-steel hover:bg-brand-mint">Dashboard</a>
+                            <a href="settings.html" class="block px-4 py-2 text-brand-steel hover:bg-brand-mint">Settings</a>
+                            <a href="subscription.html" class="block px-4 py-2 text-brand-steel hover:bg-brand-mint">Subscription</a>
+                            <hr class="my-2">
+                            <button id="signOutBtn" class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
+    <!-- Main Content -->
+    <main id="main-content" role="main">
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-brand-forest to-brand-midnight text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -741,6 +770,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-brand-midnight text-white py-8">
@@ -764,9 +794,11 @@
     <!-- External libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- Authentication -->
+    <script src="auth-supabase.js"></script>
+
     <!-- API Clients -->
     <script src="js/supabase-client.js"></script>
-    <script src="js/ec3-client.js"></script>
 
     <!-- Application Scripts -->
     <script src="js/materials-database.js"></script>
@@ -959,19 +991,15 @@
 
     <!-- Initialize Database Connections -->
     <script>
-        // Initialize Supabase and EC3 when page loads
+        // Initialize Supabase when page loads
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('≡ƒÜÇ Initializing CarbonConstruct...');
+            console.log('🚀 Initializing CarbonConstruct...');
 
             try {
                 const env = window.ENV || {};
                 const supabaseUrl = env.SUPABASE_URL || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : '');
                 const supabaseKey = env.SUPABASE_ANON_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : '');
                 const enableSupabase = typeof env.ENABLE_SUPABASE === 'boolean' ? env.ENABLE_SUPABASE : Boolean(supabaseUrl && supabaseKey);
-
-                const ec3ApiKey = env.EC3_API_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_EC3_API_KEY : '');
-                const ec3BearerToken = env.EC3_BEARER_TOKEN || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_EC3_BEARER_TOKEN : '');
-                const enableEC3 = typeof env.ENABLE_EC3 === 'boolean' ? env.ENABLE_EC3 : Boolean(ec3ApiKey || ec3BearerToken);
 
                 // Initialize Supabase
                 if (enableSupabase && typeof supabaseClient !== 'undefined') {
@@ -981,50 +1009,56 @@
                     });
 
                     if (supabaseReady) {
-                        console.log('Γ£à Supabase: Connected to 4,343 materials database');
+                        console.log('✅ Supabase: Connected to materials database');
 
                         // Test connection
                         const testResult = await supabaseClient.testConnection();
                         if (testResult.connected) {
-                            console.log('Γ£à Supabase: Connection verified');
+                            console.log('✅ Supabase: Connection verified');
                         }
 
                         // Get stats
                         try {
                             const stats = await supabaseClient.getMaterialStats();
                             if (stats) {
-                                console.log(`≡ƒôè Supabase: ${stats.total} total materials available`);
+                                console.log(`📊 Supabase: ${stats.total} total materials available`);
                             }
                         } catch (e) {
                             console.warn('Could not fetch stats:', e.message);
                         }
                     } else {
-                        console.warn('ΓÜá∩╕Å  Supabase: Failed to connect, using fallback database');
+                        console.warn('⚠️  Supabase: Failed to connect, using fallback database');
                     }
                 } else {
-                    console.log('Γä╣∩╕Å  Supabase: Disabled in configuration');
+                    console.log('⏹️  Supabase: Disabled in configuration');
                 }
 
-                // Initialize EC3
-                if (enableEC3 && typeof ec3Client !== 'undefined') {
-                    const ec3Ready = await ec3Client.initialize({
-                        apiKey: ec3ApiKey,
-                        bearerToken: ec3BearerToken
-                    });
-
-                    if (ec3Ready) {
-                        console.log('Γ£à EC3: Connected to 50,000+ global EPDs');
-                    } else {
-                        console.warn('ΓÜá∩╕Å  EC3: Failed to connect, EC3 features disabled');
-                    }
-                } else {
-                    console.log('Γä╣∩╕Å  EC3: Disabled in configuration');
-                }
-
-                console.log('Γ£à CarbonConstruct initialized successfully!');
+                console.log('✅ CarbonConstruct initialized successfully!');
 
             } catch (error) {
-                console.error('Γ¥î Initialization error:', error);
+                console.error('❌ Initialization error:', error);
+            }
+        });
+    </script>
+
+    <!-- Authentication Protection -->
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                if (window.auth && typeof window.auth.protectPage === 'function') {
+                    const isAuthorized = await window.auth.protectPage();
+                    if (!isAuthorized) {
+                        console.log('ΓÜá∩╕Å  User not authenticated, redirecting...');
+                        return;
+                    }
+                    console.log('Γ£à User authenticated');
+                } else {
+                    console.warn('ΓÜá∩╕Å  Auth system not available, allowing access');
+                }
+            } catch (error) {
+                console.error('Γ¥î Auth check error:', error);
+                // Don't block page load on auth errors in development
             }
         });
     </script>

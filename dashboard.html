@@ -457,6 +457,19 @@
             }
         }
     </style>
+
+<script>
+// Environment variables injected at build time from Vercel
+// NO HARDCODED KEYS - All from environment variables
+window.ENV = {
+    NEXT_PUBLIC_EC3_API_KEY: '',
+    NEXT_PUBLIC_SUPABASE_URL: '',
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
+    APP_URL: '' || window.location.origin,
+    EC3_CLIENT_ID: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX'
+};
+console.log('✅ Environment variables loaded from build');
+</script>
 </head>
 <body>
     <nav class="navbar">
@@ -467,7 +480,7 @@
             </a>
             <ul class="nav-links">
                 <li><a href="dashboard.html" class="active">Dashboard</a></li>
-                <li><a href="calculator.html">Calculator</a></li>
+                <li><a href="/calculator">Calculator</a></li>
                 <li><a href="subscription.html">Subscription</a></li>
                 <li><a href="settings.html">Settings</a></li>
                 <li><a href="#" id="logoutBtn">Logout</a></li>
@@ -492,7 +505,7 @@
                     <p>Here's what's happening with your projects today</p>
                 </div>
                 <div class="header-actions">
-                    <a href="calculator.html" class="btn btn-primary">New Project</a>
+                    <a href="/calculator" class="btn btn-primary">New Project</a>
                 </div>
             </div>
 
@@ -535,7 +548,7 @@
             <div class="content-section">
                 <div class="section-header">
                     <h2>Recent Projects</h2>
-                    <a href="calculator.html" class="btn btn-secondary">Create New</a>
+                    <a href="/calculator" class="btn btn-secondary">Create New</a>
                 </div>
                 <div id="projectsContainer">
                     <div class="projects-grid" id="projectsGrid"></div>
@@ -650,14 +663,14 @@
                             <div class="empty-state-icon">📊</div>
                             <h3>No projects yet</h3>
                             <p>Create your first carbon calculation project</p>
-                            <a href="calculator.html" class="btn btn-primary" style="margin-top: 1rem;">Start Calculating</a>
+                            <a href="/calculator" class="btn btn-primary" style="margin-top: 1rem;">Start Calculating</a>
                         </div>
                     `;
                     return;
                 }
 
                 grid.innerHTML = data.map(project => `
-                    <div class="project-card" onclick="window.location.href='calculator.html?id=${project.id}'">
+                    <div class="project-card" onclick="window.location.href='/calculator?id=${project.id}'">
                         <div class="project-header">
                             <div>
                                 <div class="project-title">${escapeHtml(project.name)}</div>

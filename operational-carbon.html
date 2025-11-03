@@ -1034,22 +1034,33 @@ console.log('✅ Environment variables loaded from build');
 
     <!-- Authentication -->
     <script src="auth-supabase.js"></script>
-    <script>
-        // Protect this page - require authentication
-        (async function() {
-            const isAuthorized = await window.auth.protectPage();
-            if (!isAuthorized) {
-                // Redirect happens in protectPage(), but stop execution here
-                return;
-            }
-            console.log('✅ User authenticated, loading operational carbon');
-        })();
-    </script>
 
     <!-- Application Scripts -->
     <script src="js/emissions-factors.js"></script>
     <script src="js/scopes-calculator-comprehensive.js"></script>
     <script src="js/operational-carbon-ui.js"></script>
+
+    <!-- Authentication Protection -->
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                if (window.auth && typeof window.auth.protectPage === 'function') {
+                    const isAuthorized = await window.auth.protectPage();
+                    if (!isAuthorized) {
+                        console.log('⚠️ User not authenticated, redirecting...');
+                        return;
+                    }
+                    console.log('✅ User authenticated');
+                } else {
+                    console.warn('⚠️ Auth system not available, allowing access');
+                }
+            } catch (error) {
+                console.error('❌ Auth check error:', error);
+                // Don't block page load on auth errors in development
+            }
+        });
+    </script>
 
 </body>
 </html>

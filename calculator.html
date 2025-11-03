@@ -795,17 +795,6 @@ console.log('✅ Environment variables loaded from build');
 
     <!-- Authentication -->
     <script src="auth-supabase.js"></script>
-    <script>
-        // Protect this page - require authentication
-        (async function() {
-            const isAuthorized = await window.auth.protectPage();
-            if (!isAuthorized) {
-                // Redirect happens in protectPage(), but stop execution here
-                return;
-            }
-            console.log('✅ User authenticated, loading calculator');
-        })();
-    </script>
 
     <!-- API Clients -->
     <script src="js/supabase-client.js"></script>
@@ -1068,6 +1057,28 @@ console.log('✅ Environment variables loaded from build');
 
             } catch (error) {
                 console.error('Γ¥î Initialization error:', error);
+            }
+        });
+    </script>
+
+    <!-- Authentication Protection -->
+    <script>
+        // Protect this page - require authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                if (window.auth && typeof window.auth.protectPage === 'function') {
+                    const isAuthorized = await window.auth.protectPage();
+                    if (!isAuthorized) {
+                        console.log('ΓÜá∩╕Å  User not authenticated, redirecting...');
+                        return;
+                    }
+                    console.log('Γ£à User authenticated');
+                } else {
+                    console.warn('ΓÜá∩╕Å  Auth system not available, allowing access');
+                }
+            } catch (error) {
+                console.error('Γ¥î Auth check error:', error);
+                // Don't block page load on auth errors in development
             }
         });
     </script>

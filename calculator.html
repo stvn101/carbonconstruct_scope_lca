@@ -104,11 +104,9 @@
 // Environment variables injected at build time from Vercel
 // NO HARDCODED KEYS - All from environment variables
 window.ENV = {
-    NEXT_PUBLIC_EC3_API_KEY: '',
     NEXT_PUBLIC_SUPABASE_URL: '',
     NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
     APP_URL: ('' ? '' : window.location.origin),
-    EC3_CLIENT_ID: ''
 };
 console.log('✅ Environment variables loaded from build');
 </script>
@@ -801,7 +799,6 @@ console.log('✅ Environment variables loaded from build');
 
     <!-- API Clients -->
     <script src="js/supabase-client.js"></script>
-    <script src="js/ec3-client.js"></script>
 
     <!-- Application Scripts -->
     <script src="js/materials-database.js"></script>
@@ -994,19 +991,15 @@ console.log('✅ Environment variables loaded from build');
 
     <!-- Initialize Database Connections -->
     <script>
-        // Initialize Supabase and EC3 when page loads
+        // Initialize Supabase when page loads
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('≡ƒÜÇ Initializing CarbonConstruct...');
+            console.log('🚀 Initializing CarbonConstruct...');
 
             try {
                 const env = window.ENV || {};
                 const supabaseUrl = env.SUPABASE_URL || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : '');
                 const supabaseKey = env.SUPABASE_ANON_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : '');
                 const enableSupabase = typeof env.ENABLE_SUPABASE === 'boolean' ? env.ENABLE_SUPABASE : Boolean(supabaseUrl && supabaseKey);
-
-                const ec3ApiKey = env.EC3_API_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_EC3_API_KEY : '');
-                const ec3BearerToken = env.EC3_BEARER_TOKEN || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_EC3_BEARER_TOKEN : '');
-                const enableEC3 = typeof env.ENABLE_EC3 === 'boolean' ? env.ENABLE_EC3 : Boolean(ec3ApiKey || ec3BearerToken);
 
                 // Initialize Supabase
                 if (enableSupabase && typeof supabaseClient !== 'undefined') {
@@ -1016,50 +1009,34 @@ console.log('✅ Environment variables loaded from build');
                     });
 
                     if (supabaseReady) {
-                        console.log('Γ£à Supabase: Connected to 4,343 materials database');
+                        console.log('✅ Supabase: Connected to materials database');
 
                         // Test connection
                         const testResult = await supabaseClient.testConnection();
                         if (testResult.connected) {
-                            console.log('Γ£à Supabase: Connection verified');
+                            console.log('✅ Supabase: Connection verified');
                         }
 
                         // Get stats
                         try {
                             const stats = await supabaseClient.getMaterialStats();
                             if (stats) {
-                                console.log(`≡ƒôè Supabase: ${stats.total} total materials available`);
+                                console.log(`📊 Supabase: ${stats.total} total materials available`);
                             }
                         } catch (e) {
                             console.warn('Could not fetch stats:', e.message);
                         }
                     } else {
-                        console.warn('ΓÜá∩╕Å  Supabase: Failed to connect, using fallback database');
+                        console.warn('⚠️  Supabase: Failed to connect, using fallback database');
                     }
                 } else {
-                    console.log('Γä╣∩╕Å  Supabase: Disabled in configuration');
+                    console.log('⏹️  Supabase: Disabled in configuration');
                 }
 
-                // Initialize EC3
-                if (enableEC3 && typeof ec3Client !== 'undefined') {
-                    const ec3Ready = await ec3Client.initialize({
-                        apiKey: ec3ApiKey,
-                        bearerToken: ec3BearerToken
-                    });
-
-                    if (ec3Ready) {
-                        console.log('Γ£à EC3: Connected to 50,000+ global EPDs');
-                    } else {
-                        console.warn('ΓÜá∩╕Å  EC3: Failed to connect, EC3 features disabled');
-                    }
-                } else {
-                    console.log('Γä╣∩╕Å  EC3: Disabled in configuration');
-                }
-
-                console.log('Γ£à CarbonConstruct initialized successfully!');
+                console.log('✅ CarbonConstruct initialized successfully!');
 
             } catch (error) {
-                console.error('Γ¥î Initialization error:', error);
+                console.error('❌ Initialization error:', error);
             }
         });
     </script>

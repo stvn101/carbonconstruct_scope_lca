@@ -273,7 +273,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 100px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--primary-green-dark);
+    color: #047857;
     margin-bottom: 24px;
 }
 
@@ -471,14 +471,14 @@ h1, h2, h3, h4, h5, h6 {
 .trust-logo {
     font-size: 20px;
     font-weight: 700;
-    color: var(--text-light);
-    opacity: 0.7;
+    color: var(--text-secondary);
+    opacity: 0.9;
     transition: var(--transition);
 }
 
 .trust-logo:hover {
     opacity: 1;
-    color: var(--text-secondary);
+    color: var(--text-primary);
 }
 
 .compliance-badges {
@@ -516,6 +516,7 @@ h1, h2, h3, h4, h5, h6 {
     flex-shrink: 0;
 }
 
+.badge-content h2,
 .badge-content h4 {
     font-size: 16px;
     margin-bottom: 4px;
@@ -544,7 +545,7 @@ h1, h2, h3, h4, h5, h6 {
     display: inline-block;
     padding: 6px 12px;
     background: var(--primary-green-light);
-    color: var(--primary-green-dark);
+    color: #047857;
     border-radius: 100px;
     font-size: 13px;
     font-weight: 600;
@@ -660,6 +661,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 2px;
 }
 
+.about-feature-item h3,
 .about-feature-item h4 {
     font-size: 16px;
     margin-bottom: 4px;
@@ -705,7 +707,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 48px;
     border-radius: 50%;
     background: var(--primary-green-light);
-    color: var(--primary-green-dark);
+    color: #047857;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -956,6 +958,7 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.6;
 }
 
+.footer-column h2,
 .footer-column h4 {
     color: white;
     font-size: 16px;

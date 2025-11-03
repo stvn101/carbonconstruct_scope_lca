@@ -429,7 +429,7 @@
 
         .navbar .nav-links a:hover,
         .navbar .nav-links a.active {
-            color: #3DD68C;
+            color: #059669;
         }
 
         .mobile-menu-toggle {
@@ -466,7 +466,7 @@ window.ENV = {
     NEXT_PUBLIC_SUPABASE_URL: '',
     NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
     APP_URL: '' || window.location.origin,
-    EC3_CLIENT_ID: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX'
+    EC3_CLIENT_ID: ''
 };
 console.log('✅ Environment variables loaded from build');
 </script>
@@ -474,8 +474,8 @@ console.log('✅ Environment variables loaded from build');
 <body>
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo" aria-label="Back to CarbonConstruct home">
-                <img src="images/logo-light-bg.svg" alt="CarbonConstruct logo" class="logo-image" />
+            <a href="index.html" class="logo" aria-label="CarbonConstruct - Back to home">
+                <img src="images/logo-light-bg.svg" alt="" class="logo-image" />
                 <span>CarbonConstruct</span>
             </a>
             <ul class="nav-links">
@@ -489,6 +489,8 @@ console.log('✅ Environment variables loaded from build');
         </div>
     </nav>
 
+    <!-- Main Content -->
+    <main id="main-content" role="main">
     <div class="dashboard-container">
         <!-- Loading State -->
         <div id="loadingState" class="loading">
@@ -566,17 +568,24 @@ console.log('✅ Environment variables loaded from build');
             </div>
         </div>
     </div>
+    </main>
 
-    <script type="module">
-        import { supabase, getCurrentUser, signOut } from './auth-supabase.js';
+    <!-- Load auth before module script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth-supabase.js"></script>
 
+    <script>
         let currentUser = null;
+        let supabase = null;
 
         // Initialize dashboard
         async function initDashboard() {
             try {
+                // Get Supabase client from auth
+                supabase = window.auth.getClient();
+                
                 // Get current user
-                currentUser = await getCurrentUser();
+                currentUser = await window.auth.getCurrentUser();
 
                 if (!currentUser) {
                     window.location.href = 'signin-new.html';
@@ -837,7 +846,7 @@ console.log('✅ Environment variables loaded from build');
         document.getElementById('logoutBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             if (confirm('Are you sure you want to logout?')) {
-                await signOut();
+                await window.auth.signOut();
                 window.location.href = 'index.html';
             }
         });

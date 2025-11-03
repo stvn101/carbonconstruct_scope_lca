@@ -59,39 +59,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* BRAND COLORS - From BRAND_KIT.md */
+        /* VIBRANT HIGH-CONTRAST COLORS */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #E0F4ED; /* Mint Green */
+            background-color: #FFFFFF; /* White background for maximum contrast */
+            color: #1E2A35; /* Dark navy text */
         }
 
         html {
             scroll-behavior: smooth;
         }
 
-        /* Explicit brand color overrides */
-        .bg-brand-mint { background-color: #E0F4ED; }
-        .bg-brand-forest { background-color: #47876D; } /* Forest Green */
-        .bg-brand-primary { background-color: #3DD68C; } /* Vibrant Green */
-        .bg-brand-primary-dark { background-color: #1E4A40; } /* Dark Emerald */
-        .bg-brand-midnight { background-color: #0E1621; } /* Midnight Blue */
+        /* VIBRANT brand colors with high contrast */
+        .bg-brand-mint { background-color: #F0FDF4; } /* Very light mint for sections */
+        .bg-brand-forest { background-color: #059669; } /* BRIGHT forest green */
+        .bg-brand-primary { background-color: #10B981; } /* BRIGHT emerald */
+        .bg-brand-primary-dark { background-color: #047857; } /* Deep emerald */
+        .bg-brand-midnight { background-color: #0F172A; } /* Dark navy */
 
-        .text-brand-navy { color: #1E2A35; } /* Dark Navy */
-        .text-brand-forest { color: #47876D; } /* Forest Green */
-        .text-brand-sage { color: #7A9B8E; } /* Sage Green */
-        .text-brand-steel { color: #4A5A6A; } /* Steel Gray */
-        .text-brand-primary { color: #3DD68C; } /* Vibrant Green */
-        .text-brand-primary-dark { color: #1E4A40; } /* Dark Emerald */
-        .text-brand-mint { color: #E0F4ED; } /* Mint Green */
+        .text-brand-navy { color: #0F172A; } /* Almost black for max readability */
+        .text-brand-forest { color: #047857; } /* Deep green */
+        .text-brand-sage { color: #6B7280; } /* Medium gray */
+        .text-brand-steel { color: #374151; } /* Dark gray */
+        .text-brand-primary { color: #059669; } /* Bright green */
+        .text-brand-primary-dark { color: #065F46; } /* Dark green */
+        .text-brand-mint { color: #ECFDF5; } /* Light mint for dark backgrounds */
 
-        .hover\:text-brand-forest:hover { color: #47876D; }
-        .hover\:text-brand-primary-dark:hover { color: #1E4A40; }
-        .hover\:bg-brand-primary-dark:hover { background-color: #1E4A40; }
+        .hover\:text-brand-forest:hover { color: #059669; }
+        .hover\:text-brand-primary-dark:hover { color: #047857; }
+        .hover\:bg-brand-primary-dark:hover { background-color: #047857; }
+        .hover\:bg-brand-forest:hover { background-color: #059669; }
 
-        .from-brand-primary { --tw-gradient-from: #3DD68C; }
-        .from-brand-forest { --tw-gradient-from: #47876D; }
-        .to-brand-midnight { --tw-gradient-to: #0E1621; }
-        .to-brand-forest { --tw-gradient-to: #1E4A40; }
+        .from-brand-primary { --tw-gradient-from: #10B981; }
+        .from-brand-forest { --tw-gradient-from: #059669; }
+        .to-brand-midnight { --tw-gradient-to: #0F172A; }
+        .to-brand-forest { --tw-gradient-to: #047857; }
 
         .carbon-card {
             transition: transform 0.2s, box-shadow 0.2s;
@@ -114,7 +116,7 @@
         }
     </style>
 </head>
-<body class="bg-brand-mint">
+<body class="bg-white">
 
     <!-- Navigation Header -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">

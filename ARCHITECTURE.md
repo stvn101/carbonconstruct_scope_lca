@@ -2,20 +2,54 @@
 
 ## Application Structure
 
-###  Page Routing & Purpose
+### Correct User Flow
 
-#### Marketing & Landing Pages
-- **index.html** - Homepage/Landing page with hero, features, pricing
-  - Links: signin-new.html, signup-new.html, operational-carbon.html
+**This is a SaaS application with authentication-gated features:**
+
+1. **Landing Page (index.html)** → Public marketing page
+2. **Sign In/Up** → Authentication
+3. **Dashboard** → User's project hub  
+4. **Calculator** → The MVP app (accessed from dashboard)
+
+### Page Routing & Purpose
+
+#### Public Pages (No Auth Required)
+- **index.html** - Landing/Marketing page
+  - Hero section, features, pricing, testimonials
+  - CTA buttons: "Start Free Trial" → signup-new.html
+  - Links: Sign In, Sign Up
   - Auth: Public
-  - Navigation: Basic marketing nav
+  - Navigation: Simple marketing nav (Features, Pricing, About)
 
-#### Core Application
-- **calculator.html** - MAIN APPLICATION PAGE (Complete LCA Calculator)
-  - This is the full-featured embodied carbon calculator
-  - Includes: Project setup, materials database, LCA stages, charts
-  - Auth: Works both public and authenticated
-  - Navigation: Full app navigation
+#### Authentication Pages
+- **signin-new.html** - Sign in page (Email/Google/GitHub)
+  - Uses: auth-supabase.js, js/config.js
+  - On success → Redirects to: **dashboard.html**
+  - Auth: Public (redirects if already logged in)
+
+- **signup-new.html** - Sign up / Create account
+  - Uses: auth-supabase.js, js/config.js  
+  - On success → Redirects to: **dashboard.html**
+  - Auth: Public (redirects if already logged in)
+
+#### Authenticated Pages (Login Required)
+
+- **dashboard.html** - User Dashboard (First page after login)
+  - Shows: Saved projects, stats, recent activity
+  - Main CTA: "New Project" button → calculator.html
+  - Navigation: Dashboard, Calculator, Settings, Subscription
+  - Auth: **REQUIRED** - Redirects to signin if not authenticated
+
+- **calculator.html** - THE MAIN MVP APPLICATION
+  - Complete embodied carbon calculator (LCA engine)
+  - Project setup, materials database, LCA stages, charts
+  - Accessed FROM dashboard, not directly
+  - Auth: **REQUIRED** (or demo mode with limited features)
+  - Navigation: Dashboard, Calculator sections, User menu
+
+- **operational-carbon.html** - Operational emissions calculator
+  - Scope 1 & 2 emissions tracking  
+  - Auth: **REQUIRED** (or demo mode)
 
 - **operational-carbon.html** - Operational emissions calculator
   - Scope 1 & 2 emissions tracking
@@ -156,28 +190,83 @@ js/emissions-factors.js       - Australian emission factors
 7. **Authentication** - Multi-provider (Supabase)
 8. **Subscriptions** - Stripe billing integration
 
-### Navigation Structure
+### Navigation Structure & User Flow
 
 ```
-Home (index.html)
-├── Sign In (signin-new.html)
-├── Sign Up (signup-new.html)
-├── Calculator (calculator.html) ← MAIN APP
-│   └── Materials Database
-│   └── LCA Stages
-│   └── Compliance Checks
-│   └── Charts & Reports
-├── Operational Carbon (operational-carbon.html)
-└── EC3 Database (ec3-oauth.html)
+┌─────────────────────────────────────────────────────────┐
+│                    PUBLIC ACCESS                        │
+└─────────────────────────────────────────────────────────┘
 
-Authenticated Users:
-├── Dashboard (dashboard.html)
-│   ├── My Projects
-│   ├── Recent Activity
-│   └── Stats
-├── Settings (settings.html)
-└── Subscription (subscription.html)
+Home (index.html) - Landing Page
+├── Features Section (#features)
+├── Pricing Section (#pricing)  
+├── About Section (#about)
+└── Call-to-Action
+    ├── "Start Free Trial" → signup-new.html
+    └── "Sign In" → signin-new.html
+
+Sign Up (signup-new.html)
+└── On Success → dashboard.html
+
+Sign In (signin-new.html)
+└── On Success → dashboard.html
+
+┌─────────────────────────────────────────────────────────┐
+│              AUTHENTICATED USER AREA                    │
+│              (Requires Login)                           │
+└─────────────────────────────────────────────────────────┘
+
+Dashboard (dashboard.html) ← LANDING PAGE AFTER LOGIN
+├── My Projects List
+│   └── Click Project → calculator.html?id=PROJECT_ID
+├── Stats & Metrics
+├── Recent Activity
+└── Primary Actions
+    ├── "New Project" Button → calculator.html
+    └── "Operational Carbon" → operational-carbon.html
+
+Calculator (calculator.html) ← MAIN MVP APPLICATION
+├── Project Setup (name, type, GFA)
+├── Materials Database (54,343+ materials)
+├── LCA Calculator (A1-D stages)
+├── Scopes Calculator (Scope 1, 2, 3)
+├── Compliance Checker (NCC, NABERS, Green Star)
+├── Charts & Visualizations
+├── Save Project → Back to dashboard.html
+└── Export Reports (PDF/JSON)
+
+Operational Carbon (operational-carbon.html)
+├── Scope 1 Emissions Tracking
+├── Scope 2 Emissions Tracking
+├── Site Equipment, Electricity, Transport
+└── Back to dashboard.html
+
+Settings (settings.html)
+├── Profile Settings
+├── Notification Preferences
+├── Security Settings
+└── Account Management
+
+Subscription (subscription.html)
+├── Current Plan
+├── Billing History
+├── Upgrade/Downgrade
+└── Cancel Subscription
+
+┌─────────────────────────────────────────────────────────┐
+│              OPTIONAL INTEGRATIONS                      │
+└─────────────────────────────────────────────────────────┘
+
+EC3 OAuth (ec3-oauth.html)
+└── Connect to Building Transparency EC3 Database
+    └── ec3-callback.html (OAuth handler)
 ```
+
+**Key Principles:**
+1. **Landing page is for marketing** - Features, pricing, sign up
+2. **Calculator is the product** - Accessed after authentication
+3. **Dashboard is the hub** - Users start here after login
+4. **Linear flow:** Land → Sign Up → Dashboard → Calculator
 
 ### Current Issues to Fix
 

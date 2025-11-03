@@ -112,26 +112,33 @@
                     <span class="ml-3 text-sm text-brand-sage">Embodied Carbon Calculator</span>
                 </div>
                 <div class="hidden md:flex space-x-6">
-                    <a href="index.html" class="text-brand-steel hover:text-brand-forest font-medium">
-                        <i class="fas fa-home mr-1"></i>Home
+                    <a href="dashboard.html" class="text-brand-steel hover:text-brand-forest font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Dashboard
                     </a>
                     <a href="#calculator" class="text-brand-steel hover:text-brand-forest font-medium">Calculator</a>
                     <a href="#lca" class="text-brand-steel hover:text-brand-forest font-medium">LCA</a>
                     <a href="operational-carbon.html" class="text-brand-primary hover:text-brand-primary-dark font-semibold">
-                        <i class="fas fa-industry mr-1"></i>Operational Carbon
+                        <i class="fas fa-industry mr-1"></i>Operational
                     </a>
                     <a href="#compliance" class="text-brand-steel hover:text-brand-forest font-medium">Compliance</a>
-                    <a href="dashboard.html" class="text-brand-steel hover:text-brand-forest font-medium">
-                        <i class="fas fa-chart-line mr-1"></i>Dashboard
-                    </a>
+                    <a href="#saved" class="text-brand-steel hover:text-brand-forest font-medium">Projects</a>
                 </div>
                 <div class="flex items-center space-x-3">
                     <button id="newProjectBtn" class="bg-brand-forest hover:bg-brand-primary-dark text-white px-4 py-2 rounded-lg font-medium">
                         <i class="fas fa-plus mr-2"></i>New Project
                     </button>
-                    <a href="signin-new.html" class="text-brand-forest hover:text-brand-primary-dark font-medium px-2 py-2">
-                        <i class="fas fa-sign-in-alt"></i>
-                    </a>
+                    <div id="userMenu" class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2 text-brand-steel hover:text-brand-forest">
+                            <i class="fas fa-user-circle text-2xl"></i>
+                        </button>
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                            <a href="dashboard.html" class="block px-4 py-2 text-brand-steel hover:bg-brand-mint">Dashboard</a>
+                            <a href="settings.html" class="block px-4 py-2 text-brand-steel hover:bg-brand-mint">Settings</a>
+                            <a href="subscription.html" class="block px-4 py-2 text-brand-steel hover:bg-brand-mint">Subscription</a>
+                            <hr class="my-2">
+                            <button id="signOutBtn" class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

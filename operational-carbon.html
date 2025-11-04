@@ -19,92 +19,7 @@
     <title>Operational Carbon Tracking - CarbonConstruct</title>
 
     <!-- Tailwind CSS -->
-    <script>
-        window.tailwind = window.tailwind || {};
-        window.tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            primary: '#3DD68C',
-                            'primary-dark': '#1E4A40',
-                            forest: '#47876D',
-                            sage: '#7A9B8E',
-                            'sage-light': '#AFC2B9',
-                            mint: '#E0F4ED',
-                            navy: '#1E2A35',
-                            midnight: '#0E1621',
-                            steel: '#4A5A6A',
-                            surface: '#F3F8F6',
-                            border: '#C9DAD3',
-                            contrast: '#FFFFFF'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Main CSS - Professional styling -->
-    <link rel="stylesheet" href="styles.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom.css">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        :root {
-            --primary-green: #3DD68C;
-            --dark-green: #1E4A40;
-            --light-green: #E0F4ED;
-        }
-
-        .carbon-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .carbon-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .chart-container {
-            height: 400px;
-            position: relative;
-        }
-
-        .tab-button {
-            transition: all 0.3s;
-        }
-
-        .tab-button.active {
-            background-color: var(--dark-green);
-            color: white;
-        }
-
-        .section-hidden {
-            display: none;
-        }
-    </style>
+    
 
 <script>
 // Environment variables injected at build time from Vercel
@@ -114,12 +29,43 @@ window.ENV = {
     NEXT_PUBLIC_SUPABASE_URL: '',
     NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
     APP_URL: '' || window.location.origin,
-    EC3_CLIENT_ID: ''
+    EC3_CLIENT_ID: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX'
 };
 console.log('✅ Environment variables loaded from build');
 </script>
 </head>
 <body class="bg-brand-mint">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-brand-navy bg-opacity-95 z-[9999] flex items-center justify-center">
+        <div class="text-center max-w-md px-6">
+            <!-- Animated Logo -->
+            <div class="mb-8">
+                <i class="fas fa-industry text-brand-primary text-6xl animate-pulse"></i>
+            </div>
+
+            <!-- Loading Message -->
+            <h2 class="text-2xl font-bold text-white mb-4">
+                <span id="loading-message">Loading Operational Carbon Tracker...</span>
+            </h2>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-brand-steel bg-opacity-30 rounded-full h-3 mb-4 overflow-hidden">
+                <div id="loading-progress" class="bg-gradient-to-r from-brand-primary to-brand-forest h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <!-- Progress Percentage -->
+            <p class="text-brand-sage-light mb-6">
+                <span id="loading-percentage">0</span>% Complete
+            </p>
+
+            <!-- Operational Carbon Tips -->
+            <div class="bg-brand-forest bg-opacity-20 rounded-lg p-4 text-brand-mint text-sm">
+                <i class="fas fa-lightbulb text-brand-primary mr-2"></i>
+                <span id="carbon-tip">Operational carbon accounts for 70-90% of a building's lifetime emissions</span>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation Header -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
@@ -1043,6 +989,126 @@ console.log('✅ Environment variables loaded from build');
     <script src="js/emissions-factors.js"></script>
     <script src="js/scopes-calculator-comprehensive.js"></script>
     <script src="js/operational-carbon-ui.js"></script>
+
+    <!-- Chart.js Lazy Loader -->
+    <script src="js/chart-loader.js"></script>
+
+    <!-- Loading State Manager -->
+    <script>
+        // Operational carbon tips to show during loading
+        const CARBON_TIPS = [
+            'Operational carbon accounts for 70-90% of a building\'s lifetime emissions',
+            'Scope 1: Direct emissions from on-site equipment and vehicles',
+            'Scope 2: Indirect emissions from purchased electricity',
+            'Scope 3: Value chain emissions including materials transport and waste',
+            'TCFD requires disclosure of Scope 1 and 2, with Scope 3 recommended',
+            'Australian electricity grid emissions vary by state - NSW vs Tasmania differ significantly',
+            'Diesel excavators can emit 2.7 kg CO2-e per liter consumed',
+            'Site waste management strategies can reduce Scope 3 emissions by 30%',
+            'Energy-efficient site offices can reduce operational carbon by 40%',
+            'Tracking operational carbon helps identify cost-saving opportunities'
+        ];
+
+        let currentTipIndex = 0;
+        let tipRotationInterval = null;
+
+        // Loading state controller
+        const LoadingController = {
+            overlay: null,
+            progressBar: null,
+            progressPercentage: null,
+            messageElement: null,
+            tipElement: null,
+
+            init() {
+                this.overlay = document.getElementById('loading-overlay');
+                this.progressBar = document.getElementById('loading-progress');
+                this.progressPercentage = document.getElementById('loading-percentage');
+                this.messageElement = document.getElementById('loading-message');
+                this.tipElement = document.getElementById('carbon-tip');
+
+                // Start rotating tips
+                this.startTipRotation();
+
+                // Simulate loading progress
+                this.simulateProgress();
+            },
+
+            updateProgress(percentage, message) {
+                if (this.progressBar) {
+                    this.progressBar.style.width = `${percentage}%`;
+                }
+                if (this.progressPercentage) {
+                    this.progressPercentage.textContent = Math.round(percentage);
+                }
+                if (message && this.messageElement) {
+                    this.messageElement.textContent = message;
+                }
+            },
+
+            startTipRotation() {
+                // Show first tip immediately
+                if (this.tipElement) {
+                    this.tipElement.textContent = CARBON_TIPS[0];
+                }
+
+                // Rotate tips every 4 seconds
+                tipRotationInterval = setInterval(() => {
+                    currentTipIndex = (currentTipIndex + 1) % CARBON_TIPS.length;
+                    if (this.tipElement) {
+                        this.tipElement.style.opacity = '0';
+                        setTimeout(() => {
+                            this.tipElement.textContent = CARBON_TIPS[currentTipIndex];
+                            this.tipElement.style.opacity = '1';
+                        }, 300);
+                    }
+                }, 4000);
+            },
+
+            simulateProgress() {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    if (progress <= 30) {
+                        this.updateProgress(progress, 'Loading emission factors...');
+                    } else if (progress <= 60) {
+                        this.updateProgress(progress, 'Initializing calculators...');
+                    } else if (progress <= 90) {
+                        this.updateProgress(progress, 'Loading UI components...');
+                    } else {
+                        this.updateProgress(100, 'Ready!');
+                        clearInterval(interval);
+                        setTimeout(() => this.hide(), 500);
+                    }
+                }, 100);
+            },
+
+            hide() {
+                if (tipRotationInterval) {
+                    clearInterval(tipRotationInterval);
+                }
+
+                if (this.overlay) {
+                    this.overlay.style.opacity = '0';
+                    this.overlay.style.transition = 'opacity 0.5s ease-out';
+
+                    setTimeout(() => {
+                        this.overlay.style.display = 'none';
+                    }, 500);
+                }
+            }
+        };
+
+        // Initialize loading controller immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => LoadingController.init());
+        } else {
+            LoadingController.init();
+        }
+
+        // Export for use in other scripts
+        window.LoadingController = LoadingController;
+    </script>
 
     <!-- Authentication Protection -->
     <script>

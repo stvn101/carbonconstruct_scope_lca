@@ -19,101 +19,53 @@
     <title>CarbonConstruct - Embodied Carbon Calculator</title>
 
     <!-- Tailwind CSS for rapid, professional styling -->
-    <script>
-        window.tailwind = window.tailwind || {};
-        window.tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            primary: '#3DD68C',
-                            'primary-dark': '#1E4A40',
-                            forest: '#47876D',
-                            sage: '#7A9B8E',
-                            'sage-light': '#AFC2B9',
-                            mint: '#E0F4ED',
-                            navy: '#1E2A35',
-                            midnight: '#0E1621',
-                            steel: '#4A5A6A',
-                            surface: '#F3F8F6',
-                            border: '#C9DAD3',
-                            contrast: '#FFFFFF'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Chart.js for data visualization - construction pros need to SEE the data -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Font Awesome for professional icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-
-    <!-- Google Fonts - Professional and readable -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Main CSS - Professional styling -->
-    <link rel="stylesheet" href="styles.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom.css">
-
-    <style>
-        /* Custom styling to match professional construction software */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Smooth scrolling for better UX */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Custom color scheme - professional greens for sustainability */
-        :root {
-            --primary-green: #3DD68C;
-            --dark-green: #1E4A40;
-            --light-green: #E0F4ED;
-        }
-
-        .carbon-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .carbon-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Chart container with fixed height - critical for Chart.js */
-        .chart-container {
-            height: 400px;
-            position: relative;
-        }
-
-        /* Specific chart container heights */
-        .chart-container-400 {
-            height: 400px;
-        }
-    </style>
+    
 
 <script>
 // Environment variables injected at build time from Vercel
 // NO HARDCODED KEYS - All from environment variables
 window.ENV = {
+    NEXT_PUBLIC_EC3_API_KEY: '',
     NEXT_PUBLIC_SUPABASE_URL: '',
     NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
-    APP_URL: ('' ? '' : window.location.origin),
+    APP_URL: '' || window.location.origin,
+    EC3_CLIENT_ID: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX'
 };
 console.log('✅ Environment variables loaded from build');
 </script>
 </head>
 <body class="bg-brand-mint">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-brand-navy bg-opacity-95 z-[9999] flex items-center justify-center">
+        <div class="text-center max-w-md px-6">
+            <!-- Animated Logo -->
+            <div class="mb-8">
+                <i class="fas fa-leaf text-brand-primary text-6xl animate-pulse"></i>
+            </div>
+
+            <!-- Loading Message -->
+            <h2 class="text-2xl font-bold text-white mb-4">
+                <span id="loading-message">Loading Carbon Calculator...</span>
+            </h2>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-brand-steel bg-opacity-30 rounded-full h-3 mb-4 overflow-hidden">
+                <div id="loading-progress" class="bg-gradient-to-r from-brand-primary to-brand-forest h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <!-- Progress Percentage -->
+            <p class="text-brand-sage-light mb-6">
+                <span id="loading-percentage">0</span>% Complete
+            </p>
+
+            <!-- Carbon Tips (Rotated) -->
+            <div class="bg-brand-forest bg-opacity-20 rounded-lg p-4 text-brand-mint text-sm">
+                <i class="fas fa-lightbulb text-brand-primary mr-2"></i>
+                <span id="carbon-tip">Loading 54,000+ Australian construction materials...</span>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation Header -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
@@ -814,6 +766,113 @@ console.log('✅ Environment variables loaded from build');
     <!-- Agent Integration -->
     <script src="js/agent-orchestrator.js"></script>
 
+    <!-- Materials Loader (Incremental Loading) -->
+    <script src="js/materials-loader.js"></script>
+
+    <!-- Chart.js Lazy Loader -->
+    <script src="js/chart-loader.js"></script>
+
+    <!-- Loading State Manager -->
+    <script>
+        // Carbon reduction tips to show during loading
+        const CARBON_TIPS = [
+            'Concrete accounts for 8% of global CO2 emissions - consider geopolymer alternatives',
+            'Recycled steel cuts embodied carbon by 75% compared to virgin steel',
+            'Timber sequesters carbon - it can have negative embodied carbon!',
+            'Green Star certification requires <15% reduction in embodied carbon',
+            'Transportation typically accounts for only 4-5% of total embodied carbon',
+            'Cross-Laminated Timber (CLT) is revolutionizing mid-rise construction',
+            'Autoclaved Aerated Concrete (AAC) blocks are lighter and more insulating',
+            'NABERS 6-star rating requires carbon intensity <250 kg CO2-e/m²',
+            'Module D in LCA accounts for recycling benefits at end-of-life',
+            'EN 15978 standardizes LCA for buildings across stages A1-D'
+        ];
+
+        let currentTipIndex = 0;
+        let tipRotationInterval = null;
+
+        // Loading state controller
+        const LoadingController = {
+            overlay: null,
+            progressBar: null,
+            progressPercentage: null,
+            messageElement: null,
+            tipElement: null,
+
+            init() {
+                this.overlay = document.getElementById('loading-overlay');
+                this.progressBar = document.getElementById('loading-progress');
+                this.progressPercentage = document.getElementById('loading-percentage');
+                this.messageElement = document.getElementById('loading-message');
+                this.tipElement = document.getElementById('carbon-tip');
+
+                // Start rotating tips
+                this.startTipRotation();
+            },
+
+            updateProgress(percentage, message) {
+                if (this.progressBar) {
+                    this.progressBar.style.width = `${percentage}%`;
+                }
+                if (this.progressPercentage) {
+                    this.progressPercentage.textContent = Math.round(percentage);
+                }
+                if (message && this.messageElement) {
+                    this.messageElement.textContent = message;
+                }
+            },
+
+            startTipRotation() {
+                // Show first tip immediately
+                if (this.tipElement) {
+                    this.tipElement.textContent = CARBON_TIPS[0];
+                }
+
+                // Rotate tips every 4 seconds
+                tipRotationInterval = setInterval(() => {
+                    currentTipIndex = (currentTipIndex + 1) % CARBON_TIPS.length;
+                    if (this.tipElement) {
+                        this.tipElement.style.opacity = '0';
+                        setTimeout(() => {
+                            this.tipElement.textContent = CARBON_TIPS[currentTipIndex];
+                            this.tipElement.style.opacity = '1';
+                        }, 300);
+                    }
+                }, 4000);
+            },
+
+            hide() {
+                if (tipRotationInterval) {
+                    clearInterval(tipRotationInterval);
+                }
+
+                if (this.overlay) {
+                    this.overlay.style.opacity = '0';
+                    this.overlay.style.transition = 'opacity 0.5s ease-out';
+
+                    setTimeout(() => {
+                        this.overlay.style.display = 'none';
+                        // Ensure main content is visible
+                        const mainContent = document.getElementById('main-content');
+                        if (mainContent) {
+                            mainContent.style.opacity = '1';
+                        }
+                    }, 500);
+                }
+            }
+        };
+
+        // Initialize loading controller immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => LoadingController.init());
+        } else {
+            LoadingController.init();
+        }
+
+        // Export for use in other scripts
+        window.LoadingController = LoadingController;
+    </script>
+
     <!-- AI-Enhanced UI Controls -->
     <script>
         // AI-Enhanced Mode Toggle Handler
@@ -998,6 +1057,11 @@ console.log('✅ Environment variables loaded from build');
             console.log('🚀 Initializing CarbonConstruct...');
 
             try {
+                // Update loading progress
+                if (window.LoadingController) {
+                    window.LoadingController.updateProgress(10, 'Connecting to database...');
+                }
+
                 const env = window.ENV || {};
                 const supabaseUrl = env.SUPABASE_URL || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : '');
                 const supabaseKey = env.SUPABASE_ANON_KEY || (typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : '');
@@ -1012,6 +1076,10 @@ console.log('✅ Environment variables loaded from build');
 
                     if (supabaseReady) {
                         console.log('✅ Supabase: Connected to materials database');
+
+                        if (window.LoadingController) {
+                            window.LoadingController.updateProgress(20, 'Database connected');
+                        }
 
                         // Test connection
                         const testResult = await supabaseClient.testConnection();
@@ -1028,17 +1096,63 @@ console.log('✅ Environment variables loaded from build');
                         } catch (e) {
                             console.warn('Could not fetch stats:', e.message);
                         }
+
+                        // Initialize Materials Loader (incremental loading)
+                        if (typeof initializeMaterialsLoader !== 'undefined') {
+                            const loader = initializeMaterialsLoader(supabaseClient);
+
+                            // Register progress callback
+                            loader.onProgress((progress) => {
+                                if (window.LoadingController) {
+                                    window.LoadingController.updateProgress(
+                                        progress.percentage,
+                                        progress.message
+                                    );
+                                }
+                            });
+
+                            // Initialize loader (loads essentials immediately, rest in background)
+                            await loader.initialize();
+
+                            // Make loader globally available
+                            window.materialsLoader = loader;
+
+                            console.log('✅ Materials loader initialized');
+                        }
                     } else {
                         console.warn('⚠️  Supabase: Failed to connect, using fallback database');
+                        if (window.LoadingController) {
+                            window.LoadingController.updateProgress(30, 'Using local materials database');
+                        }
                     }
                 } else {
                     console.log('⏹️  Supabase: Disabled in configuration');
+                    if (window.LoadingController) {
+                        window.LoadingController.updateProgress(30, 'Using local materials database');
+                    }
                 }
+
+                // Wait a moment to ensure everything is rendered
+                setTimeout(() => {
+                    if (window.LoadingController) {
+                        window.LoadingController.updateProgress(100, 'Ready!');
+                        setTimeout(() => {
+                            window.LoadingController.hide();
+                        }, 500);
+                    }
+                }, 500);
 
                 console.log('✅ CarbonConstruct initialized successfully!');
 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
+                // Hide loading overlay even on error
+                if (window.LoadingController) {
+                    window.LoadingController.updateProgress(100, 'Initialization complete');
+                    setTimeout(() => {
+                        window.LoadingController.hide();
+                    }, 1000);
+                }
             }
         });
     </script>

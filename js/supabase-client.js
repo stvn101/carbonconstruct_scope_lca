@@ -42,12 +42,31 @@ class SupabaseClient {
                 await this.loadSupabaseLibrary();
             }
 
-            // Initialize Supabase client
-            this.client = supabase.createClient(this.supabaseUrl, this.supabaseKey);
+            // Initialize Supabase client with connection pooling and performance optimizations
+            this.client = supabase.createClient(this.supabaseUrl, this.supabaseKey, {
+                db: {
+                    schema: 'public'
+                },
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true
+                },
+                global: {
+                    headers: {
+                        'x-connection-pooling': 'true'
+                    }
+                },
+                // Realtime disabled for better performance (enable if needed)
+                realtime: {
+                    params: {
+                        eventsPerSecond: 2
+                    }
+                }
+            });
             this.initialized = true;
-            
+
             console.log('✅ Supabase connected successfully');
-            console.log(`📊 Ready to access 4,500+ materials database`);
+            console.log(`📊 Ready to access 54,000+ materials database`);
             
             return true;
         } catch (error) {

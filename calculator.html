@@ -286,17 +286,18 @@ console.log('✅ Environment variables loaded from build');
                 </div>
             </div>
 
-            <!-- Subscription Required Message -->
-            <div id="subscriptionRequired" class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg" style="display:none;">
+            <!-- Agent Access Message (Trial System) -->
+            <div id="subscriptionRequired" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg" style="display:none;">
                 <div class="flex items-center">
-                    <i class="fas fa-lock text-yellow-600 text-2xl mr-4"></i>
+                    <i class="fas fa-rocket text-blue-600 text-2xl mr-4"></i>
                     <div class="flex-1">
-                        <h4 class="font-semibold text-gray-800 mb-1">Pro Subscription Required</h4>
+                        <h4 class="font-semibold text-gray-800 mb-1">AI Agents Available</h4>
                         <p class="text-sm text-gray-600 mb-2">
-                            AI-Enhanced features require a Pro subscription. Upgrade to unlock advanced analysis, automation, and insights.
+                            <!-- Message will be dynamically updated by JavaScript based on access status -->
+                            Start your free 14-day trial (3 agent uses per day). Add a payment card to unlock AI-powered analysis and insights.
                         </p>
-                        <a href="subscription.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                            <i class="fas fa-star mr-1"></i>Upgrade to Pro
+                        <a href="subscription.html" class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                            <i class="fas fa-credit-card mr-1"></i>Start Free Trial
                         </a>
                     </div>
                 </div>
@@ -765,6 +766,7 @@ console.log('✅ Environment variables loaded from build');
 
     <!-- Agent Integration -->
     <script src="js/agent-orchestrator.js"></script>
+    <script src="js/agent-access.js"></script>
 
     <!-- Materials Loader (Incremental Loading) -->
     <script src="js/materials-loader.js"></script>
@@ -873,10 +875,12 @@ console.log('✅ Environment variables loaded from build');
         window.LoadingController = LoadingController;
     </script>
 
-    <!-- AI-Enhanced UI Controls -->
+    <!-- AI-Enhanced UI Controls (Trial System) -->
     <script>
-        // AI-Enhanced Mode Toggle Handler
-        document.addEventListener('DOMContentLoaded', function() {
+        // AI Agent Access Manager (14-Day Trial System)
+        let agentAccessManager;
+
+        document.addEventListener('DOMContentLoaded', async function() {
             const aiToggle = document.getElementById('aiEnhancedMode');
             const aiFeatures = document.getElementById('aiFeatures');
             const bimUploadSection = document.getElementById('bimUploadSection');
@@ -887,29 +891,39 @@ console.log('✅ Environment variables loaded from build');
             const bimParseStatus = document.getElementById('bimParseStatus');
             const bimParseMessage = document.getElementById('bimParseMessage');
 
-            // Check user subscription on page load
-            checkUserSubscription();
+            // Initialize agent access manager when Supabase is ready
+            if (typeof supabaseClient !== 'undefined' && supabaseClient.client) {
+                agentAccessManager = new AgentAccessManager(supabaseClient.client);
+                console.log('✅ Agent Access Manager initialized');
+
+                // Check and display agent status on page load
+                await updateAgentStatus();
+            } else {
+                console.warn('⚠️ Supabase not initialized - AI agents unavailable');
+            }
 
             // Toggle AI features visibility
             aiToggle.addEventListener('change', async function() {
                 const isEnabled = this.checked;
 
                 if (isEnabled) {
-                    // Check if user has Pro subscription
-                    const hasProAccess = await checkProAccess();
+                    // Check agent access (trial or subscription)
+                    const accessStatus = await checkAgentAccess();
 
-                    if (hasProAccess) {
+                    if (accessStatus.canUse) {
+                        // Enable AI features
                         aiFeatures.style.display = 'grid';
                         bimUploadSection.style.display = 'block';
                         aiUsageStats.style.display = 'block';
                         subscriptionRequired.style.display = 'none';
 
-                        // Load usage stats
-                        loadAIUsageStats();
+                        // Load and display usage stats
+                        await loadAIUsageStats();
 
-                        console.log('[AI Mode] Enabled');
+                        console.log('[AI Mode] Enabled -', accessStatus.message);
                     } else {
-                        // Show upgrade message
+                        // Show access required message
+                        updateAccessRequiredMessage(accessStatus);
                         subscriptionRequired.style.display = 'block';
                         aiFeatures.style.display = 'none';
                         bimUploadSection.style.display = 'none';
@@ -920,9 +934,10 @@ console.log('✅ Environment variables loaded from build');
                             this.checked = false;
                         }, 100);
 
-                        console.warn('[AI Mode] Pro subscription required');
+                        console.warn('[AI Mode]', accessStatus.message);
                     }
                 } else {
+                    // Disable AI features
                     aiFeatures.style.display = 'none';
                     bimUploadSection.style.display = 'none';
                     aiUsageStats.style.display = 'none';
@@ -937,12 +952,35 @@ console.log('✅ Environment variables loaded from build');
                 const file = e.target.files[0];
                 if (!file) return;
 
+                // Check agent access before processing
+                const accessStatus = await checkAgentAccess();
+                if (!accessStatus.canUse) {
+                    alert(accessStatus.message);
+                    this.value = '';
+                    return;
+                }
+
                 bimFileName.textContent = file.name;
                 bimParseStatus.classList.remove('hidden');
                 bimParseMessage.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Parsing file with AI...';
 
                 try {
+                    const startTime = Date.now();
                     const materials = await window.agentOrchestrator.parseBIMFile(file);
+                    const executionTime = Date.now() - startTime;
+
+                    // Log agent usage
+                    if (agentAccessManager) {
+                        await agentAccessManager.logUsage(
+                            'plan-extraction-estimator',
+                            'parse_bim_file',
+                            true,
+                            null,
+                            { fileName: file.name, fileSize: file.size },
+                            { materialsCount: materials.length },
+                            executionTime
+                        );
+                    }
 
                     bimParseMessage.innerHTML = `<i class="fas fa-check-circle mr-2"></i>Successfully parsed ${materials.length} materials`;
 
@@ -953,95 +991,130 @@ console.log('✅ Environment variables loaded from build');
                     });
 
                     // Refresh usage stats
-                    loadAIUsageStats();
+                    await loadAIUsageStats();
 
                 } catch (error) {
                     console.error('[BIM Parser] Error:', error);
+
+                    // Log failed usage
+                    if (agentAccessManager) {
+                        await agentAccessManager.logUsage(
+                            'plan-extraction-estimator',
+                            'parse_bim_file',
+                            false,
+                            error.message
+                        );
+                    }
+
                     bimParseMessage.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>Failed to parse file: ${error.message}`;
                     bimParseStatus.classList.add('text-red-600');
                     bimParseStatus.classList.remove('text-green-600');
                 }
             });
 
-            // Check user subscription status
-            async function checkUserSubscription() {
-                // TODO: Implement Supabase subscription check
-                console.log('[AI Mode] Checking subscription status...');
+            // Check agent access (NEW TRIAL SYSTEM)
+            async function checkAgentAccess() {
+                if (!agentAccessManager) {
+                    return {
+                        canUse: false,
+                        message: '⚠️ Agent system not initialized. Please refresh the page.',
+                        reason: 'not_initialized'
+                    };
+                }
+
+                return await agentAccessManager.checkAccess();
             }
 
-            // Check if user has Pro access
-            async function checkProAccess() {
+            // Update agent status display
+            async function updateAgentStatus() {
+                if (!agentAccessManager) return;
+
                 try {
-                    // Check if Supabase is initialized
-                    if (typeof supabase === 'undefined') {
-                        console.warn('[AI Mode] Supabase not initialized');
-                        return false;
+                    const statusDisplay = await agentAccessManager.getStatusDisplay();
+
+                    // Update UI elements if they exist
+                    const statusBadge = document.getElementById('agentStatusBadge');
+                    const statusMessage = document.getElementById('agentStatusMessage');
+
+                    if (statusBadge) {
+                        statusBadge.textContent = statusDisplay.badge;
+                        statusBadge.className = `px-3 py-1 rounded-full text-white text-sm ${statusDisplay.badgeClass}`;
                     }
 
-                    // Get current user
-                    const { data: { user } } = await supabase.auth.getUser();
-                    if (!user) {
-                        console.log('[AI Mode] User not authenticated');
-                        return false;
+                    if (statusMessage) {
+                        statusMessage.innerHTML = `
+                            <strong>${statusDisplay.title}:</strong> ${statusDisplay.message}
+                            ${statusDisplay.action ? `<br><a href="${statusDisplay.actionLink}" class="text-blue-600 underline">${statusDisplay.action}</a>` : ''}
+                        `;
                     }
 
-                    // Query subscriptions table
-                    const { data, error } = await supabase
-                        .from('subscriptions')
-                        .select('tier, status, features')
-                        .eq('user_id', user.id)
-                        .eq('status', 'active')
-                        .single();
-
-                    if (error) {
-                        console.error('[AI Mode] Subscription check error:', error);
-                        return false;
-                    }
-
-                    // Check if features include ai_agents
-                    const hasPro = data && (data.tier === 'pro' || data.tier === 'enterprise');
-                    const hasFeature = data && data.features?.includes('ai_agents');
-
-                    return hasPro || hasFeature;
-
+                    console.log(`[Agent Status] ${statusDisplay.title}:`, statusDisplay.message);
                 } catch (error) {
-                    console.error('[AI Mode] Pro access check failed:', error);
-                    return false;
+                    console.error('[Agent Status] Failed to update status:', error);
                 }
             }
 
-            // Load AI usage statistics
+            // Update access required message (NEW MESSAGING)
+            function updateAccessRequiredMessage(accessStatus) {
+                const messageElement = subscriptionRequired.querySelector('.text-gray-600');
+                if (!messageElement) return;
+
+                const messages = {
+                    'no_payment_method': `
+                        <strong>💳 Start Your Free Trial</strong><br>
+                        Add a payment card to unlock 14 days of AI agents (3 uses per day).<br>
+                        <a href="/subscription.html" class="text-blue-600 underline font-semibold">Add Card & Start Trial</a>
+                    `,
+                    'trial_expired': `
+                        <strong>⏰ Trial Expired</strong><br>
+                        Your 14-day trial has ended. Subscribe to continue using AI agents.<br>
+                        <a href="/subscription.html" class="text-blue-600 underline font-semibold">Subscribe Now ($10/month)</a>
+                    `,
+                    'not_authenticated': `
+                        <strong>🔒 Sign In Required</strong><br>
+                        Sign in to access AI agents with your free trial or subscription.<br>
+                        <a href="/signin-new.html" class="text-blue-600 underline font-semibold">Sign In</a>
+                    `,
+                    'daily_limit_reached': `
+                        <strong>⏸️ Daily Limit Reached</strong><br>
+                        You've used all 3 agent uses today (trial limit). Resets at midnight UTC.<br>
+                        <a href="/subscription.html" class="text-blue-600 underline font-semibold">Subscribe for Unlimited Access</a>
+                    `
+                };
+
+                const messageHTML = messages[accessStatus.reason] || `
+                    <strong>⚠️ Access Required</strong><br>
+                    ${accessStatus.message}<br>
+                    <a href="/subscription.html" class="text-blue-600 underline font-semibold">Learn More</a>
+                `;
+
+                messageElement.innerHTML = messageHTML;
+            }
+
+            // Load AI usage statistics (UPDATED FOR TRIAL)
             async function loadAIUsageStats() {
                 try {
-                    // Get usage count from Supabase
-                    if (typeof supabase === 'undefined') return;
+                    if (!agentAccessManager) return;
 
-                    const { data: { user } } = await supabase.auth.getUser();
-                    if (!user) return;
+                    const stats = await agentAccessManager.getUsageStats();
+                    if (!stats) return;
 
-                    // Get this month's usage
-                    const startOfMonth = new Date();
-                    startOfMonth.setDate(1);
-                    startOfMonth.setHours(0, 0, 0, 0);
-
-                    const { count, error } = await supabase
-                        .from('agent_usage_log')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('user_id', user.id)
-                        .gte('timestamp', startOfMonth.toISOString())
-                        .eq('success', true);
-
-                    if (error) {
-                        console.error('[AI Mode] Usage stats error:', error);
-                        return;
+                    // Update usage display
+                    const usageElement = document.getElementById('aiUsageCount');
+                    if (usageElement) {
+                        if (stats.isTrial) {
+                            usageElement.textContent = `${stats.todayUsage} / ${stats.dailyLimit} (Trial)`;
+                        } else {
+                            usageElement.textContent = `${stats.todayUsage} today (Unlimited)`;
+                        }
                     }
 
-                    // Update UI
-                    const usageCount = count || 0;
-                    const limit = 50; // TODO: Get limit from subscription tier
-                    document.getElementById('aiUsageCount').textContent = `${usageCount} / ${limit}`;
+                    // Show warning if approaching limit
+                    if (stats.isTrial && stats.usesRemaining <= 1) {
+                        console.warn(`[AI Mode] ⚠️ Only ${stats.usesRemaining} use(s) remaining today`);
+                    }
 
-                    console.log(`[AI Mode] Usage: ${usageCount}/${limit}`);
+                    console.log(`[AI Mode] Usage: ${stats.todayUsage}/${stats.dailyLimit} (Trial: ${stats.isTrial})`);
 
                 } catch (error) {
                     console.error('[AI Mode] Failed to load usage stats:', error);

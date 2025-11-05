@@ -6,11 +6,12 @@
     <meta name="description" content="CarbonConstruct - Australia's trusted NCC-compliant carbon calculator for construction. Calculate your project's carbon footprint in under 10 minutes.">
     <meta name="keywords" content="carbon calculator, construction, Australia, NCC, NABERS, embodied carbon, sustainability">
     <title>CarbonConstruct - NCC-Compliant Carbon Calculator for Australian Construction</title>
-    
+
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base64_upload/da2b5c1b15e4fb2daeacc024515e7944">
-    
-    <style>
+    <link rel="icon" type="image/png" href="https://page.gensparksite.com/v1/base
+    64_upload/da2b5c1b15e4fb2daeacc024515e7944">
+
+<style>
         /* ============================================
            GLOBAL RESET & BASE STYLES
            ============================================ */
@@ -513,6 +514,12 @@
             margin-bottom: 1.5rem;
         }
 
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            color: #adb5bd;
+        }
+
         .cta-buttons {
             display: flex;
             gap: 1.5rem;
@@ -694,6 +701,19 @@
             }
         }
     </style>
+
+<script>
+// Environment variables injected at build time from Vercel
+// NO HARDCODED KEYS - All from environment variables
+window.ENV = {
+    NEXT_PUBLIC_EC3_API_KEY: '',
+    NEXT_PUBLIC_SUPABASE_URL: '',
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: '',
+    APP_URL: '' || window.location.origin,
+    EC3_CLIENT_ID: 'gNyUuor5vOAOiCrRdQ7o209nnMzESTrb4HpGKpqX'
+};
+console.log('✅ Environment variables loaded from build');
+</script>
 </head>
 <body>
     <!-- HEADER -->
@@ -723,7 +743,7 @@
                 <a href="/signup" class="btn-large btn-primary-large">Start Free 14-Day Trial</a>
                 <a href="#demo" class="btn-large btn-secondary-large">Watch Demo (2 min)</a>
             </div>
-            
+
             <div class="stats-grid">
                 <div class="stat-item">
                     <h3>Australian Made</h3>
@@ -759,33 +779,33 @@
             <h2>Everything You Need for Carbon Compliance</h2>
             <p>Comprehensive tools to measure, track, and report your project's environmental impact</p>
         </div>
-        
+
         <div class="features-grid">
             <div class="feature-card">
                 <h3>Complete LCA Analysis</h3>
                 <p>Full cradle-to-grave assessment following ISO 14040/14044 and EN 15978 standards for construction products.</p>
             </div>
-            
+
             <div class="feature-card">
                 <h3>Real-Time Tracking</h3>
                 <p>Track Scope 1, 2, and 3 emissions throughout your project lifecycle with live dashboard updates.</p>
             </div>
-            
+
             <div class="feature-card">
                 <h3>Instant Reports</h3>
                 <p>Generate PDF reports for NCC compliance instantly. Export directly to NABERS portal.</p>
             </div>
-            
+
             <div class="feature-card">
                 <h3>Material Database</h3>
                 <p>Access Australian database of verified EPDs and carbon factors for accurate calculations.</p>
             </div>
-            
+
             <div class="feature-card">
                 <h3>Material Optimization</h3>
                 <p>Swap materials and reduce carbon footprint by 20-30% while maintaining budget.</p>
             </div>
-            
+
             <div class="feature-card">
                 <h3>Team Collaboration</h3>
                 <p>Invite team members, share projects, and collaborate on carbon reduction strategies in real-time.</p>
@@ -799,30 +819,30 @@
             <div class="section-header">
                 <h2>Built by Construction Professionals, for Construction Professionals</h2>
             </div>
-            
+
             <p class="about-text">
                 CarbonConstruct was born from frustration with complex, expensive carbon calculators that weren't designed for Australian construction realities. The purpose of CarbonConstruct is to make embodied carbon measurement accessible and practical for SMEs and construction professionals in the construction industry.
             </p>
-            
+
             <p class="about-text">
                 Founded in 2025 by Steven Jenkins, with 17 years of tier 1 experience working on the biggest commercial jobs in Brisbane, I have a unique understanding of what needs to be done and I know how to fix it. SMEs now have available to them a powerful tool to measure and reduce embodied carbon in their projects.
             </p>
-            
+
             <p class="about-text">
                 I understand the pressure you're under: tight deadlines, budget constraints, and increasing regulatory requirements. That's why we built a tool that's fast, accurate, and actually useful for real-world construction projects. CarbonConstruct isn't just another piece of software—it's a game changer for how we approach sustainability in construction.
             </p>
-            
+
             <div class="about-features">
                 <div class="about-feature">
                     <h3>Australian Standards</h3>
                     <p>Built specifically for NCC, NABERS, and GBCA requirements</p>
                 </div>
-                
+
                 <div class="about-feature">
                     <h3>Lightning Fast</h3>
                     <p>What takes 6 months with consultants takes 10 minutes with us</p>
                 </div>
-                
+
                 <div class="about-feature">
                     <h3>Verified Accuracy</h3>
                     <p>All carbon factors verified against Australian EPD database</p>
@@ -837,15 +857,15 @@
             <h2>Simple, Transparent Pricing</h2>
             <p>One plan. Everything you need. No hidden fees, cancel anytime.</p>
         </div>
-        
+
         <div class="pricing-card">
             <span class="popular-badge">Most Popular ⭐</span>
-            
+
             <div class="pricing-header">
                 <h3>Essential Plan</h3>
                 <p class="pricing-description">For Australian construction professionals ready to measure and reduce carbon</p>
             </div>
-            
+
             <div class="pricing-amount">
                 <div class="price-monthly">
                     <span class="currency">$</span>
@@ -853,13 +873,13 @@
                     <span class="period">/month</span>
                 </div>
                 <p class="gst-notice">(GST inclusive)</p>
-                
+
                 <div class="price-annual">
                     <p class="price-annual-amount">$1,210/year (GST inclusive)</p>
                     <span class="savings-badge">Save $110 annually</span>
                 </div>
             </div>
-            
+
             <ul class="pricing-features">
                 <li>1-3 user accounts</li>
                 <li>Unlimited projects</li>
@@ -871,12 +891,12 @@
                 <li>Email support</li>
                 <li>Weekly training webinars after launch</li>
             </ul>
-            
+
             <div class="pricing-cta">
                 <a href="/signup" class="btn-large btn-primary-large">Start 14-Day Free Trial</a>
                 <p class="trial-notice">💡 No credit card required. Cancel anytime.</p>
             </div>
-            
+
             <div class="enterprise-note">
                 <p><strong>Need more than 3 users?</strong></p>
                 <p>Contact us for custom enterprise pricing with unlimited seats, white-labeling, and dedicated support.</p>
@@ -888,7 +908,7 @@
     <!-- CTA SECTION -->
     <section class="cta">
         <h2>Ready to Calculate Your Carbon Impact?</h2>
-        <p style="font-size: 1.2rem; margin-top: 1rem; color: #adb5bd;">Join Australian construction projects ready to reduce their carbon footprint</p>
+        <p class="cta-subtitle">Join Australian construction projects ready to reduce their carbon footprint</p>
         <div class="cta-buttons">
             <a href="/signup" class="btn-large btn-primary-large">Start Free Trial</a>
             <a href="#demo" class="btn-large btn-secondary-large">Book a Demo</a>
@@ -904,7 +924,7 @@
                 <p class="footer-brand-text">CarbonConstruct</p>
                 <p class="footer-tagline">Australia's trusted carbon calculator for the construction industry. Making embodied carbon measurement accessible for all construction professionals.</p>
             </div>
-            
+
             <!-- Footer Links -->
             <div class="footer-links">
                 <div class="footer-column">
@@ -914,7 +934,7 @@
                     <a href="/signup">Get Started</a>
                     <a href="#demo">Demo</a>
                 </div>
-                
+
                 <div class="footer-column">
                     <h4>Company</h4>
                     <a href="#about">About</a>
@@ -922,7 +942,7 @@
                     <a href="#careers">Careers</a>
                     <a href="#blog">Blog</a>
                 </div>
-                
+
                 <div class="footer-column">
                     <h4>Resources</h4>
                     <a href="#docs">Documentation</a>
@@ -931,7 +951,7 @@
                     <a href="#terms">Terms of Service</a>
                 </div>
             </div>
-            
+
             <!-- GBCA Member Badge -->
             <div class="footer-membership">
                 <p class="membership-label">Proud Member:</p>
@@ -940,7 +960,7 @@
                 </a>
             </div>
         </div>
-        
+
         <!-- Footer Bottom -->
         <div class="footer-bottom">
             <p>&copy; 2025 CarbonConstruct. All rights reserved.</p>

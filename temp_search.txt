@@ -1,1 +1,4 @@
 Searching for Claude and Codex references...
+
+Search completed - Found Claude documentation in CLAUDE.md and related setup files.
+Claude integration appears to be documented but may need reactivation.

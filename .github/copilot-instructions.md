@@ -6,54 +6,72 @@ CarbonConstruct is an Australian-focused embodied carbon calculator for construc
 
 **Tech Stack**: Vanilla JavaScript (ES6+), HTML5, CSS3, Supabase (database/auth), Stripe (payments), Vercel (hosting)
 
+**Critical Architecture**: SaaS application with **authentication-gated calculator** - the main MVP is `calculator.html` accessed via `dashboard.html` after login
+
 ## Core Architecture Principles
 
-### 1. No-Build Vanilla JavaScript
+### 1. SaaS User Flow (Authentication-First)
+- **Landing**: `index.html` (marketing) → `signup-new.html` → `dashboard.html` → `calculator.html` (MVP)
+- **Pattern**: Calculator requires auth; dashboard is user hub; landing is public marketing
+- **Navigation**: `js/navigation.js` provides unified navigation across authenticated pages
+- **Auth Guard**: Protected pages redirect to signin if not authenticated
+
+### 2. Environment Injection Build System
+- **Build Script**: `build.js` injects environment variables into HTML at deployment
+- **Pattern**: `window.ENV = { SUPABASE_URL: '...' }` injected into `<head>` tags
+- **Config**: `js/config.js` reads from `window.ENV` with fallbacks
+- **Security**: NO hardcoded keys in code - all from Vercel environment variables
+
+### 3. AI Agent Integration Architecture
+- **Frontend**: `js/agent-orchestrator.js` manages Claude Code agent invocations
+- **Backend**: `api/invoke-agent.js` bridges to Claude API with fallback logic
+- **Pattern**: Premium feature with subscription tier checking and rate limiting
+- **Agents**: `cc-lca-analyst`, `compliance-checker`, `materials-database-manager`, `construction-estimator`
+
+### 4. No-Build Vanilla JavaScript
 - **Pattern**: ES6+ modules loaded directly via `<script>` tags
 - **Rationale**: Transparency, simplicity, educational value
 - **Trade-off**: Manual module loading, no hot reload (refresh to see changes)
 - **Example**: `js/lca-calculator.js` is a self-contained calculator class
 
-### 2. Modular Calculation Engines
+### 5. Modular Calculation Engines
 Each calculator is an independent module with clear responsibilities:
 - `js/lca-calculator.js` - LCA stages A1-D with Australian standards
 - `js/scopes-calculator.js` - GHG Protocol Scopes 1-3 mapping
 - `js/compliance.js` - NCC/NABERS/Green Star compliance checking
 - `js/materials-database.js` - 40+ construction materials with carbon coefficients
 
-### 3. Progressive Enhancement Pattern
-- Core functionality works without JavaScript
-- JavaScript enhances with calculations, visualizations, persistence
-- Example: Material input forms work as static HTML, enhanced with real-time calculations
-
-### 4. Data Layer Abstraction
-- `js/storage.js` abstracts all database operations (Supabase)
-- `js/config.js` handles environment configuration with fallbacks
-- Pattern: `window?.ENV?.VARIABLE || 'DEFAULT'` for client-side config
-
 ## Development Workflow
 
 ### Commands (npm/pnpm)
 ```bash
 npm start              # Local dev server (http-server port 8000)
-npm run lint           # ESLint (max warnings: 0)
-npm run deploy         # Vercel production deployment
+npm run lint           # ESLint (max warnings: 0)  
+npm run deploy         # Vercel production deployment (runs build.js)
 npm test               # Jest unit tests
 npm run test:manual    # Manual test suite in browser
 ```
 
+### Build & Deployment Pattern
+```bash
+# Vercel runs this on deployment:
+node build.js          # Injects ENV vars into HTML files
+# Then serves static files + serverless functions
+```
+
 ### File Structure Conventions
 - `*-new.html` = Production-ready Supabase auth pages
-- `*.html` (no suffix) = Legacy demo pages or static marketing
+- `*.html` (no suffix) = Legacy demo pages or static marketing  
 - `*-supabase.js` = Supabase integration modules
 - Root scripts = Migration/setup utilities (not deployed)
 
 ### Configuration Management
 **Environment Variables** (Vercel dashboard):
-- `SUPABASE_URL`, `SUPABASE_ANON_KEY` (database)
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (database)
 - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` (payments)
+- `ANTHROPIC_API_KEY` (Claude AI agents)
 
-**Client Config**: Edit `js/config.js` or create `js/config.local.js` (gitignored)
+**Client Config**: `js/config.js` reads from injected `window.ENV`
 
 ## Key Calculation Patterns
 
@@ -76,10 +94,15 @@ function calculateNABERSRating(carbonIntensity) {
 }
 ```
 
-### Material Database Access
-- **Local**: `js/materials-database.js` (40+ materials for offline)
-- **Production**: Supabase `unified_materials` table (54,343+ materials)
-- **Pattern**: `getMaterialData(category, type)` function
+### AI Agent Invocation Pattern
+```javascript
+// Frontend pattern in js/agent-orchestrator.js
+const result = await agentOrchestrator.invokeLCAAgent(projectData, materials, {
+    includeHotspotAnalysis: true,
+    complianceFrameworks: ['NCC', 'NABERS', 'GreenStar']
+});
+// Backend automatically falls back to standard calculations if Claude API fails
+```
 
 ## Database Architecture (Supabase)
 
@@ -94,6 +117,7 @@ FOR SELECT USING (auth.uid() = user_id);
 - `unified_materials` - Master materials database (54k+ materials)
 - `projects` - Saved carbon calculations with JSON results
 - `user_profiles`, `subscriptions`, `invoices` - User management
+- `agent_usage_log` - AI agent invocation tracking
 
 ### Data Flow Pattern
 ```javascript
@@ -114,22 +138,17 @@ const saveProject = async (projectData) => {
 3. `api/stripe-webhook.js` updates `subscriptions` table
 4. Dashboard reflects new status
 
+### Claude AI Agent Flow  
+1. Frontend calls `js/agent-orchestrator.js`
+2. Orchestrator calls `api/invoke-agent.js` with auth token
+3. Server checks subscription tier & rate limits
+4. Invokes Claude API or falls back to standard calculations
+5. Returns enhanced results with AI insights
+
 ### Serverless Functions (api/ directory)
 - `api/stripe-webhook.js` - Webhook handler for subscription events
-- `api/invoke-agent.js` - Claude AI integration for advanced features
+- `api/invoke-agent.js` - Claude AI integration with fallback logic
 - Pattern: Vercel serverless functions with environment variables
-
-### Visualization Pattern
-```javascript
-// js/charts.js uses Chart.js for all visualizations
-const createLCAChart = (canvasId, lcaData) => {
-    return new Chart(ctx, {
-        type: 'doughnut',
-        data: formatLCAData(lcaData), // Australian-specific formatting
-        options: australianChartOptions
-    });
-};
-```
 
 ## Testing Strategy
 
@@ -158,32 +177,38 @@ const createLCAChart = (canvasId, lcaData) => {
 
 ## Common Development Patterns
 
-### Error Handling
+### Progressive Enhancement with Auth Gates
 ```javascript
-// Pattern: Graceful degradation with user feedback
+// Pattern: Check auth state, degrade gracefully
+if (await isAuthenticated()) {
+    enableFullFeatures();
+    loadUserProjects();
+} else {
+    enableDemoMode();
+    showSignupPrompt();
+}
+```
+
+### Error Handling with Fallbacks
+```javascript
+// Pattern: AI features fall back to standard calculations
 try {
-    const result = await calculateLCA(materials);
-    updateUI(result);
+    const result = await agentOrchestrator.invokeLCAAgent(data);
+    return result; // Enhanced AI results
 } catch (error) {
-    console.error('LCA calculation failed:', error);
-    showUserMessage('Calculation error. Please check your inputs.');
+    console.warn('AI unavailable, using standard calculations');
+    return lcaCalculator.calculateProjectLCA(data); // Standard fallback
 }
 ```
 
-### State Management
-- No complex state management framework
-- Project state held in JavaScript objects
-- Persistence via `js/storage.js` to Supabase
-- Local storage fallback for offline operation
-
-### UI Update Pattern
+### Environment-Aware Configuration
 ```javascript
-// Real-time calculation updates
-function onMaterialChange() {
-    const updatedResults = lcaCalculator.calculateProjectLCA(materials);
-    updateChartsAndTables(updatedResults);
-    updateComplianceStatus(updatedResults);
+// Pattern: Build-time injection with runtime fallbacks
+const supabaseUrl = window?.ENV?.NEXT_PUBLIC_SUPABASE_URL || '';
+if (!supabaseUrl) {
+    console.error('Supabase not configured - features disabled');
+    showConfigurationError();
 }
 ```
 
-When working on this codebase, prioritize **Australian standards compliance**, **transparent calculations**, and **vanilla JavaScript simplicity** over complex frameworks or build tools.
+When working on this codebase, prioritize **Australian standards compliance**, **authentication-first user flows**, **graceful AI fallbacks**, and **build-time environment injection** patterns.

@@ -25,6 +25,7 @@ CarbonConstruct is an Australian-focused embodied carbon calculator for construc
 ### 3. AI Agent Integration Architecture
 - **Frontend**: `js/agent-orchestrator.js` manages Claude Code agent invocations
 - **Backend**: `api/invoke-agent.js` bridges to Claude API with fallback logic
+- **Utils**: `api/utils/claude-client.js` handles direct Claude API communication
 - **Pattern**: Premium feature with subscription tier checking and rate limiting
 - **Agents**: `cc-lca-analyst`, `compliance-checker`, `materials-database-manager`, `construction-estimator`
 
@@ -49,7 +50,8 @@ npm start              # Local dev server (http-server port 8000)
 npm run lint           # ESLint (max warnings: 0)  
 npm run deploy         # Vercel production deployment (runs build.js)
 npm test               # Jest unit tests
-npm run test:manual    # Manual test suite in browser
+npm run test:manual    # Manual test suite in browser (js/tests/manual-test-suite.html)
+npm run test:claude    # Test Claude AI integration
 ```
 
 ### Build & Deployment Pattern
@@ -58,6 +60,12 @@ npm run test:manual    # Manual test suite in browser
 node build.js          # Injects ENV vars into HTML files
 # Then serves static files + serverless functions
 ```
+
+### Testing Strategy & Workflows
+- **Manual Testing**: Load `js/tests/manual-test-suite.html` - comprehensive UI test runner
+- **Unit Testing**: Jest for calculation engines with Australian compliance verification
+- **Test Pattern**: `test(name, fn)` with `assert()` and `assertCloseTo()` helpers
+- **Coverage**: Target `js/**/*.js` excluding vendor/tests directories
 
 ### File Structure Conventions
 - `*-new.html` = Production-ready Supabase auth pages
@@ -104,6 +112,21 @@ const result = await agentOrchestrator.invokeLCAAgent(projectData, materials, {
 // Backend automatically falls back to standard calculations if Claude API fails
 ```
 
+### Comprehensive Testing Pattern
+```javascript
+// Manual test suite pattern in js/tests/manual-test-suite.html
+test('Scope 1: Add excavator with fuel consumption', () => {
+    const calc = new ComprehensiveScopesCalculator();
+    const result = calc.addScope1Equipment({
+        category: 'excavators',
+        type: 'standard_13t',
+        operatingHours: 100
+    });
+    assert(result.emissions > 0, 'Emissions should be greater than 0');
+    assertCloseTo(result.fuelConsumed, 1200, 0); // 12L/hr * 100hr
+});
+```
+
 ## Database Architecture (Supabase)
 
 ### Key Tables & RLS Patterns
@@ -118,6 +141,7 @@ FOR SELECT USING (auth.uid() = user_id);
 - `projects` - Saved carbon calculations with JSON results
 - `user_profiles`, `subscriptions`, `invoices` - User management
 - `agent_usage_log` - AI agent invocation tracking
+- `webhook_errors` - Failed Stripe webhook logging
 
 ### Data Flow Pattern
 ```javascript
@@ -142,25 +166,55 @@ const saveProject = async (projectData) => {
 1. Frontend calls `js/agent-orchestrator.js`
 2. Orchestrator calls `api/invoke-agent.js` with auth token
 3. Server checks subscription tier & rate limits
-4. Invokes Claude API or falls back to standard calculations
+4. Invokes Claude API via `api/utils/claude-client.js` or falls back to standard calculations
 5. Returns enhanced results with AI insights
 
 ### Serverless Functions (api/ directory)
 - `api/stripe-webhook.js` - Webhook handler for subscription events
 - `api/invoke-agent.js` - Claude AI integration with fallback logic
+- `api/utils/claude-client.js` - Direct Claude API communication utilities
 - Pattern: Vercel serverless functions with environment variables
+
+## Deployment & Production Workflows
+
+### Pre-Deployment Checklist (from DEPLOYMENT_CHECKLIST.md)
+1. **Database Setup**: Run `SUPABASE_SCHEMA.sql` to create 8 tables
+2. **Auth URLs**: Configure Supabase redirect URLs for production domain
+3. **Stripe Webhooks**: Set endpoint to `https://domain.com/api/stripe-webhook`
+4. **Environment Variables**: Verify all keys in Vercel dashboard
+
+### Production Testing Pattern
+```bash
+# Test sequence after deployment:
+1. Email auth signup → dashboard redirect
+2. OAuth providers (Google, GitHub) → dashboard redirect  
+3. Subscription checkout → webhook delivery → database sync
+4. Settings page → profile updates → persistence
+5. Calculator → project save → Supabase storage
+```
+
+### Monitoring & Troubleshooting
+- **Webhook Health**: Check `webhook_errors` table for Stripe integration issues
+- **AI Agent Usage**: Monitor `agent_usage_log` for rate limiting and cost tracking
+- **Auth Flow**: Verify Supabase redirect URLs and OAuth provider configuration
+- **Database Performance**: Monitor RLS policy performance on large queries
 
 ## Testing Strategy
 
-### Manual Testing
-- Load `js/tests/manual-test-suite.html` for interactive tests
-- Test each calculator module independently
-- Verify Australian compliance calculations
+### Manual Testing Suite
+- **Location**: `js/tests/manual-test-suite.html` - comprehensive browser-based test runner
+- **Coverage**: Scope 1-3 calculations, LCA engines, Australian compliance standards
+- **Pattern**: Visual test results with pass/fail status and detailed error reporting
 
 ### Unit Testing (Jest)
-- Test calculation engines in isolation
-- Verify Australian standards compliance
-- Coverage target: `js/**/*.js` excluding vendor/tests
+- **Target**: Calculation engines in isolation
+- **Focus**: Australian standards compliance verification
+- **Coverage**: `js/**/*.js` excluding vendor/tests directories
+
+### Integration Testing
+- **Auth Flow**: Signup → dashboard → calculator → project save
+- **Payment Flow**: Checkout → webhook → subscription activation
+- **AI Agent Flow**: Request → fallback → result validation
 
 ## Australian Construction Focus
 
@@ -170,10 +224,12 @@ const saveProject = async (projectData) => {
 - **Green Star**: Points calculation for materials credit
 - **GHG Protocol**: Scope 1-3 mapping to LCA stages
 
-### Material Coefficients
-- Source: AusLCI, EPD Australasia, NABERS databases
-- Units: kg CO2-e per material unit (m³, tonne, m²)
-- Regional factors: Australian state-based grid emissions
+### Material Coefficients & Data Sources
+- **Source**: AusLCI, EPD Australasia, NABERS databases
+- **Units**: kg CO2-e per material unit (m³, tonne, m²)
+- **Regional Factors**: Australian state-based grid emissions
+- **Local Database**: 40+ materials in `js/materials-database.js` for offline use
+- **Production Database**: 54,343+ materials in Supabase `unified_materials` table
 
 ## Common Development Patterns
 
@@ -211,4 +267,19 @@ if (!supabaseUrl) {
 }
 ```
 
-When working on this codebase, prioritize **Australian standards compliance**, **authentication-first user flows**, **graceful AI fallbacks**, and **build-time environment injection** patterns.
+### Webhook Error Handling
+```javascript
+// Pattern: Log failed webhooks for debugging
+try {
+    await processStripeWebhook(event);
+} catch (error) {
+    await supabase.from('webhook_errors').insert({
+        event_type: event.type,
+        error_message: error.message,
+        timestamp: new Date().toISOString()
+    });
+    throw error; // Re-throw for Stripe retry logic
+}
+```
+
+When working on this codebase, prioritize **Australian standards compliance**, **authentication-first user flows**, **graceful AI fallbacks**, **comprehensive testing coverage**, and **build-time environment injection** patterns.
